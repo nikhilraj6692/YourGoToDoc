@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment Reminder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background: #4CAF50;
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .appointment-details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .reminder {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Appointment Reminder</h1>
+        </div>
+        <div class="content">
+            <p>Dear <span th:text="${name}">User</span>,</p>
+            
+            <p>This is a friendly reminder about your upcoming appointment tomorrow.</p>
+            
+            <div class="appointment-details">
+                <p><strong>Date:</strong> <span th:text="${#dates.format(#dates.createDate(#numbers.longValue(appointmentDate)), 'MMMM dd, yyyy')}">Date</span></p>
+                <p><strong>Time:</strong> <span th:text="${#dates.format(#dates.createDate(#numbers.longValue(startTime)), 'HH:mm')}">Time</span> - <span th:text="${#dates.format(#dates.createDate(#numbers.longValue(endTime)), 'HH:mm')}">Time</span></p>
+                <p><strong>Type:</strong> <span th:text="${type}">Type</span></p>
+                <p th:if="${location != null}"><strong>Location:</strong> <span th:text="${location}">Location</span></p>
+                <p th:if="${meetingLink != null}"><strong>Meeting Link:</strong> <a th:href="${meetingLink}" th:text="${meetingLink}">Link</a></p>
+            </div>
+
+            <div class="reminder">
+                <h3>Important Reminders:</h3>
+                <ul>
+                    <li th:if="${type == 'VIDEO'}">
+                        <strong>For Video Consultation:</strong>
+                        <ul>
+                            <li>Test your camera and microphone</li>
+                            <li>Ensure you have a stable internet connection</li>
+                            <li>Find a quiet, well-lit space</li>
+                        </ul>
+                    </li>
+                    <li th:if="${type == 'IN_PERSON'}">
+                        <strong>For In-Person Visit:</strong>
+                        <ul>
+                            <li>Arrive 10 minutes before your scheduled time</li>
+                            <li>Bring any required documents or medical records</li>
+                            <li>Wear a mask if required by the facility</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>General Preparation:</strong>
+                        <ul>
+                            <li>Have your medical history ready</li>
+                            <li>Prepare a list of questions or concerns</li>
+                            <li>Bring any current medications you're taking</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <p>If you need to reschedule or cancel your appointment, please do so at least 24 hours in advance.</p>
+        </div>
+        <div class="footer">
+            <p>This is an automated reminder. Please do not reply to this email.</p>
+            <p>© 2024 MediConnect. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html> 
