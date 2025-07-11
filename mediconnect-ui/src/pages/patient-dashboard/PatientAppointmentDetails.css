@@ -1,0 +1,1247 @@
+/* ===============================
+   PATIENT-SPECIFIC OVERRIDES
+   =============================== */
+
+/* ===============================
+   PATIENT APPOINTMENT DETAILS - DOCTOR INFO MODULE
+   =============================== */
+
+/* Main doctor info container for patient appointment details - UNIQUE CLASS */
+.patient-appointment-doctor-info {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: none !important;
+}
+
+.patient-appointment-details .doctor-info:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+.patient-appointment-details .doctor-info-header {
+  background: rgb(230, 239, 233);
+  color: black;
+  padding: 0.3rem 0.5rem 0.3rem 1.5rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.info-group {
+    padding:1rem;
+}
+
+.info-item {
+    gap: 1rem;
+}
+
+.patient-appointment-details .doctor-avatar {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 1.125rem;
+  position: relative;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.patient-appointment-details .doctor-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid white;
+}
+
+.patient-appointment-details .avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  line-height: 1;
+}
+
+.patient-appointment-details .doctor-details {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.patient-appointment-details .doctor-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #1e293b;
+  line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.patient-appointment-details .doctor-specialty {
+  font-size: 1.125rem;
+  color: #3b82f6;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.patient-appointment-details .doctor-experience {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.patient-appointment-details .consultation-fee {
+  font-size: 1rem;
+  color: #059669;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.patient-appointment-details .appointment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.patient-appointment-details .doctor-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.patient-appointment-details .rating-percentage {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+
+.patient-appointment-details .doctor-actions-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-left: auto;
+}
+
+.patient-appointment-details .appointment-status-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.patient-appointment-details .status-badge {
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.patient-appointment-details .status-badge.confirmed {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+  border-color: #93c5fd;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.patient-appointment-details .status-badge.pending {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  border-color: #fde68a;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+.patient-appointment-details .status-badge.completed {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+  border-color: #93c5fd;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.patient-appointment-details .status-badge.cancelled {
+  background: linear-gradient(135deg, #fed7d7 0%, #fecaca 100%);
+  color: #dc2626;
+  border-color: #fecaca;
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+}
+
+.patient-appointment-details .status-badge.paid {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #166534;
+  border-color: #bbf7d0;
+  box-shadow: 0 2px 4px rgba(22, 101, 52, 0.2);
+}
+
+.patient-appointment-details .status-badge.payment-pending {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  border-color: #fde68a;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+.patient-appointment-details .status-badge.failed {
+  background: linear-gradient(135deg, #fed7d7 0%, #fecaca 100%);
+  color: #dc2626;
+  border-color: #fecaca;
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+}
+
+.patient-appointment-details .action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+/* Doctor Info Header - Patient specific overrides */
+.patient-header.doctor-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.doctor-specialization {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.doctor-rating {
+    font-size: 0.8rem;
+    color: #472e02;
+    font-weight: 500;
+}
+
+/* Blue theme for doctor avatar */
+.patient-avatar.theme-blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+/* Progress Bar */
+.progress-bar {
+    margin-top: 1rem;
+    background: #f1f5f9;
+    border-radius: 1rem;
+    height: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    border-radius: 1rem;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: -1.5rem;
+    right: 0;
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ===============================
+   PATIENT TABS STYLES
+   =============================== */
+.patient-tabs {
+    display: flex;
+    border-bottom: 1px solid #e2e8f0;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    background: #f8fafc;
+    flex-shrink: 0;
+    gap: 1px; /* Creates transparent partition between tabs */
+}
+
+.patient-tab {
+    flex: 1;
+    padding: 1rem;
+    background: #181f2a;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.patient-tab.active {
+    color: #181f2a;
+    font-weight: 600;
+    background: white;
+    border-bottom: 1px solid #181f2a;
+    border-top: none;
+}
+
+.doctor-info-group {
+    border: none;
+}
+
+.patient-tab:hover:not(.active) {
+    background: #2a3441; /* Slightly lighter on hover */
+}
+
+.doctor-info-tab-panel.active {
+    padding: 0;
+}
+
+/* ===============================
+   PATIENT FORM STYLES
+   =============================== */
+.patient-form-section {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: white;
+    margin-top: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: #fafbfc;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Input with icon styles - from Auth.css */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    color: #a0aec0;
+    font-size: 1rem;
+    z-index: 1;
+}
+
+.input-with-icon input,
+.input-with-icon select,
+.input-with-icon textarea {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.4375rem;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+/* Patient form specific - inputs without icons */
+.patient-form-section .input-with-icon input,
+.patient-form-section .input-with-icon select,
+.patient-form-section .input-with-icon textarea {
+    padding: 0.8rem 1rem;
+}
+
+.input-with-icon input:focus,
+.input-with-icon select:focus,
+.input-with-icon textarea:focus {
+    border-color: #45660c;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(182, 255, 60, 0.1);
+}
+
+.input-with-icon input::placeholder,
+.input-with-icon textarea::placeholder {
+    color: #a0aec0;
+}
+
+/* Regular form input styles */
+.form-input {
+    padding: 0.875rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input.textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+/* Symptoms Grid */
+.symptoms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.symptom-btn {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.4375rem;
+    background: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #374151;
+    transition: all 0.2s ease;
+    text-align: center;
+    outline: none;
+    box-shadow: none;
+}
+
+.symptom-btn:hover {
+    border: 1px solid #3b82f6;
+    background: #f0f9ff;
+    box-shadow: none;
+}
+
+.symptom-btn.selected {
+    border: 1px solid #3b82f6;
+    background: #f0f9ff;
+    box-shadow: none;
+}
+
+/* Pain Scale */
+.pain-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pain-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.pain-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+}
+
+.pain-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: none;
+}
+
+.pain-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.pain-value {
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+}
+
+/* ===============================
+   DOCTOR INFO PANEL STYLES
+   =============================== */
+.education-item,
+.certification-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.education-item:last-child,
+.certification-item:last-child {
+    border-bottom: none;
+}
+
+.education-text {
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.certification-text {
+    font-size: 0.9rem;
+    color: #059669;
+    font-weight: 500;
+}
+
+.languages-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.language-tag {
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.4375rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.info-value.available {
+    color: #059669;
+    font-weight: 600;
+}
+
+.info-value.fee {
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Status Card */
+.status-card {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-icon {
+    font-size: 1.5rem;
+}
+
+.status-info {
+    flex: 1;
+}
+
+.status-title {
+    font-weight: 600;
+    color: #0369a1;
+    margin-bottom: 0.25rem;
+}
+
+.status-time {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+/* Payment Options */
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.payment-item {
+    padding: 0.75rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+/* ===============================
+   BUTTON HEIGHT ADJUSTMENT
+   =============================== */
+.consultation-actions .plain-btn {
+    height: 57px;
+}
+
+.consultation-actions .plain-btn.back-btn {
+    margin-top: 1rem;
+}
+
+/* Primary button style - matches save-notes-btn */
+.plain-btn.view-profile-btn {
+    background: #1c779e;
+    color: white;
+}
+
+.plain-btn.view-profile-btn:hover {
+    background: #2c5282;
+}
+
+/* Disabled button styles for all plain-btn */
+.plain-btn:disabled {
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.plain-btn:disabled:hover {
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ===============================
+   DISABLED CHAT BUTTON
+   =============================== */
+.plain-btn.chat-btn.disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.plain-btn.chat-btn.disabled:hover {
+    background: #f3f4f6;
+    transform: none;
+    box-shadow: none;
+}
+
+.plain-btn.chat-btn.disabled::before {
+    display: none;
+}
+
+/* Enhanced Chat Button */
+.plain-btn.chat-btn {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    min-width: 120px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plain-btn.chat-btn:hover:not(.disabled) {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+}
+
+/* ===============================
+   FORM VALIDATION STYLES
+   =============================== */
+.form-input:invalid:not(:placeholder-shown) {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.form-input:valid:not(:placeholder-shown) {
+    border-color: #10b981;
+}
+
+.form-group.required label::after {
+    content: ' *';
+    color: #ef4444;
+    font-weight: 700;
+}
+
+/* Success States */
+.form-section.completed {
+    border-color: #10b981;
+    background: #f0fdf4;
+}
+
+.form-section.completed .section-title {
+    color: #059669;
+    border-bottom-color: #10b981;
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .symptoms-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+    }
+    
+    .symptom-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .form-section {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .patient-form-section {
+        padding: 1rem;
+    }
+    
+    .consultation-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .consultation-actions .plain-btn {
+        width: 100%;
+        height: 48px;
+    }
+    
+    .consultation-actions .plain-btn.back-btn {
+        margin-top: 1rem;
+    }
+    
+    .progress-text {
+        position: static;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+    
+    /* Doctor info responsive styles */
+    .patient-appointment-details .doctor-info-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .patient-appointment-details .doctor-avatar {
+        width: 4rem;
+        height: 4rem;
+        font-size: 1rem;
+    }
+    
+    .patient-appointment-details .doctor-name {
+        font-size: 1.125rem;
+    }
+    
+    .patient-appointment-details .doctor-actions-right {
+        align-items: center;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-section {
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+    }
+    
+    .form-input {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .symptom-btn {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    .pain-labels {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .status-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    /* Doctor info responsive styles for small screens */
+    .patient-appointment-details .doctor-info {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .patient-appointment-details .doctor-avatar {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .patient-appointment-details .doctor-name {
+        font-size: 1rem;
+    }
+    
+    .patient-appointment-details .doctor-specialty {
+        font-size: 0.875rem;
+    }
+}
+
+/* ===============================
+   CHAT SECTION PATIENT VERSION
+   =============================== */
+.patient-chat-section {
+    background: #f8fafc;
+    border-left: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.patient-chat-header {
+    background: #1e293b;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.chat-doctor-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.chat-doctor-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.chat-doctor-details h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    margin: 0 0 0.125rem 0;
+}
+
+.chat-doctor-status {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+}
+
+/* Patient-specific message styling */
+.patient-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: #f1f5f9;
+    background-image: 
+        radial-gradient(circle at 25px 25px, rgba(255,255,255,0.3) 2%, transparent 2%),
+        radial-gradient(circle at 75px 75px, rgba(255,255,255,0.3) 2%, transparent 2%);
+    background-size: 100px 100px;
+    background-position: 0 0, 50px 50px;
+    position: relative;
+    min-height: 0;
+}
+
+.patient-message.sent .message-text {
+    background: #3b82f6;
+    color: white;
+    margin-right: 0.5rem;
+}
+
+.patient-message.sent .message-text::before {
+    border-color: transparent transparent transparent #3b82f6;
+}
+
+.patient-message:not(.sent) .message-text {
+    background: white;
+    color: #374151;
+    margin-left: 0.5rem;
+}
+
+/* Patient form summary in chat */
+.form-summary-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    backdrop-filter: blur(10px);
+}
+
+.form-summary-title {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.form-summary-value {
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Quick action buttons in chat */
+.chat-quick-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+}
+
+.quick-action-btn {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-action-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Emergency contact info */
+.emergency-info {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #991b1b;
+    font-size: 0.9rem;
+}
+
+.emergency-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ===============================
+   LOADING AND SUCCESS STATES
+   =============================== */
+.form-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #64748b;
+    font-size: 0.9rem;
+    padding: 1rem;
+}
+
+.loading-spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.form-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #166534;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.success-icon {
+    font-size: 1.25rem;
+}
+
+/* ===============================
+   ACCESSIBILITY IMPROVEMENTS
+   =============================== */
+.form-input:focus,
+.quick-action-btn:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .form-input {
+        border-width: 3px;
+    }
+    
+    .symptom-btn.selected {
+        border-width: 3px;
+    }
+    
+    .plain-btn.chat-btn:not(.disabled) {
+        border: 2px solid white;
+    }
+}
+
+/* ===============================
+   FINAL OVERRIDE FOR DOCTOR INFO
+   =============================== */
+/* This ensures no background or border is applied to doctor-info in patient appointment details */
+.patient-appointment-details .doctor-info {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: none !important;
+}
+
+.patient-appointment-details .doctor-info:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+/* ===============================
+   CUSTOM SYMPTOM INPUT STYLES
+   =============================== */
+.custom-symptom-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    overflow: visible;
+    height: fit-content;
+}
+
+.custom-symptom-input {
+    width: 100%;
+    padding: 0.875rem 36px 0.875rem 0.875rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 0;
+    border-radius: 0.4375rem;
+    outline: none;
+    box-shadow: none;
+}
+
+.custom-symptom-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.custom-symptom-plus-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #07a88c;
+    color: white;
+    border: none;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    z-index: 10;
+    text-align: center;
+}
+
+.custom-symptom-plus-btn:hover:not(:disabled) {
+    background: #0b3c40;
+}
+
+.custom-symptom-plus-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: translateY(-50%);
+    opacity: 0.6;
+}
+
+.custom-symptoms-section {
+    margin-top: 1rem;
+}
+
+.custom-symptoms-title {
+    font-size: 0.9rem;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.custom-symptoms-grid {
+    max-width: 600px;
+}
+
+.custom-symptom-item {
+    background-color: #f0f9ff;
+    border-color: #3b82f6;
+    color: #3b82f6;
+    position: relative;
+    padding-right: 2rem;
+    max-width: 200px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.custom-symptom-remove-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.custom-symptom-remove-btn:hover {
+    background-color: #fef2f2;
+}

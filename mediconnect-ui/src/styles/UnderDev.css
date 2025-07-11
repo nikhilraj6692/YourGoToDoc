@@ -1,0 +1,361 @@
+/* Under Development Pages - Complete CSS */
+/* For Profile, Appointments, and other under development pages */
+
+/* Main Container */
+.under-development-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8fafd 0%, #f1f5f9 100%);
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  }
+  
+  /* Content Card */
+  .under-development-content {
+    max-width: 600px;
+    text-align: center;
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Top accent border */
+  .under-development-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #86bf23, #75a820);
+  }
+  
+  /* Icon with animation */
+  .development-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* Typography */
+  .development-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .development-subtitle {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #86bf23;
+    margin: 0 0 1.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .development-description {
+    font-size: 1rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  
+  /* Features Section */
+  .development-features {
+    background: #f8fafd;
+    padding: 1.5rem;
+    border-radius: 0.8rem;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  
+  .development-features h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 1rem 0;
+    text-align: center;
+  }
+  
+  .development-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .development-features li {
+    padding: 0.5rem 0;
+    color: #4a5568;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Timeline Badge */
+  .development-timeline {
+    margin-bottom: 2rem;
+  }
+  
+  .timeline-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #86bf23 0%, #75a820 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(134, 191, 35, 0.3);
+  }
+  
+  /* Action Buttons Container */
+  .development-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  /* Back Button (Secondary) */
+  .back-button {
+    padding: 0.875rem 1.5rem;
+    background: white;
+    color: #4a5568;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+  
+  .back-button:hover {
+    background: #f8fafd;
+    border-color: #86bf23;
+    color: #86bf23;
+  }
+  
+  /* Schedule Button (Blue Alternative) */
+  .schedule-button {
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+  }
+  
+  .schedule-button:hover {
+    background: linear-gradient(135deg, #2c5282 0%, #2a4365 100%);
+    box-shadow: 0 6px 16px rgba(49, 130, 206, 0.4);
+  }
+  
+  /* Notify Button (Primary Green) */
+  .notify-button {
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #86bf23 0%, #75a820 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(134, 191, 35, 0.3);
+  }
+  
+  .notify-button:hover {
+    background: linear-gradient(135deg, #75a820 0%, #68a008 100%);
+    box-shadow: 0 6px 16px rgba(134, 191, 35, 0.4);
+  }
+  
+  /* Optional: Button Grouping */
+  .button-group-primary {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .button-group-secondary {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .development-actions-grouped {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .development-actions-grouped .button-group-primary {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .development-actions-grouped .button-group-secondary {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .under-development-container {
+      padding: 1rem;
+    }
+    
+    .under-development-content {
+      padding: 2rem 1.5rem;
+    }
+    
+    .development-title {
+      font-size: 1.6rem;
+    }
+    
+    .development-subtitle {
+      font-size: 1.1rem;
+    }
+    
+    .development-icon {
+      font-size: 3rem;
+    }
+    
+    .development-actions {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .back-button,
+    .schedule-button,
+    .notify-button {
+      width: 100%;
+    }
+    
+    /* Logical order on mobile */
+    .back-button {
+      order: 1;
+    }
+    
+    .schedule-button {
+      order: 2;
+    }
+    
+    .notify-button {
+      order: 3;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .under-development-container {
+      padding: 0.5rem;
+    }
+    
+    .under-development-content {
+      padding: 1.5rem 1rem;
+    }
+    
+    .development-title {
+      font-size: 1.4rem;
+    }
+    
+    .development-subtitle {
+      font-size: 1rem;
+    }
+    
+    .development-icon {
+      font-size: 2.5rem;
+    }
+    
+    .back-button,
+    .schedule-button,
+    .notify-button {
+      font-size: 0.9rem;
+      padding: 0.75rem 1.25rem;
+    }
+    
+    .development-features {
+      padding: 1rem;
+    }
+    
+    .development-features li {
+      font-size: 0.9rem;
+    }
+    
+    .timeline-badge {
+      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .under-development-content {
+      border: 3px solid #000;
+    }
+    
+    .development-features {
+      border: 2px solid #000;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .development-icon {
+      animation: none;
+    }
+    
+    .back-button,
+    .schedule-button,
+    .notify-button {
+      transition: none;
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .under-development-container {
+      background: white;
+      padding: 1rem;
+    }
+    
+    .under-development-content {
+      box-shadow: none;
+      border: 1px solid #000;
+    }
+    
+    .development-actions {
+      display: none;
+    }
+  }

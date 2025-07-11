@@ -1,0 +1,15 @@
+{
+  "short_name": "MediConnect",
+  "name": "MediConnect - Your trusted healthcare platform",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#181f2a",
+  "background_color": "#ffffff"
+}

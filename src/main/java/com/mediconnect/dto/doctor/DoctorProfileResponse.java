@@ -1,8 +1,8 @@
 package com.mediconnect.dto.doctor;
 
+import com.mediconnect.dto.AddressResponse;
 import com.mediconnect.enums.VerificationStatus;
 import com.mediconnect.model.DoctorProfile;
-import com.mediconnect.model.Address;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class DoctorProfileResponse {
     private Long phoneNumber;
 
     @Schema(description = "Doctor's address")
-    private Address address;
+    private AddressResponse address;
 
     @Schema(description = "Doctor's bio", example = "Experienced cardiologist with expertise in...")
     private String bio;
@@ -45,7 +45,7 @@ public class DoctorProfileResponse {
     private String email;
 
     @Schema(description = "Uploaded documents mapped by type")
-    private Map<DocumentType, com.mediconnect.model.DoctorProfile.UploadedDocument> documents;
+    private Map<DocumentType, DoctorProfile.UploadedDocument> documents;
 
     private String statusReason;
 } 

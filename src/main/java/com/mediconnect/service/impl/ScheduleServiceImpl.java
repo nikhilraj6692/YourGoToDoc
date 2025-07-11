@@ -1,10 +1,11 @@
 package com.mediconnect.service.impl;
 
-import com.mediconnect.SlotException;
+import com.mediconnect.exceptions.SlotException;
 import com.mediconnect.dto.schedule.DeleteSlotsRequest;
 import com.mediconnect.dto.schedule.ScheduleSlotRequest;
 import com.mediconnect.dto.schedule.SlotExtensionRequest;
 import com.mediconnect.dto.schedule.SlotValidationResponse;
+import com.mediconnect.dto.schedule.RescheduleRequest;
 import com.mediconnect.model.Calendar;
 import com.mediconnect.repository.CalendarRepository;
 import com.mediconnect.service.ScheduleService;
@@ -461,5 +462,59 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         // Save the updated calendars
         calendarRepository.saveAll(calendars);
+    }
+
+    @Override
+    @Transactional
+    public void rescheduleAppointment(String doctorId, RescheduleRequest request) {
+        // Get the old calendar and slot
+        Calendar oldCalendar = calendarRepository.findByIdAndDoctorId(request.getOldCalendarId(), doctorId)
+                .orElseThrow(() -> new IllegalArgumentException("Old calendar not found"));
+
+        Calendar.Slot oldSlot = oldCalendar.getSlots().stream()
+                .filter(slot -> slot.getId().equals(request.getOldSlotId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Old slot not found"));
+
+        // Verify the old slot is booked
+        if (oldSlot.isAvailable()) {
+            throw new IllegalArgumentException("Cannot reschedule an available slot");
+        }
+
+        // If both calendars are the same, use the same calendar instance
+        Calendar newCalendar;
+        if (oldCalendar.getId().equals(request.getNewCalendarId())) {
+            newCalendar = oldCalendar;
+        } else {
+            newCalendar = calendarRepository.findByIdAndDoctorId(request.getNewCalendarId(), doctorId)
+                    .orElseThrow(() -> new IllegalArgumentException("New calendar not found"));
+        }
+
+        Calendar.Slot newSlot = newCalendar.getSlots().stream()
+                .filter(slot -> slot.getId().equals(request.getNewSlotId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("New slot not found"));
+
+        // Verify the new slot is available
+        if (!newSlot.isAvailable()) {
+            throw new IllegalArgumentException("New slot is already booked");
+        }
+
+        // Move the appointment from old slot to new slot
+        String appointmentId = oldSlot.getAppointmentId();
+        oldSlot.setAppointmentId(null);
+        oldSlot.setAvailable(true);
+
+        newSlot.setAppointmentId(appointmentId);
+        newSlot.setAvailable(false);
+
+        // If both calendars are the same, we only need to save once
+        if (oldCalendar.getId().equals(newCalendar.getId())) {
+            calendarRepository.save(oldCalendar);
+        } else {
+            // Save both calendars
+            calendarRepository.save(oldCalendar);
+            calendarRepository.save(newCalendar);
+        }
     }
 }

@@ -1,0 +1,849 @@
+/* AdminDashboard.css - Enhanced with DoctorDashboard styling */
+
+/* Base styles matching DoctorDashboard */
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f7fafd;
+  color: #23272a;
+}
+
+.admin-dashboard {
+  min-height: 100vh;
+  width: 100%;
+  background: #f7fafd;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main Content Styles */
+.admin-content {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+}
+
+/* Stats Cards Section */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.admin-stat-card {
+  background: white;
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-stat-card:hover {
+  box-shadow: 0 8px 25px rgba(8, 8, 8, 0.203);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  background: rgba(134, 191, 35, 0.15);
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-content h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.stat-change {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-change.positive {
+  color: #38a169;
+}
+
+.stat-change.negative {
+  color: #e53e3e;
+}
+
+/* Enhanced Approvals Section */
+.approvals-section {
+  background: white;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+
+
+.approval-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  color: #4a5568;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  position: relative;
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #86bf23;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tab:hover {
+  background: #f7fafc;
+  color: #2d3748;
+}
+
+.tab.active {
+  background: #f8fafd;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.tab.active::after {
+  transform: scaleX(1);
+}
+
+.tab-count {
+  background: #e2e8f0;
+  color: #4a5568;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  font-weight: 600;
+}
+
+.tab.active .tab-count {
+  background: #86bf23;
+  color: white;
+}
+
+/* Enhanced Doctor Tiles */
+.doctor-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.doctor-tile {
+  background: #f8fafd;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.doctor-tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #86bf23, #75a820);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.doctor-tile:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border-color: #86bf23;
+}
+
+.doctor-tile:hover::before {
+  transform: scaleX(1);
+}
+
+.doctor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.doctor-tile h3 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.priority-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-weight: 600;
+}
+
+.priority-badge.high {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.priority-badge.medium {
+  background: #feebc8;
+  color: #7b341e;
+}
+
+.priority-badge.low {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.doctor-info {
+  margin-bottom: 1rem;
+}
+
+.doctor-tile .specialty {
+  margin: 0.5rem 0;
+  color: #3182ce;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.specialty-icon {
+  font-size: 1.1rem;
+}
+
+.doctor-tile .experience {
+  margin: 0.5rem 0;
+  color: #718096;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.doctor-tile .dates {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 1rem 0;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.date-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.date-item:last-child {
+  margin-bottom: 0;
+}
+
+.date-label {
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.details-btn {
+  width: 100%;
+  background: #68a008;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.details-btn:hover {
+  background: #517f06;
+}
+
+/* Enhanced Doctor Details Panel */
+.doctor-details-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 650px;
+  height: 100vh;
+  background: white;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.panel-header {
+  background: #181f2a;
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.close-btn {
+  background: rgba(134, 191, 35, 0.2);
+  border: none;
+  font-size: 1.5rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  padding: 0.3 rem 0.4 rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #86bf23;
+  color: white;
+}
+
+.panel-content {
+  padding: 2rem;
+}
+
+.doctor-info {
+  margin-bottom: 2rem;
+  background: #f8fafd;
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  border: 1px solid #e2e8f0;
+}
+
+.doctor-info h3 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.doctor-info p {
+  margin: 0.5rem 0;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-icon {
+  color: #718096;
+  width: 1.2rem;
+}
+
+/* Documents Section */
+.documents-section {
+  margin-bottom: 2rem;
+}
+
+.documents-section h3 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.document-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.document-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.document-item.clickable {
+  cursor: pointer;
+}
+
+.document-item.clickable:hover {
+  background: #edf2f7;
+  border-color: #86bf23;
+}
+
+.document-type {
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.document-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.document-btn.available {
+  background: #48bb78;
+  color: white;
+  border: none;
+}
+
+.document-btn.available:hover {
+  background: #38a169;
+}
+
+.document-btn.unavailable {
+  background: #f56565;
+  color: white;
+  border: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.document-icon {
+  font-size: 1rem;
+}
+
+.document-icon.clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.document-icon.clickable:hover {
+  transform: scale(1.2);
+}
+
+/* Approval Actions */
+.approval-actions {
+  background: #f8fafd;
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  border: 1px solid #e2e8f0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.approval-actions h3 {
+  margin: 0 0 1rem 0;
+  color: #2d3748;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.action-btn {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.action-btn.approve {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.action-btn.approve:hover {
+  background: #9ae6b4;
+}
+
+.action-btn.reject {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.action-btn.reject:hover {
+  background: #feb2b2;
+}
+
+.action-btn.review {
+  background: #feebc8;
+  color: #7b341e;
+}
+
+.action-btn.review:hover {
+  background: #fbd38d;
+}
+
+.comment-box {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.9rem;
+  margin: 1rem 0;
+  box-sizing: border-box;
+}
+
+.comment-box:focus {
+  outline: none;
+  border-color: #86bf23;
+  box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.2);
+}
+
+.submit-btn {
+  background: #3182ce;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.submit-btn:hover {
+  background: #2c5282;
+  transform: translateY(-2px);
+}
+
+/* Enhanced Document Viewer Panel */
+.blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+}
+
+.document-viewer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2001;
+  overflow: hidden;
+}
+
+.document-viewer-panel {
+  background: white;
+  border-radius: 0.5rem;
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.viewer-header {
+  background: #181f2a;
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.5rem 0.5rem 0 0;
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.viewer-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.viewer-header .close-btn {
+  background: rgba(134, 191, 35, 0.2);
+  border: none;
+  font-size: 1.5rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  padding: 0.02rem 0.3rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.viewer-header .close-btn:hover {
+  background: #86bf23;
+  color: white;
+}
+
+.document-content {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.document-content object,
+.document-content iframe,
+.document-content img {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0.5rem;
+  background: white;
+}
+
+/* When document viewer is open, prevent background scrolling */
+body.document-viewer-open {
+  overflow: hidden;
+}
+
+/* Ensure doctor details panel stays behind document viewer */
+.doctor-details-panel {
+  z-index: 1000;
+}
+
+/* Loading and empty states */
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+  padding: 3rem 2rem;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  margin: 0 0 0.5rem 0;
+  color: #4a5568;
+  font-size: 1.2rem;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .admin-content {
+    max-width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .doctor-details-panel {
+    width: 450px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .doctor-tiles {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .doctor-details-panel {
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .doctor-details-panel {
+    width: 100%;
+  }
+  
+  .header-menu {
+    order: 1;
+    margin: 0;
+    gap: 1rem;
+  }
+  
+  .header-left,
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .doctor-tiles {
+    grid-template-columns: 1fr;
+  }
+  
+  .doctor-details-panel {
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-content {
+    padding: 1rem;
+  }
+  
+  .approval-tabs {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  .tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .doctor-tile {
+    padding: 1rem;
+  }
+  
+  .panel-content {
+    padding: 1rem;
+  }
+}
+
+.approval-actions .auth-button {
+  width: 100%;
+  margin-top: 1rem;
+  display: block;
+}
+
+/* Remove duplicate button styles since they are in Auth.css */
+
+.profile-photo-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-profile-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}

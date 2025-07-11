@@ -1,33 +1,25 @@
 package com.mediconnect.config;
 
+import com.mediconnect.handler.ChatWebSocketHandler;
+import com.mediconnect.interceptor.ChatHandshakeInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 @Configuration
-@EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-
+@EnableWebSocket
+@RequiredArgsConstructor
+public class WebSocketConfig implements WebSocketConfigurer {
+    
+    private final ChatWebSocketHandler chatWebSocketHandler;
+    private final ChatHandshakeInterceptor chatHandshakeInterceptor;
+    
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        // Enable a simple memory-based message broker to send messages to clients
-        // on destinations prefixed with "/topic"
-        config.enableSimpleBroker("/topic", "/queue");
-        
-        // Set prefix for messages bound for @MessageMapping methods
-        config.setApplicationDestinationPrefixes("/app");
-        
-        // Set prefix for user-specific messages
-        config.setUserDestinationPrefix("/user");
-    }
-
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Register the "/ws" endpoint, enabling the SockJS fallback options
-        registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*")
-                .withSockJS();
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(chatWebSocketHandler, "/ws/chat")
+                .setAllowedOriginPatterns("*") // In production, specify exact origins
+                .addInterceptors(chatHandshakeInterceptor);
     }
 } 

@@ -5,6 +5,7 @@ import com.mediconnect.dto.schedule.ScheduleSlotRequest;
 import com.mediconnect.dto.schedule.SlotExtensionRequest;
 import com.mediconnect.dto.schedule.SlotValidationResponse;
 import com.mediconnect.dto.schedule.DeleteSlotsRequest;
+import com.mediconnect.dto.schedule.RescheduleRequest;
 import com.mediconnect.model.Calendar;
 
 import java.time.LocalDate;
@@ -53,4 +54,9 @@ public interface ScheduleService {
     void deleteSlot(String doctorId, String calendarId, String slotId);
     
     void deleteSlotsInRange(String doctorId, DeleteSlotsRequest request);
+
+    /**
+     * Reschedule an appointment from one slot to another
+     */
+    void rescheduleAppointment(String doctorId, RescheduleRequest request);
 }

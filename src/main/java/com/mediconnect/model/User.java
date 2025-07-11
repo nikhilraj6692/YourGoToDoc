@@ -70,6 +70,4 @@ public class User extends BaseEntity {
         if (updatedAt != null) doc.append("updatedAt", updatedAt);
         return doc;
     }
-
-
 } 

@@ -1,0 +1,1064 @@
+/* PatientDashboard.css - Professional Medical Theme */
+
+/* Main Container */
+.pd-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f8fafc;
+  min-height: 90vh;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* Find Doctor Hero Section - Login Screen Style */
+.pd-find-doctor-hero {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 0;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  min-height: 300px;
+}
+
+/* Left side - Text content */
+.pd-hero-content {
+  flex: 1;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  color: white;
+  position: relative;
+  z-index: 2;
+}
+
+.pd-hero-content::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 50%;
+}
+
+.pd-hero-text h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.3;
+  color: white;
+}
+
+.pd-hero-text p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+.pd-find-doctor-btn {
+  background: white;
+  color: #2d3748;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  align-self: flex-start;
+}
+
+.pd-find-doctor-btn:hover {
+  background: #f7fafc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.pd-find-doctor-btn::before {
+  content: '🔍';
+  font-size: 1.1rem;
+}
+
+/* Right side - Illustration area */
+.pd-hero-illustration {
+  flex: 0.7;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  min-width: 320px;
+}
+
+.pd-hero-doctors-image {
+  width: 100%;
+  max-width: 40px;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  object-fit: cover;
+  background: white;
+}
+
+/* If using placeholder/fallback */
+.pd-hero-doctors-placeholder {
+  width: 280px;
+  height: 200px;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border: 2px solid #e2e8f0;
+}
+
+.pd-hero-doctors-placeholder .placeholder-icon {
+  font-size: 3rem;
+  opacity: 0.3;
+}
+
+.pd-hero-doctors-placeholder .placeholder-text {
+  color: #718096;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Benefits section below illustration (optional) */
+.pd-hero-benefits {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 200px;
+  backdrop-filter: blur(10px);
+}
+
+.pd-hero-benefits h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+}
+
+.pd-hero-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  color: #4a5568;
+}
+
+.pd-hero-benefits li {
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pd-hero-benefits li::before {
+  content: '✓';
+  color: #48bb78;
+  font-weight: bold;
+}
+
+/* Welcome Section */
+.pd-welcome {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.pd-welcome h2 {
+  font-size: 1.8rem;
+  font-weight: 600;       
+  margin: 0 0 0.5rem 0;
+  color: #2d3748;
+}
+
+.pd-welcome .pd-subtitle {
+  font-size: 1rem;
+  color: #718096;
+  margin: 0 0 1rem 0;
+  font-weight: 500;
+}
+
+.pd-next-appointment {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.pd-next-appointment h4 {
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem 0;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.pd-next-appointment p {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 500;
+  color: #2d3748;
+}
+
+/* Stats Section */
+.pd-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.pd-stat {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pd-stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #4299e1, #3182ce);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.pd-stat:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e0;
+}
+
+.pd-stat:hover::before {
+  transform: scaleX(1);
+}
+
+.pd-stat-icon {
+  font-size: 2.2rem;
+  background: #f7fafc;
+  padding: 0.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.pd-stat-content h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pd-stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+/* Health Alert */
+.pd-health-alert {
+  background: white;
+  border-left: 4px solid #4299e1;
+  color: #2d3748;
+  padding: 1rem 1.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.pd-health-alert.warning {
+  border-left-color: #ed8936;
+}
+
+.pd-health-alert.error {
+  border-left-color: #e53e3e;
+}
+
+.pd-alert-icon {
+  font-size: 1.3rem;
+  min-width: 1.5rem;
+  color: #4299e1;
+}
+
+.pd-health-alert.warning .pd-alert-icon {
+  color: #ed8936;
+}
+
+.pd-health-alert.error .pd-alert-icon {
+  color: #e53e3e;
+}
+
+.pd-alert-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: #2d3748;
+}
+
+.pd-alert-content p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #4a5568;
+}
+
+/* Main Grid Layout */
+.pd-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Section Components */
+.pd-appointments,
+.pd-health-metrics,
+.pd-quick-actions,
+.pd-prescriptions,
+.pd-medical-history,
+.pd-payment-history {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.pd-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f7fafc;
+}
+
+.pd-section-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.pd-book-btn {
+  background: #4299e1;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pd-book-btn:hover {
+  background: #3182ce;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Appointments List */
+.pd-appointments-list {
+  padding: 1.5rem 2rem;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.pd-appointment-card {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.pd-appointment-card:last-child {
+  margin-bottom: 0;
+}
+
+.pd-appointment-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: #cbd5e0;
+}
+
+.pd-appointment-card.upcoming {
+  border-left: 4px solid #4299e1;
+}
+
+.pd-appointment-card.completed {
+  border-left: 4px solid #48bb78;
+}
+
+.pd-appointment-card.cancelled {
+  border-left: 4px solid #e53e3e;
+  opacity: 0.7;
+}
+
+/* Appointment Header */
+.pd-appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pd-doctor-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pd-doctor-avatar {
+  width: 2.8rem;
+  height: 2.8rem;
+  background: #4299e1;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pd-doctor-name h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.pd-specialization {
+  font-size: 0.85rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+.pd-status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.pd-status-badge.scheduled {
+  background: #e6fffa;
+  color: #234e52;
+  border-color: #81e6d9;
+}
+
+.pd-status-badge.completed {
+  background: #f0fff4;
+  color: #22543d;
+  border-color: #9ae6b4;
+}
+
+.pd-status-badge.cancelled {
+  background: #fed7d7;
+  color: #c53030;
+  border-color: #feb2b2;
+}
+
+/* Appointment Details */
+.pd-appointment-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pd-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pd-detail-icon {
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.pd-detail-text {
+  font-size: 0.85rem;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+/* Appointment Actions */
+.pd-appointment-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.pd-action-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  border: 1px solid transparent;
+}
+
+.pd-action-btn.primary {
+  background: #4299e1;
+  color: white;
+  border-color: #4299e1;
+}
+
+.pd-action-btn.primary:hover {
+  background: #3182ce;
+  border-color: #3182ce;
+}
+
+.pd-action-btn.secondary {
+  background: white;
+  color: #4a5568;
+  border-color: #e2e8f0;
+}
+
+.pd-action-btn.secondary:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+  color: #2d3748;
+}
+
+.pd-action-btn.danger {
+  background: white;
+  color: #e53e3e;
+  border-color: #fed7d7;
+}
+
+.pd-action-btn.danger:hover {
+  background: #fed7d7;
+  border-color: #feb2b2;
+}
+
+/* Empty State */
+.pd-empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.pd-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.4;
+}
+
+.pd-empty-state h4 {
+  font-size: 1.1rem;
+  color: #4a5568;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.pd-empty-state p {
+  color: #718096;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+/* Health Metrics */
+.pd-metrics-grid {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pd-metric-card {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.pd-metric-card:hover {
+  border-color: #cbd5e0;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.pd-metric-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.pd-metric-icon {
+  font-size: 1.3rem;
+  margin-right: 0.5rem;
+}
+
+.pd-metric-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+  flex: 1;
+}
+
+.pd-metric-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2d3748;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.pd-metric-status {
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+.pd-metric-status.normal {
+  background: #f0fff4;
+  color: #22543d;
+}
+
+.pd-metric-status.warning {
+  background: #fffaf0;
+  color: #7b341e;
+}
+
+.pd-metric-status.critical {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+/* Quick Actions */
+.pd-actions-grid {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pd-quick-action-card {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pd-quick-action-card:hover {
+  border-color: #cbd5e0;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.pd-action-icon {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.pd-quick-action-card h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.pd-quick-action-card p {
+  font-size: 0.75rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+/* Prescriptions */
+.pd-prescriptions {
+  margin-bottom: 2rem;
+}
+
+.pd-prescriptions-list {
+  padding: 1.5rem 2rem;
+}
+
+.pd-prescription-card {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.pd-prescription-card:last-child {
+  margin-bottom: 0;
+}
+
+.pd-prescription-card:hover {
+  border-color: #cbd5e0;
+  background: white;
+}
+
+.pd-prescription-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.pd-medication-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.pd-dosage {
+  font-size: 0.85rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+.pd-prescription-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pd-prescription-status.active {
+  background: #f0fff4;
+  color: #22543d;
+}
+
+.pd-prescription-status.completed {
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+.pd-prescription-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #4a5568;
+}
+
+/* Medical History */
+.pd-history-list {
+  padding: 1.5rem 2rem;
+}
+
+.pd-history-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pd-history-item:last-child {
+  border-bottom: none;
+}
+
+.pd-history-icon {
+  font-size: 1.1rem;
+  background: #f7fafc;
+  padding: 0.5rem;
+  border-radius: 50%;
+  min-width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+}
+
+.pd-history-content h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.pd-history-content p {
+  font-size: 0.85rem;
+  color: #4a5568;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.4;
+}
+
+.pd-history-date {
+  font-size: 0.75rem;
+  color: #718096;
+}
+
+/* Payment History */
+.pd-payment-list {
+  padding: 1.5rem 2rem;
+}
+
+.pd-payment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.pd-payment-item:last-child {
+  margin-bottom: 0;
+}
+
+.pd-payment-item:hover {
+  border-color: #cbd5e0;
+  background: white;
+}
+
+.pd-payment-info h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.pd-payment-date {
+  font-size: 0.8rem;
+  color: #4a5568;
+  margin: 0;
+}
+
+.pd-payment-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.pd-amount {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.pd-payment-status {
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.pd-payment-status.paid {
+  background: #f0fff4;
+  color: #22543d;
+}
+
+.pd-payment-status.pending {
+  background: #fffaf0;
+  color: #7b341e;
+}
+
+.pd-payment-status.overdue {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .pd-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .pd-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .pd-appointment-details {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .pd-hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pd-hero-medical-icon {
+    flex: none;
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pd-container {
+    padding: 1rem;
+  }
+  
+  .pd-welcome {
+    padding: 1.5rem;
+  }
+  
+  .pd-find-doctor-hero {
+    padding: 1.5rem;
+  }
+  
+  .pd-hero-text h2 {
+    font-size: 1.6rem;
+  }
+  
+  .pd-hero-text p {
+    font-size: 1rem;
+  }
+  
+  .pd-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .pd-stat {
+    padding: 1rem;
+  }
+  
+  .pd-section-header {
+    padding: 1rem 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .pd-appointments-list,
+  .pd-prescriptions-list,
+  .pd-history-list,
+  .pd-payment-list {
+    padding: 1rem 1.5rem;
+  }
+  
+  .pd-appointment-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .pd-appointment-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .pd-appointment-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .pd-prescription-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .pd-health-alert {
+    flex-direction: column;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .pd-container {
+    padding: 0.5rem;
+  }
+  
+  .pd-welcome,
+  .pd-find-doctor-hero {
+    padding: 1rem;
+  }
+  
+  .pd-hero-text h2 {
+    font-size: 1.4rem;
+  }
+  
+  .pd-appointment-card,
+  .pd-prescription-card {
+    padding: 1rem;
+  }
+  
+  .pd-actions-grid,
+  .pd-metrics-grid {
+    padding: 1rem;
+  }
+  
+  .pd-doctor-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .pd-payment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .pd-payment-amount {
+    align-items: flex-start;
+  }
+}

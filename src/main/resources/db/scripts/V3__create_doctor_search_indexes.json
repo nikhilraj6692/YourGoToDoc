@@ -1,0 +1,15 @@
+{
+    "createIndexes": "users",
+    "indexes": [
+        {
+            "key": {
+                "fullName": "text"
+            },
+            "name": "user_name_text_index",
+            "textIndexVersion": 3,
+            "weights": {
+                "fullName": 10
+            }
+        }
+    ]
+}

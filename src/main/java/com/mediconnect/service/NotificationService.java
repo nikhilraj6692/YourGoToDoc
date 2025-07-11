@@ -189,61 +189,7 @@ public class NotificationService {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY;
     }
 
-    public void sendAppointmentNotification(Appointment appointment, String status) {
-        try {
-            var doctor = userRepository.findById(appointment.getDoctorId()).orElseThrow();
-            var patient = userRepository.findById(appointment.getPatientId()).orElseThrow();
-
-            // Create notifications for both doctor and patient
-            createNotification(
-                doctor.getId(),
-                "Appointment " + status,
-                "You have a new appointment " + status.toLowerCase() + " with " + patient.getFullName(),
-                "APPOINTMENT",
-                appointment.getId()
-            );
-
-            createNotification(
-                patient.getId(),
-                "Appointment " + status,
-                "Your appointment with Dr. " + doctor.getFullName() + " has been " + status.toLowerCase(),
-                "APPOINTMENT",
-                appointment.getId()
-            );
-
-            // Send email notifications
-            emailService.sendAppointmentStatusEmail(
-                doctor.getEmail(),
-                doctor.getFullName(),
-                status,
-                appointment.getStartTime(),
-                appointment.getStartTime(),
-                appointment.getEndTime(),
-                appointment.getType(),
-                appointment.getLocation(),
-                appointment.getMeetingLink(),
-                appointment.getCancellationReason()
-            );
-
-            emailService.sendAppointmentStatusEmail(
-                patient.getEmail(),
-                patient.getFullName(),
-                status,
-                appointment.getStartTime(),
-                appointment.getStartTime(),
-                appointment.getEndTime(),
-                appointment.getType(),
-                appointment.getLocation(),
-                appointment.getMeetingLink(),
-                appointment.getCancellationReason()
-            );
-        } catch (MessagingException e) {
-            // Log the error but don't fail the request
-            e.printStackTrace();
-        }
-    }
-
-    @Scheduled(cron = "0 0 9 * * ?") // Run at 9 AM every day
+    /*@Scheduled(cron = "0 0 9 * * ?") // Run at 9 AM every day
     public void sendAppointmentReminders() {
         long now = System.currentTimeMillis();
         long tomorrow = now + 24 * 60 * 60 * 1000; // 24 hours from now
@@ -278,21 +224,21 @@ public class NotificationService {
                     emailService.sendAppointmentReminderEmail(
                         doctor.getEmail(),
                         doctor.getFullName(),
-                        appointment.getStartTime(),
-                        appointment.getEndTime(),
+                            null, //appointment.getStartTime(),
+                            null, //appointment.getEndTime(),
                         appointment.getType(),
-                        appointment.getLocation(),
-                        appointment.getMeetingLink()
+                        appointment.getMeetingLink(),
+                            null
                     );
 
                     emailService.sendAppointmentReminderEmail(
                         patient.getEmail(),
                         patient.getFullName(),
-                        appointment.getStartTime(),
-                        appointment.getEndTime(),
+                            null, //appointment.getStartTime(),
+                            null, //appointment.getEndTime(),
                         appointment.getType(),
-                        appointment.getLocation(),
-                        appointment.getMeetingLink()
+                        appointment.getMeetingLink(),
+                            null
                     );
                 } catch (MessagingException e) {
                     // Log the error but continue with other appointments
@@ -300,7 +246,7 @@ public class NotificationService {
                 }
             }
         }
-    }
+    }*/
 
     public List<Notification> getUnreadNotifications(String userId) {
         return notificationRepository.findByUserIdAndStatusOrderByCreatedAtDesc(userId, "UNREAD");

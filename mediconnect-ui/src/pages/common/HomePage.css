@@ -1,0 +1,669 @@
+/* Main body styles */
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f7fafd;
+  color: #23272a;
+}
+
+.doctor-desk-home {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Header/Navigation */
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+  background: #181f2a;
+  color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  font-size: 1.75rem;
+  color: #b6ff3c;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.main-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.85;
+  transition: all 0.2s;
+}
+
+.nav-link.active, .nav-link:hover {
+  color: white;
+  opacity: 1;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.sign-up-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.login-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.3rem;
+  background: #b6ff3c;
+  color: #23272a;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Hero Section - Updated to match image */
+.hero-section {
+  background: linear-gradient(to bottom, #181f2a, #243b45);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  max-width: 650px;
+  z-index: 2;
+  margin: 0 auto 2rem;
+  padding: 0 2rem;
+}
+
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.accent-text {
+  color: #b6ff3c;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.find-doctor-btn {
+  background: #b6ff3c;
+  color: #181f2a;
+  padding: 0.7rem 1.5rem;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.book-appointment-btn {
+  border: 1px solid white;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  font-weight: 600;
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+.hero-visual {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.doctor-image-container {
+  position: relative;
+  z-index: 1;
+}
+
+.doctor-hero-image {
+  width: 320px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 0.4rem;
+  z-index: 1;
+}
+
+.stats-card {
+  position: absolute;
+  bottom: 30px;
+  left: -40px;
+  background: rgba(36, 58, 21, 0.9);
+  padding: 1.2rem 2rem;
+  border-radius: 0.4rem;
+  color: #b6ff3c;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.stats-number {
+  font-size: 2.2rem;
+  font-weight: 900;
+}
+
+.stats-text {
+  font-size: 1rem;
+  color: #e0e7ef;
+}
+
+.doctor-avatars {
+  display: flex;
+  margin-top: 0.5rem;
+  gap: 0.3rem;
+}
+
+.avatar-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #6b7280;
+  border: 2px solid white;
+  margin-left: -8px;
+}
+
+.avatar-circle:first-child {
+  margin-left: 0;
+}
+
+.chart-card {
+  position: absolute;
+  right: -40px;
+  top: 80px;
+  background: white;
+  padding: 1rem;
+  border-radius: 0.4rem;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.chart-image {
+  width: 100px;
+  height: 70px;
+  object-fit: contain;
+}
+
+/* Steps Section */
+.steps-section {
+  background: white;
+  border-radius: 0.5rem;
+  margin: -4rem auto 4rem;
+  max-width: 1200px;
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+.steps-header {
+  margin-bottom: 3rem;
+}
+
+.steps-header h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #23272a;
+  margin-bottom: 0.5rem;
+}
+
+.steps-subtitle {
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1rem;
+}
+
+.steps-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.step-card {
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 2rem 1.5rem;
+  flex: 1;
+  max-width: 300px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+}
+
+.step-icon {
+  margin-bottom: 1.5rem;
+  width: 64px;
+  height: 64px;
+  background-color: rgba(182, 255, 60, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.step-icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.step-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #23272a;
+}
+
+.step-description {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.start-booking-container {
+  margin-top: 2.5rem;
+}
+
+.start-booking-btn {
+  background: #b6ff3c;
+  color: #23272a;
+  padding: 0.8rem 2rem;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.start-booking-btn:hover {
+  background: #a8ef30;
+  transform: translateY(-2px);
+}
+
+/* Doctors Section */
+.doctors-section {
+  background: #f5f9e9;
+  padding: 3rem 2rem;
+  margin: 0 auto 2rem;
+  max-width: 1200px;
+  border-radius: 0.4rem;
+}
+
+.doctors-header {
+  margin-bottom: 2rem;
+}
+
+.doctors-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #23272a;
+  margin-bottom: 0.5rem;
+}
+
+.doctors-subtitle {
+  color: #6b7280;
+  max-width: 600px;
+  font-size: 0.95rem;
+}
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.doctor-card {
+  background: white;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.doctor-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  font-size: 0.8rem;
+}
+
+.hospital-info {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.hospital-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.hospital-name {
+  color: #6b7280;
+}
+
+.doctor-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.star-icon {
+  color: #b6ff3c;
+  font-size: 0.9rem;
+}
+
+.rating-value {
+  color: #6b7280;
+}
+
+.doctor-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.doctor-info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.doctor-specialty {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.doctor-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #23272a;
+}
+
+.book-now-btn {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.book-now-btn.outline {
+  border: 1px solid #b6ff3c;
+  color: #b6ff3c;
+  background: transparent;
+}
+
+.book-now-btn.outline:hover {
+  background: rgba(182, 255, 60, 0.1);
+}
+
+.book-now-btn.filled {
+  background: #b6ff3c;
+  color: #23272a;
+}
+
+.book-now-btn.filled:hover {
+  background: #a8ef30;
+}
+
+.see-all-container {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.see-all-btn {
+  background: #b6ff3c;
+  color: #23272a;
+  padding: 0.7rem 2rem;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+/* Health Section */
+.health-section {
+  background: white;
+  border-radius: 0.4rem;
+  margin: 0 auto 2rem;
+  max-width: 1200px;
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.health-content {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.health-text {
+  flex: 1;
+}
+
+.health-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #23272a;
+  margin-bottom: 1.5rem;
+}
+
+.health-description {
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.book-now-large-btn {
+  display: inline-block;
+  background: #b6ff3c;
+  color: #23272a;
+  padding: 0.7rem 1.5rem;
+  border-radius: 0.3rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.health-image-container {
+  flex: 1;
+}
+
+.health-image {
+  width: 100%;
+  border-radius: 0.4rem;
+  object-fit: cover;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background: white;
+  border-radius: 0.4rem;
+  margin: 0 auto 3rem;
+  max-width: 1200px;
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.testimonials-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #23272a;
+  margin-bottom: 0.5rem;
+}
+
+.testimonials-subtitle {
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  font-size: 1rem;
+}
+
+.testimonials-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.testimonial-card {
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  flex: 1;
+  max-width: 300px;
+  text-align: left;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial-stars {
+  color: #f59e0b;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-text {
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.testimonial-author {
+  color: #6b7280;
+  font-style: italic;
+  text-align: right;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .health-content {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-header {
+    padding: 1rem 2rem;
+  }
+  
+  .hero-section {
+    padding: 2rem 2rem 4rem;
+  }
+  
+  .hero-content {
+    margin-bottom: 2rem;
+  }
+  
+  .steps-container, .testimonials-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .health-content {
+    flex-direction: column;
+  }
+  
+  .doctor-image-container {
+    margin-bottom: 2rem;
+  }
+  
+  .stats-card {
+    position: relative;
+    left: 0;
+    margin: 1rem auto;
+  }
+  
+  .chart-card {
+    position: relative;
+    right: 0;
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-nav {
+    display: none;
+  }
+  
+  .doctors-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .step-card, .testimonial-card {
+    max-width: 100%;
+  }
+}

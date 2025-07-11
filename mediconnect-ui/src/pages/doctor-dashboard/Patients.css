@@ -1,0 +1,45 @@
+.patients-page {
+  background: #fff;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.patients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.patients-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.patients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.patient-card {
+  background: #f8fafd;
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  text-align: center;
+  color: #718096;
+  font-size: 1.1rem;
+}

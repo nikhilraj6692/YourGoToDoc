@@ -3,6 +3,7 @@ package com.mediconnect.controller;
 import com.mediconnect.dto.schedule.ScheduleResponse;
 import com.mediconnect.dto.schedule.ScheduleSlotRequest;
 import com.mediconnect.dto.schedule.DeleteSlotsRequest;
+import com.mediconnect.dto.schedule.RescheduleRequest;
 import com.mediconnect.model.Calendar;
 import com.mediconnect.service.ScheduleService;
 import com.mediconnect.service.UserService;
@@ -94,6 +95,15 @@ public class ScheduleController {
         String email = UserContext.getCurrentUserEmail();
         String doctorId = userService.findByEmail(email).getId();
         scheduleService.deleteSlotsInRange(doctorId, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reschedule")
+    public ResponseEntity<Void> rescheduleAppointment(
+            @RequestBody RescheduleRequest request) {
+        String email = UserContext.getCurrentUserEmail();
+        String doctorId = userService.findByEmail(email).getId();
+        scheduleService.rescheduleAppointment(doctorId, request);
         return ResponseEntity.ok().build();
     }
 } 

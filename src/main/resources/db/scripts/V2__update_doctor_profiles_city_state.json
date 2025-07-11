@@ -1,0 +1,48 @@
+{
+    "aggregate": "doctor_profiles",
+    "pipeline": [
+        {
+            "$addFields": {
+                "userIdAsObjectId": {
+                    "$toObjectId": "$userId"
+                }
+            }
+        },
+        {
+            "$lookup": {
+                "from": "users",
+                "localField": "userIdAsObjectId",
+                "foreignField": "_id",
+                "as": "userInfo"
+            }
+        },
+        {
+            "$match": {
+                "userInfo": { "$ne": [] }
+            }
+        },
+        {
+            "$addFields": {
+                "userDoc": { "$arrayElemAt": ["$userInfo", 0] }
+            }
+        },
+        {
+            "$addFields": {
+                "city": "$userDoc.address.city",
+                "state": "$userDoc.address.state"
+            }
+        },
+        {
+            "$unset": ["userInfo", "userIdAsObjectId", "userDoc"]
+        },
+        {
+            "$merge": {
+                "into": "doctor_profiles",
+                "on": "_id",
+                "whenMatched": "merge",
+                "whenNotMatched": "discard"
+            }
+        }
+    ],
+    "cursor": {}
+}

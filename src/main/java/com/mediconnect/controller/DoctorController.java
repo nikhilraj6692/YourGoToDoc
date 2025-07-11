@@ -31,10 +31,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.mediconnect.service.LocationService;
+import com.mediconnect.model.Address;
+import java.util.Objects;
+import com.mediconnect.dto.AddressResponse;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -44,8 +45,8 @@ public class DoctorController {
 
     private final UserRepository userRepository;
     private final DoctorProfileRepository doctorProfileRepository;
-    private final FileStorageService fileStorageService;
     private final AppS3Client appS3Client;
+    private final LocationService locationService;
 
     @Value("${file.allowed-types}")
     private String allowedFileTypesStr;
@@ -61,12 +62,15 @@ public class DoctorController {
                           UserRepository userRepository,
                           DoctorProfileRepository doctorProfileRepository,
                           FileStorageService fileStorageService,
-                          AppS3Client appS3Client) {
+                          AppS3Client appS3Client,
+                          LocationService locationService) {
         this.userRepository = userRepository;
         this.doctorProfileRepository = doctorProfileRepository;
-        this.fileStorageService = fileStorageService;
         this.appS3Client = appS3Client;
+        this.locationService = locationService;
     }
+
+
 
     @Operation(summary = "Get doctor profile", description = "Retrieves the profile of the authenticated doctor")
     @ApiResponses(value = {
@@ -85,13 +89,19 @@ public class DoctorController {
         DoctorProfile doctorProfile = doctorProfileRepository.findByUserId(user.getId())
             .orElseThrow(() -> new RuntimeException("Doctor profile not found"));
 
+        // Create address response with location from doctor profile
+        AddressResponse addressResponse = AddressResponse.fromAddress(user.getAddress());
+        if (addressResponse != null && doctorProfile.getLocation() != null) {
+            addressResponse.setLocation(doctorProfile.getLocation());
+        }
+
         DoctorProfileResponse profileResponse = new DoctorProfileResponse(
             user.getFullName(),
             doctorProfile.getSpecialization(),
             doctorProfile.getLicenseNumber(),
             doctorProfile.getYearsOfExperience(),
             user.getPhoneNumber(),
-            user.getAddress(),
+            addressResponse,
             doctorProfile.getBio(),
             doctorProfile.getVerificationStatus(),
             user.getProfilePhotoId(),
@@ -105,14 +115,12 @@ public class DoctorController {
 
     @Operation(summary = "Update doctor profile", description = "Updates the profile of the authenticated doctor")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Profile updated successfully",
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = DoctorProfileResponse.class))),
+        @ApiResponse(responseCode = "200", description = "Profile updated successfully"),
         @ApiResponse(responseCode = "401", description = "Unauthorized"),
         @ApiResponse(responseCode = "404", description = "Profile not found")
     })
     @PutMapping("/profile")
-    public ResponseEntity<?> updateDoctorProfile(@Valid @RequestBody DoctorProfileResponse profile) {
+    public ResponseEntity<Void> updateDoctorProfile(@Valid @RequestBody DoctorProfileResponse profile) {
         String userEmail = UserContext.getCurrentUserEmail();
         User user = userRepository.findByEmail(userEmail)
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -125,14 +133,33 @@ public class DoctorController {
         doctorProfile.setBio(profile.getBio());
         doctorProfile.setLicenseNumber(profile.getLicenseNumber());
 
+        // Update address in user and location in doctor profile
+        if (profile.getAddress() != null) {
+            Address address = new Address();
+            address.setAddress1(profile.getAddress().getAddress1());
+            address.setAddress2(profile.getAddress().getAddress2());
+            address.setAddress3(profile.getAddress().getAddress3());
+            address.setCity(profile.getAddress().getCity());
+            address.setState(profile.getAddress().getState());
+            address.setPincode(profile.getAddress().getPincode());
+            user.setAddress(address);
+
+            doctorProfile.setCity(profile.getAddress().getCity());
+            doctorProfile.setState(profile.getAddress().getState());
+
+            // Set location only in doctor profile
+            if (profile.getAddress().getLocation() != null) {
+                doctorProfile.setLocation(profile.getAddress().getLocation());
+            }
+        }
+
         doctorProfileRepository.save(doctorProfile);
 
         user.setFullName(profile.getFullName());
         user.setPhoneNumber(profile.getPhoneNumber());
-        user.setAddress(profile.getAddress());
         userRepository.save(user);
 
-        return ResponseEntity.ok(profile);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Upload verification document", description = "Uploads a verification document for the doctor's profile")

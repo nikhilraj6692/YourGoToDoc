@@ -1,0 +1,1319 @@
+.chat-messages-content {
+    padding: 1rem;
+}.tab-panel {
+    padding: 1.5rem;
+}/* Consultation Room CSS - ONLY affects this component */
+
+/* NO GLOBAL CSS CHANGES - All rules are scoped to consultation container */
+.consultation-page-header {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.consultation-page-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.back-to-appointments-btn {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #64748b;
+    transition: all 0.2s ease;
+}
+
+.back-to-appointments-btn:hover {
+    background: #e2e8f0;
+    color: #374151;
+}
+
+.consultation-page-title h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+}
+
+/* Only apply overflow hidden to the consultation container itself - NO GLOBAL RULES */
+.consultation-container {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    gap: 1rem;
+    background: #f8fafc;
+    transition: grid-template-columns 0.4s ease;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+.consultation-container.chat-open {
+    grid-template-columns: 2.25fr 4.5fr 2.75fr;
+    animation: expandChat 0.4s ease-out;
+}
+
+@keyframes expandChat {
+    from {
+        grid-template-columns: 3fr 7fr 0fr;
+    }
+    to {
+        grid-template-columns: 2.25fr 4.5fr 2.75fr;
+    }
+}
+
+/* ===============================
+   LEFT SIDEBAR - PATIENT INFO
+   =============================== */
+.patient-sidebar {
+    background: white;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    min-height: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.consultation-container .patient-header {
+    background: rgb(230, 239, 233);
+    color: black;
+    padding: 0.7rem 0.5rem 0.7rem 1.5rem; /* top right bottom left */
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+}
+
+.consultation-container .patient-avatar {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 0.8rem;
+  }
+  
+  .consultation-container .patient-avatar .avatar-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    line-height: 1;
+  }
+  
+  .consultation-container .patient-avatar.theme-green { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+  .consultation-container .patient-avatar.theme-purple { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); }
+  .consultation-container .patient-avatar.theme-pink { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
+  .consultation-container .patient-avatar.theme-orange { background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%); }
+  .consultation-container .patient-avatar.theme-teal { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); }
+  .consultation-container .patient-avatar.theme-indigo { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); }
+  .consultation-container .patient-avatar.theme-cyan { background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); }
+  
+
+.patient-name {
+    color: black;
+    font-size: 1.5rem;
+    margin-top: 1.2rem;
+}
+
+.patient-header p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.patient-tabs {
+    display: flex;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+    flex-shrink: 0;
+    gap: 1px; /* Creates transparent partition between tabs */
+}
+
+.patient-tab {
+    flex: 1;
+    padding: 1rem;
+    background: #181f2a;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.patient-tab.active {
+    color: #181f2a;
+    font-weight: 600;
+    background: white;
+    border-top: 1px solid #181f2a;
+    border-bottom: 1px solid #181f2a;
+}
+
+.patient-tab:hover:not(.active) {
+    background: #2a3441; /* Slightly lighter on hover */
+}
+
+
+.patient-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    min-height: 0; /* Important for flex child to scroll */
+}
+
+/* Modern Scrollbar Styling */
+.patient-content::-webkit-scrollbar,
+.notes-section::-webkit-scrollbar,
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.patient-content::-webkit-scrollbar-track,
+.notes-section::-webkit-scrollbar-track,
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.patient-content::-webkit-scrollbar-thumb,
+.notes-section::-webkit-scrollbar-thumb,
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+    transition: background 0.2s ease;
+}
+
+.patient-content::-webkit-scrollbar-thumb:hover,
+.notes-section::-webkit-scrollbar-thumb:hover,
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Firefox scrollbar styling */
+.patient-content,
+.notes-section,
+.chat-messages {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.tab-panel {
+    padding: 0.5rem;
+}
+
+/* Patient Information Styles */
+.info-group {
+    margin-bottom: 2rem;
+}
+
+.info-group h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.info-value {
+    font-weight: 500;
+    color: #374151;
+    text-align: right;
+}
+
+.history-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.4375rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.history-date {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.history-title {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.history-description {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.symptoms-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.symptom-tag {
+    background: #fef3c7;
+    color: #8e4f06;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.4375rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.attachment-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.4375rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.attachment-item:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.attachment-icon {
+    width: 2rem;
+    height: 2rem;
+    background: #3b82f6;
+    color: white;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.attachment-info {
+    flex: 1;
+}
+
+.attachment-name {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+.attachment-size {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* ===============================
+   MAIN CONTENT
+   =============================== */
+.main-content {
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    width: 100%;
+    min-height: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.consultation-header {
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-shrink: 0;
+    position: relative;
+    padding: 1.5rem;
+    background: white;
+    min-height: 80px;
+}
+
+.consultation-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.consultation-title h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.consultation-subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+    margin-top: 0.25rem;
+}
+
+/* Updated consultation actions for mixed layout when chat is open */
+.consultation-actions {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+/* When chat is closed - horizontal layout */
+.consultation-container:not(.chat-open) .consultation-actions {
+    flex-direction: row;
+    align-items: center;
+}
+
+/* When chat is open - grid layout: chat on top row, others on bottom row */
+.consultation-container.chat-open .consultation-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.75rem;
+    min-width: 280px;
+    align-items: stretch;
+}
+
+/* Chat button - right aligned in its grid cell with image */
+.consultation-container.chat-open .consultation-actions .plain-btn.submit-sub {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    background: none;
+    border: none;
+    padding: 0;
+    min-width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.consultation-container.chat-open .consultation-actions .plain-btn.submit-sub img {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.consultation-container.chat-open .consultation-actions .plain-btn.submit-sub:hover img {
+    transform: scale(1.1);
+}
+
+/* When chat is closed - show regular button */
+.consultation-container:not(.chat-open) .consultation-actions .plain-btn.submit-sub {
+    background: #1c779e;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    text-align: center;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.consultation-container:not(.chat-open) .consultation-actions .plain-btn.submit-sub:hover {
+    background: #2c5282;
+}
+
+/* Complete/Start Consultation button - left side of second row */
+.consultation-container.chat-open .consultation-actions .plain-btn.submit,
+.consultation-container.chat-open .consultation-actions .plain-btn.start {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+/* Back to Appointments button - right side of second row */
+.consultation-container.chat-open .consultation-actions .plain-btn.back {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* Floating Chat Button - Bottom Right */
+.chat-btn-floating {
+    position: fixed !important;
+    bottom: 3rem !important;
+    right: 5.5rem !important;
+    top: auto !important;
+    z-index: 1000 !important;
+    background: transparent !important;
+    color: white !important;
+    border: none !important;
+    padding: 1rem !important;
+    border-radius: 50% !important;
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+    font-size: 2rem !important;
+    transition: background 0.2s, box-shadow 0.2s !important;
+}
+.chat-btn-floating:hover {
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4) !important;
+    transform: scale(1.08);
+}
+
+.chat-icon {
+    width: 105px;
+    height: 105px;
+    flex-shrink: 0;
+}
+
+.chat-notification-badge {
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    position: absolute;
+    top: -19px;
+    right: -19px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.plain-btn.start {
+    background: #44c66e;
+    color: #000000d3;
+}
+
+.plain-btn.start:hover {
+    background: rgb(44, 203, 94);
+}
+
+.plain-btn.back {
+    border: 1px solid #e2e8f0;
+}
+
+.plain-btn.back:hover {
+    border: 1px solid #e2e8f0;
+    background: #f0f2f4;
+}
+
+.plain-btn.submit {
+    background: #181f2a;
+    color: white;
+}
+
+.plain-btn.submit:hover {
+    background: #23272a;
+    color: #ccd1c4;
+}
+
+.plain-btn.remove {
+    background: #fed7d7;
+    color: #c53030;
+}
+
+.plain-btn.submit-sub {
+    background: #1c779e;
+    color: white;
+}
+
+.plain-btn.submit-sub:hover {
+    background: #2c5282;
+}
+
+.plain-btn.remove:hover {
+    background: #feb2b2;
+}
+
+.end-consultation-btn {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.end-consultation-btn:hover {
+    background: #b91c1c;
+}
+
+.notes-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 1.5rem; /* Remove padding from scrolling container */
+    background: white;
+    margin-top: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-height: 0;
+}
+
+.notes-content {
+    padding: 1.5rem; /* Move padding to inner content */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.notes-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+.save-notes-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.save-notes-btn:hover {
+    background: #2563eb;
+}
+
+.save-notes-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.notes-textarea {
+    flex: 1;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s ease;
+    min-height: 200px;
+}
+
+.notes-textarea::placeholder {
+    color: #9ca3ae;
+    opacity: 1;
+}
+
+.prescription-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+}
+
+.prescription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.prescription-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+.add-medication-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.add-medication-btn:hover {
+    background: #059669;
+}
+
+.medication-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.4375rem;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.medication-info h4 {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.medication-dosage {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.remove-medication {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.remove-medication:hover {
+    background: #dc2626;
+}
+
+/* ===============================
+   CHAT SECTION STYLES
+   =============================== */
+
+/* Chat section specific background and styling */
+.chat-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-left: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+    min-height: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Alternative chat-friendly backgrounds - you can choose one */
+.chat-section.theme-modern {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.chat-section.theme-professional {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.chat-section.theme-calm {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.chat-section.theme-dark {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+}
+
+
+
+/* Chat messages area */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0; /* Remove padding from scrolling container */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    min-height: 0; /* Important for flex child to scroll */
+}
+
+.chat-messages-content {
+    padding: 1rem; /* Move padding to inner content */
+    min-height: 100%;
+}
+
+/* Chat message bubbles */
+.chat-message {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.chat-message.doctor {
+    flex-direction: row-reverse;
+}
+
+.chat-message.patient {
+    flex-direction: row;
+}
+
+.chat-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #374151;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.chat-bubble {
+    max-width: 70%;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.chat-message.doctor .chat-bubble {
+    background: rgba(255, 255, 255, 0.95);
+    color: #374151;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.chat-message.patient .chat-bubble {
+    background: rgba(59, 130, 246, 0.9);
+    color: white;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.chat-message-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.chat-timestamp {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 0.25rem;
+}
+
+/* Chat input area */
+.chat-input-area {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.chat-action-btn.audio-call {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+.chat-action-btn.audio-call:hover {
+    background: #059669;
+    border-color: #059669;
+}
+
+.chat-action-btn.attachment {
+    background: rgba(241, 245, 249, 0.9);
+    color: #64748b;
+    border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.chat-input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(226, 232, 240, 0.5);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.chat-input-wrapper:focus-within {
+    border-color: rgba(59, 130, 246, 0.6);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.chat-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-height: 100px;
+    min-height: 20px;
+    background: transparent;
+    color: #374151;
+}
+
+.chat-input:focus {
+    outline: none;
+}
+
+.chat-input::placeholder {
+    color: #9ca3af;
+}
+
+.send-btn {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.send-btn:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+.send-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+@media (max-width: 1400px) {
+    .consultation-container.chat-open {
+        grid-template-columns: 2fr 3.5fr 2.5fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    .consultation-container {
+        grid-template-columns: 300px 1fr;
+    }
+    
+    .consultation-container.chat-open {
+        grid-template-columns: 250px 1fr 300px;
+    }
+}
+
+@media (max-width: 968px) {
+    .consultation-container.chat-open {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+    
+    .patient-sidebar {
+        height: auto;
+        max-height: 250px;
+    }
+    
+    .main-content {
+        order: 2;
+        height: auto;
+    }
+
+    /* Force horizontal layout on mobile even when chat is open */
+    .consultation-actions {
+        flex-direction: row !important;
+        align-items: center !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .consultation-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: auto;
+    }
+    
+    .patient-sidebar {
+        height: auto;
+        max-height: 300px;
+    }
+    
+    .main-content {
+        order: 2;
+        height: auto;
+        position: relative;
+    }
+    
+    .consultation-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .consultation-title {
+        margin-right: 0;
+    }
+    
+    .chat-btn-floating {
+        position: static;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 1rem;
+        order: -1;
+        min-width: auto;
+        white-space: normal;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    }
+    
+    .consultation-actions {
+        flex-direction: row !important;
+        gap: 0.5rem;
+        position: static;
+        justify-content: center;
+    }
+    
+    .consultation-actions .plain-btn {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .chat-btn,
+    .end-consultation-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .notes-section {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+    
+    .prescription-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .medication-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .patient-tabs {
+        flex-direction: column;
+    }
+    
+    .patient-tab {
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+        border-right: none;
+    }
+    
+    .patient-tab.active {
+        border-bottom-color: #e2e8f0;
+        border-left: 3px solid #3b82f6;
+    }
+
+    /* Chat section mobile adjustments */
+    .chat-section {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .chat-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .chat-messages {
+        padding: 0.75rem;
+    }
+    
+    .chat-input-area {
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .patient-header {
+        padding: 1rem;
+    }
+    
+    .notes-section {
+        padding: 0.5rem;
+    }
+    
+    .consultation-header {
+        padding: 0.5rem;
+    }
+    
+    .patient-sidebar .tab-panel {
+        padding: 1rem;
+    }
+    
+    .consultation-actions {
+        flex-direction: column !important;
+        gap: 0.5rem;
+    }
+    
+    .consultation-actions .plain-btn {
+        width: 100%;
+    }
+    
+    /* Chat adjustments for very small screens */
+    .chat-bubble {
+        max-width: 85%;
+    }
+    
+    .chat-message {
+        gap: 0.5rem;
+    }
+    
+    .chat-avatar {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Consultation Page Header */
+
+/* Add box-sizing globally */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.consultation-container > .main-content,
+.consultation-container > .patient-sidebar {
+    /* Removed width: 100% and max-width: 100% */
+}
+
+/* Additional chat-friendly enhancements */
+.chat-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="chat-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23chat-pattern)"/></svg>') repeat;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Typing indicator animation */
+@keyframes typing {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-10px);
+    }
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 1rem;
+    margin: 0.5rem 0;
+    width: fit-content;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    background: #64748b;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Chat online status indicator */
+.chat-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: pulse 2s infinite;
+}
+
+.status-dot.offline {
+    background: #ef4444;
+    animation: none;
+}
+
+/* Smooth scroll for chat messages */
+.chat-messages {
+    scroll-behavior: smooth;
+}
+
+
+
+/* Ensure vertical button layout maintains proper spacing */
+.consultation-container.chat-open .consultation-actions .plain-btn {
+    margin-bottom: 0;
+    width: 100%;
+    min-width: 140px;
+}
+
+.plain-btn.chat-btn {
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    color: white;
+    border: none;
+    padding: 1.2rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    min-width: 120px;
+    height: auto;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plain-btn.chat-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+
+
+.plain-btn.chat-btn:hover::before {
+    left: 100%;
+}
+
+.plain-btn.chat-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.appointment-details-scroll-wrapper {
+    max-height: 100vh;
+    overflow-y: auto;
+    /* Prevent horizontal scroll unless necessary */
+    overflow-x: hidden;
+}
+
+.appointment-details-scroll-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+.appointment-details-scroll-wrapper::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+.appointment-details-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+.appointment-details-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.appointment-details-scroll-wrapper {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}

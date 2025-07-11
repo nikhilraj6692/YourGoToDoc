@@ -5,6 +5,8 @@ import com.mediconnect.enums.DocumentType;
 import com.mediconnect.enums.VerificationStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +38,10 @@ public class DoctorProfile extends BaseEntity {
     private VerificationStatus verificationStatus = VerificationStatus.PENDING;
     private List<ReasonHistory> reasons;
     private LocalDateTime verifiedAt;
+    @GeoSpatialIndexed
+    private GeoJsonPoint location;
+    private String city;
+    private String state;
 
     public void setReasons(ReasonHistory reason) {
         if(this.reasons == null) {
