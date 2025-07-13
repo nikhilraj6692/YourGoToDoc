@@ -1,3 +1,37 @@
+/* ===== CUSTOM SCROLLBAR STYLES ===== */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #181f2a;
+  border: 1px solid #f1f5f9;
+}
+
+
+
+::-webkit-scrollbar-corner {
+  background: #f1f5f9;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #5b626e #f1f5f9;
+}
+
 /* ===== GLOBAL ELEMENT STYLES ===== */
 
 /* Body and HTML */
@@ -196,6 +230,51 @@ h3 {
   flex-shrink: 0;
 }
 
+/* Notification Bell */
+.notification-bell {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+}
+
+
+.bell-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+  transition: all 0.2s ease;
+}
+
+.notification-counter {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 0.7rem;
+  font-weight: bold;
+  display: flex; /* Changed from block to flex */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  /* Remove these conflicting properties */
+  /* text-align: center; */
+  /* line-height: 1.2rem; */
+  /* min-width: 1.1rem; */
+}
 
 .user-profile-mini {
   display: flex;
@@ -274,7 +353,17 @@ h3 {
   justify-content: center;
 }
 
+/* Small variant of plain button */
+.plain-btn.small {
+  padding: 0.55rem 1.25rem;
+  font-size: 1rem;
+}
+
 .plain-btn:hover {
+  background: #23272a;
+}
+
+.plain-btn.small:hover {
   background: #23272a;
 }
 
@@ -288,11 +377,29 @@ h3 {
   background: rgba(180, 176, 176, 0.085);
 }
 
+.plain-btn.small.hollow {
+  border: 1px solid black;
+  background: white;
+  color: black;
+}
+
+.plain-btn.small.hollow:hover {
+  background: rgba(180, 176, 176, 0.085);
+}
+
 .plain-btn.sec-submit-btn {
   background: #17806b;
 }
 
 .plain-btn.sec-submit-btn:hover {
+    color: #edefe9;
+}
+
+.plain-btn.small.sec-submit-btn {
+  background: #17806b;
+}
+
+.plain-btn.small.sec-submit-btn:hover {
     color: #edefe9;
 }
 
@@ -308,6 +415,17 @@ h3 {
 
 }
 
+.plain-btn.small.hollow-dark {
+  border: 1px solid #e2e8f0;
+  background: #181f2a;
+  color: #fff;
+}
+
+.plain-btn.small.hollow-dark:hover {
+  border: 1px solid #e2e8f0;
+  color: #d9dcd3;
+}
+
 /* Submit variant */
 .plain-btn.submit {
   padding: 0.875rem;
@@ -320,6 +438,17 @@ h3 {
   color: #edefe9;
 }
 
+.plain-btn.small.submit {
+  padding: 0.6rem 1.5rem;
+  background: #181f2a;
+  color: white;
+}
+
+.plain-btn.small.submit:hover {
+  background: #23272a;
+  color: #edefe9;
+}
+
 /* Logout variant */
 .plain-btn.logout {
   background: #e59a2a;
@@ -327,6 +456,16 @@ h3 {
 }
 
 .plain-btn.logout:hover {
+  background: #d7850a;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.plain-btn.small.logout {
+  background: #e59a2a;
+  color: #181f2a;
+}
+
+.plain-btn.small.logout:hover {
   background: #d7850a;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
@@ -348,7 +487,28 @@ h3 {
   box-shadow: none;
 }
 
+.plain-btn.small:disabled,
+.plain-btn.small.disabled {
+  background: #808990;
+  color: white;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.plain-btn.small:disabled:hover,
+.plain-btn.small.disabled:hover {
+  background: #808990;
+  color: white;
+  box-shadow: none;
+}
+
 .plain-btn.remove {
+  background: #fbcfcf;
+  color: #c53030;
+}
+
+.plain-btn.small.remove {
   background: #fbcfcf;
   color: #c53030;
 }
@@ -362,6 +522,15 @@ h3 {
   background: rgb(44, 203, 94);
 }
 
+.plain-btn.small.start {
+  background: #44c66e;
+  color: #000000d3;
+}
+
+.plain-btn.small.start:hover {
+  background: rgb(44, 203, 94);
+}
+
 .plain-btn.submit-sub {
     background: #1c779e;
     color: white;
@@ -371,7 +540,20 @@ h3 {
     background: #2c5282;
 }
 
+.plain-btn.small.submit-sub {
+    background: #1c779e;
+    color: white;
+}
+
+.plain-btn.small.submit-sub:hover {
+    background: #2c5282;
+}
+
 .plain-btn.remove:hover {
+    background: #feb2b2;
+}
+
+.plain-btn.small.remove:hover {
     background: #feb2b2;
 }
 
@@ -382,6 +564,16 @@ h3 {
 }
 
 .plain-btn.bright:hover {
+  background: #a0fc00 !important;
+}
+
+.plain-btn.small.bright {
+  background: #b6ff3c !important;
+  color: rgba(0, 0, 0, 0.802) !important;
+  border: none !important;
+}
+
+.plain-btn.small.bright:hover {
   background: #a0fc00 !important;
 }
 
@@ -806,7 +998,7 @@ h3 {
 /* Dropdown Select (Alternative styling) */
 .dropdown-select {
   padding: 0.8rem 1rem;
-  border: 2px solid #e2e8f0;
+  border: 1px solid #e2e8f0;
   border-radius: 0.2rem;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -823,16 +1015,13 @@ h3 {
   padding-right: 2.5rem;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
 .dropdown-select:focus {
   outline: none;
   border-color: #86bf23;
-  box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.1);
-}
-
-.dropdown-select:hover {
-  border-color: #cbd5e0;
+  box-shadow: 0 0 0 1px #45660c;
 }
 
 /* Textarea */
@@ -840,6 +1029,28 @@ h3 {
   min-height: 100px;
   resize: vertical;
   font-family: inherit;
+}
+
+textarea::placeholder {
+  color: #a0aec0;
+  opacity: 0.9;
+}
+
+textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+  width: 100%;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #86bf23;
+  box-shadow: 0 0 0 1px #45660c;
 }
 
 /* Form Row */
@@ -879,14 +1090,14 @@ h3 {
 
 /* Form Validation States */
 .form-input:invalid:not(:placeholder-shown) {
-  border-color: #e53e3e;
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+  box-shadow: 0 0 0 1px rgba(229, 62, 62, 0.1);
+  border: 2px solid #db7272;
 }
 
 /* Required Field Indicator */
 .form-group.required label::after {
   content: " *";
-  color: #e53e3e;
+  color: #db7272;
   font-weight: 700;
 }
 

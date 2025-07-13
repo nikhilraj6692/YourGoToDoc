@@ -11,20 +11,47 @@ export const UserProvider = ({ children }) => {
 
   const fetchUserProfile = async () => {
     try {
+      console.log('🔄 UserContext: fetchUserProfile called');
+      console.log('🔍 UserContext: isAuthenticated:', tokenService.isAuthenticated());
+      
       if (!tokenService.isAuthenticated()) {
+        console.log('❌ UserContext: Not authenticated, setting user to null');
         setUser(null);
         setLoading(false);
         return;
       }
 
+      // First, check if we have user data in localStorage from login
+      const storedUser = tokenService.getUser();
+      if (storedUser) {
+        console.log('👤 UserContext: Found user data in localStorage:', storedUser);
+        // Ensure the user data has the correct structure
+        const userData = {
+          id: storedUser.id,
+          name: storedUser.fullName || storedUser.name,
+          email: storedUser.email,
+          role: storedUser.role
+        };
+        console.log('👤 UserContext: Setting user data from localStorage:', userData);
+        setUser(userData);
+        setLoading(false);
+        setError(null);
+        return;
+      }
+
+      console.log('📡 UserContext: Fetching profile from API');
       const profile = await getProfile();
+      console.log('📦 UserContext: Profile received:', profile);
+      
       // Only store essential information
-      setUser({
+      const userData = {
         id: profile.id,
         name: profile.fullName,
         email: profile.email,
         role: profile.role
-      });
+      };
+      console.log('👤 UserContext: Setting user data:', userData);
+      setUser(userData);
       setError(null);
     } catch (err) {
       console.log('Profile fetch failed:', err.message);
@@ -52,6 +79,20 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     fetchUserProfile();
+  }, []);
+
+  // Listen for user data updates
+  useEffect(() => {
+    const handleUserDataUpdate = () => {
+      console.log('🔄 UserContext: Received user data update event');
+      fetchUserProfile();
+    };
+
+    window.addEventListener('userDataUpdated', handleUserDataUpdate);
+
+    return () => {
+      window.removeEventListener('userDataUpdated', handleUserDataUpdate);
+    };
   }, []);
 
   const handleLogout = () => {

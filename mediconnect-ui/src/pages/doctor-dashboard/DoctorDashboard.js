@@ -5,18 +5,17 @@ import '../../styles/Auth.css';
 import DashboardHome from './DashboardHome';
 import Appointments from './Appointments';
 import Patients from './Patients';
-import Messages from './Messages';
 import Schedule from './Schedule';
 import AddressMapSelector from '../../components/AddressMapSelector';
-import DoctorLayout from './DoctorLayout';
+import CommonHeader from '../../components/CommonHeader';
 import tokenService from '../../services/tokenService';
 import { handleLogout } from '../../utils/logout';
+import { useToast } from '../../context/ToastContext';
 
 const menuOptions = [
   { label: 'Dashboard', id: 'dashboard' },
   { label: 'Appointments', id: 'appointments' },
   { label: 'Patients', id: 'patients' },
-  { label: 'Messages', id: 'messages' },
   { label: 'Schedule', id: 'schedule' },
 ];
 
@@ -85,11 +84,10 @@ const specializationIcons = {
 
 const DoctorDashboard = () => {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
   const [documents, setDocuments] = useState([]);
   const [formData, setFormData] = useState({
@@ -590,13 +588,22 @@ const DoctorDashboard = () => {
       setLoading(false);
     } catch (err) {
       console.error('💥 Profile fetch error:', err);
-      setError(err.message);
+      showToast(`${err.message}`, 'error', 5000);
       setLoading(false);
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    // Special validation for years of experience
+    if (name === 'yearsOfExperience') {
+      const numValue = parseInt(value);
+      if (numValue < 0) {
+        return; // Don't update if negative
+      }
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -674,11 +681,20 @@ const DoctorDashboard = () => {
             [selectedDocType]: { documentId }
           }
         }));
+        
+        // Show success toast
+        const documentNames = {
+          'LICENSE': 'Medical License',
+          'QUALIFICATION': 'Qualification Certificate',
+          'IDENTITY': 'Identity Document',
+          'PROFILE_PHOTO': 'Profile Photo'
+        };
+        showToast(`${documentNames[selectedDocType] || 'Document'} uploaded successfully!`, 'success', 4000);
       } else {
-        setError('Failed to upload document');
+        showToast('Failed to upload document', 'error', 5000);
       }
     } catch (err) {
-      setError('Failed to upload document: ' + err.message);
+      showToast(`Failed to upload document: ${err.message}`, 'error', 5000);
     }
   };
 
@@ -702,14 +718,15 @@ const DoctorDashboard = () => {
           const blob = await downloadResponse.blob();
           const imageUrl = URL.createObjectURL(blob);
           setProfile(prev => ({ ...prev, photoUrl: imageUrl }));
+          showToast('Profile photo uploaded successfully!', 'success', 4000);
         } else {
-          setError('Failed to download profile photo');
+          showToast('Failed to download profile photo', 'error', 5000);
         }
       } else {
-        setError('Failed to upload photo');
+        showToast('Failed to upload photo', 'error', 5000);
       }
     } catch (err) {
-      setError('Failed to upload/download photo: ' + err.message);
+      showToast(`Failed to upload/download photo: ${err.message}`, 'error', 5000);
     }
   };
 
@@ -721,8 +738,6 @@ const DoctorDashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
 
     try {
       // Prepare the data with location coordinates
@@ -748,10 +763,10 @@ const DoctorDashboard = () => {
         const data = await response.json();
         throw new Error(data.message || 'Failed to update profile');
       }
-      setSuccess('Profile updated and submitted for verification. Our team will review your documents shortly.');
+      showToast('Profile updated and submitted for verification. Our team will review your documents shortly.', 'success', 5000);
       fetchProfile(); // Refresh profile
     } catch (err) {
-      setError(err.message);
+      showToast(`${err.message}`, 'error', 5000);
     }
   };
 
@@ -778,8 +793,7 @@ const DoctorDashboard = () => {
 
     return (
       <div>
-        {/* Common Header */}
-        <DoctorLayout 
+        <CommonHeader 
           user={profile}
           activeTab={activeTab}
           onMenuClick={setActiveTab}
@@ -832,7 +846,7 @@ const DoctorDashboard = () => {
                 background: '#fff7e6',
                 color: '#b7791f',
                 border: '1px solid #f6ad55',
-                borderRadius: '0.5rem',
+                borderRadius: '0.2rem',
                 padding: '1rem',
                 fontWeight: 500
               }}>
@@ -846,7 +860,7 @@ const DoctorDashboard = () => {
                 background: '#fff5f5',
                 color: '#c53030',
                 border: '1px solid #feb2b2',
-                borderRadius: '0.5rem',
+                borderRadius: '0.2rem',
                 padding: '1rem',
                 fontWeight: 500
               }}>
@@ -860,101 +874,102 @@ const DoctorDashboard = () => {
                 <h2>Complete Your Profile</h2>
                 <p>Please provide accurate information to help us verify your medical credentials</p>
               </div>
-              
-              <div className="profile-image-section">
-                <div className="profile-image-container">
-                  <img src={profile && profile.photoUrl && profile.photoUrl.trim() !== '' ? profile.photoUrl : '/default-profile.png'} alt="Doctor profile" className="profile-image" />
-                  <div className="profile-image-overlay">
-                    <span className="upload-icon">📷</span>
-                  </div>
-                </div>
-                <label className="upload-btn">
-                  <input type="file" onChange={handlePhotoUpload} style={{ display: 'none' }} />
-                  <span>Upload Photo</span>
-                </label>
-              </div>
             </div>
             
-            {error && <div className="error-message">{error}</div>}
-            {success && <div className="success-message">{success}</div>}
+    
             
             <div className="profile-content">
-              <div className="document-section">
-                <div className="document-upload-section">
-                  <h3>Verification Documents</h3>
-                  <p className="upload-instruction">Please upload the following documents:</p>
-                  <ul className="document-list">
-                    <li>Medical License (Required)</li>
-                    <li>Board Certification</li>
-                    <li>Government ID</li>
-                    <li>Practice Certificate</li>
-                  </ul>
-                  
-                  <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <select
-                      value={selectedDocType}
-                      onChange={e => setSelectedDocType(e.target.value)}
-                      className="form-input dropdown-select"
-                      style={{ width: '100%' }}
-                    >
-                      <option value="LICENSE">Medical License</option>
-                      <option value="IDENTITY">Government ID</option>
-                      <option value="QUALIFICATION">Qualification Certificate</option>
-                    </select>
-                    {getSelectedDocument() && (
-                      <button
-                        type="button"
-                        className="file-upload-btn"
-                        style={{ height: '40.5px', minWidth: '110px', fontSize: '1rem', background: '#3182ce', marginLeft: '0.5rem' }}
-                        onClick={async () => {
-                          const token = tokenService.getToken();
-                          const res = await fetch(`/api/doctors/documents/${selectedDocType}?documentId=${getSelectedDocument().documentId}`, {
-                            headers: { 'Authorization': 'Bearer ' + token }
-                          });
-                          if (res.ok) {
-                            const blob = await res.blob();
-                            const url = window.URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = getSelectedDocument().documentId;
-                            document.body.appendChild(a);
-                            a.click();
-                            a.remove();
-                            window.URL.revokeObjectURL(url);
-                          }
-                        }}
+              <div className="profile-sections-container">
+                <div className="document-section">
+                  <div className="document-upload-section">
+                    <h3>Verification Documents</h3>
+                    <p className="upload-instruction">Please upload the following documents:</p>
+                    <ul className="document-list">
+                      <li>Medical License (Required)</li>
+                      <li>Board Certification</li>
+                      <li>Government ID</li>
+                      <li>Practice Certificate</li>
+                    </ul>
+                    
+                    <div className="document-selector-container">
+                      <select
+                        value={selectedDocType}
+                        onChange={e => setSelectedDocType(e.target.value)}
+                        className={`form-input dropdown-select document-selector ${getSelectedDocument() ? 'has-document' : ''}`}
                       >
-                        Download
-                      </button>
+                        <option value="">Select Document Type</option>
+                        <option value="LICENSE">Medical License</option>
+                        <option value="IDENTITY">Government ID</option>
+                        <option value="QUALIFICATION">Qualification Certificate</option>
+                      </select>
+                      {getSelectedDocument() && (
+                        <button
+                          type="button"
+                          className="document-download-btn"
+                          title="Download Document"
+                          onClick={async () => {
+                            const token = tokenService.getToken();
+                            const res = await fetch(`/api/doctors/documents/${selectedDocType}?documentId=${getSelectedDocument().documentId}`, {
+                              headers: { 'Authorization': 'Bearer ' + token }
+                            });
+                            if (res.ok) {
+                              const blob = await res.blob();
+                              const url = window.URL.createObjectURL(blob);
+                              const a = document.createElement('a');
+                              a.href = url;
+                              a.download = getSelectedDocument().documentId;
+                              document.body.appendChild(a);
+                              a.click();
+                              a.remove();
+                              window.URL.revokeObjectURL(url);
+                            }
+                          }}
+                        >
+                          ⬇️
+                        </button>
+                      )}
+                    </div>
+                    
+                    <label className="plain-btn small sec-submit-btn">
+                      <input type="file" onChange={handleFileUpload} className="hidden-input" />
+                      <span>Upload Document</span>
+                    </label>
+                    
+                    {documents.length > 0 && (
+                      <div className="uploaded-documents">
+                        <h4>Uploaded Documents</h4>
+                        <ul className="document-items">
+                          {documents.map((doc, index) => (
+                            <li key={index} className="document-item">
+                              <div className="document-info">
+                                <span className="document-icon">📄</span>
+                                <span className="document-name">{doc.name}</span>
+                              </div>
+                              <button 
+                                className="remove-document" 
+                                onClick={() => handleRemoveDocument(index)}
+                              >
+                                ✕
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
-                  
-                  <label className="file-upload-btn">
-                    <input type="file" onChange={handleFileUpload} style={{ display: 'none' }} />
-                    <span>Upload Document</span>
-                  </label>
-                  
-                  {documents.length > 0 && (
-                    <div className="uploaded-documents">
-                      <h4>Uploaded Documents</h4>
-                      <ul className="document-items">
-                        {documents.map((doc, index) => (
-                          <li key={index} className="document-item">
-                            <div className="document-info">
-                              <span className="document-icon">📄</span>
-                              <span className="document-name">{doc.name}</span>
-                            </div>
-                            <button 
-                              className="remove-document" 
-                              onClick={() => handleRemoveDocument(index)}
-                            >
-                              ✕
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+                </div>
+                
+                <div className="profile-image-section">
+                  <div className="profile-image-container">
+                    <img src={profile && profile.photoUrl && profile.photoUrl.trim() !== '' ? profile.photoUrl : '/default-profile.png'} alt="Doctor profile" className="profile-image" />
+                    <div className="profile-image-overlay">
+                      <span className="upload-icon">📷</span>
                     </div>
-                  )}
+                  </div>
+                  <label className="plain-btn small sec-submit-btn">
+                    <input type="file" onChange={handlePhotoUpload} style={{ display: 'none' }} />
+                    <span>Upload Photo</span>
+                  </label>
                 </div>
               </div>
               
@@ -1028,6 +1043,7 @@ const DoctorDashboard = () => {
                       className="form-input"
                       value={formData.yearsOfExperience}
                       onChange={handleInputChange}
+                      min="0"
                       required
                     />
                   </div>
@@ -1076,15 +1092,19 @@ const DoctorDashboard = () => {
 
   // Regular dashboard for verified doctors
   return (
-    <DoctorLayout activeTab={activeTab}>
-      <main className="dashboard-main">
+    <div>
+      <CommonHeader 
+        user={profile}
+        activeTab={activeTab}
+        onMenuClick={setActiveTab}
+        onLogout={handleLogout}
+        menuItems={menuOptions}
+      />
         {activeTab === 'dashboard' && <DashboardHome stats={stats} upcomingAppointments={upcomingAppointments} formatDate={formatDate} />}
         {activeTab === 'appointments' && <Appointments />}
         {activeTab === 'patients' && <Patients />}
-        {activeTab === 'messages' && <Messages />}
         {activeTab === 'schedule' && <Schedule />}
-      </main>
-    </DoctorLayout>
+    </div>
   );
 };
 

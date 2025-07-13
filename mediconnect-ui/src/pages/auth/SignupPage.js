@@ -138,7 +138,7 @@ const SignupPage = () => {
 
   return (
     <div className="signup-page">
-      {/* Header - Updated with "Already have an account?" text */}
+      {/* Header - Simple header with logo and login link */}
       <header className="main-header">
         <div className="logo">
           <span className="logo-icon">⚕️</span>
@@ -146,7 +146,7 @@ const SignupPage = () => {
         </div>
         <div className="button-group">
           <span className="account-text">Already have an account?</span>
-          <a href="/login" className="login-btn">Login</a>
+          <a href="/login" className="plain-btn bright">Login</a>
         </div>
       </header>
 

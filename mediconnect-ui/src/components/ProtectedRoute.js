@@ -13,13 +13,21 @@ const ProtectedRoute = ({
   const { user, loading } = useUser();
   const location = useLocation();
 
+  console.log('🛡️ ProtectedRoute: Checking access for path:', location.pathname);
+  console.log('🛡️ ProtectedRoute: Loading state:', loading);
+  console.log('🛡️ ProtectedRoute: User:', user);
+  console.log('🛡️ ProtectedRoute: Token authenticated:', tokenService.isAuthenticated());
+  console.log('🛡️ ProtectedRoute: Required role:', requiredRole);
+
   // Show loading spinner while checking authentication
   if (loading) {
+    console.log('🛡️ ProtectedRoute: Still loading, showing spinner');
     return <LoadingSpinner />;
   }
 
   // Check if user is authenticated
   const isAuthenticated = tokenService.isAuthenticated() && user;
+  console.log('🛡️ ProtectedRoute: Is authenticated:', isAuthenticated);
 
   // If route allows unauthenticated access, render children
   if (allowUnauthenticated) {
@@ -52,8 +60,11 @@ const ProtectedRoute = ({
         dashboardUrl = '/dashboard';
     }
     
+    console.log(`🔄 Redirecting to: ${dashboardUrl}`);
     return <Navigate to={dashboardUrl} replace />;
   }
+
+  console.log('✅ ProtectedRoute: Access granted, rendering children');
 
   // User is authenticated and has required role (if any), render children
   return children;

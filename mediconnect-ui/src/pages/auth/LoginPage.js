@@ -54,6 +54,7 @@ const LoginPage = () => {
       }
 
       console.log('✅ Login successful, storing tokens and user data');
+      console.log('👤 User data from login response:', data.user);
       // Store new tokens and user data
       tokenService.setTokens(data.accessToken, data.refreshToken);
       tokenService.setUser(data.user);
@@ -61,13 +62,23 @@ const LoginPage = () => {
       // Show success toast
       showToast('Login successful!', 'success');
 
+      // User data is now stored in localStorage, notify UserContext to update
+      console.log('✅ User data stored in localStorage, notifying UserContext');
+      window.dispatchEvent(new Event('userDataUpdated'));
+
+      // Give UserContext a moment to update
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       console.log('👤 User role:', data.user.role);
       console.log('🔄 Redirect URL:', redirectUrl);
+      console.log('🔍 Expected role for doctor dashboard: DOCTOR');
+      console.log('🔍 Role match:', data.user.role === 'DOCTOR');
 
       // If there's a redirect URL, use it; otherwise use default navigation
       if (redirectUrl) {
         console.log('📍 Navigating to redirect URL:', redirectUrl);
-        navigate(redirectUrl);
+        console.log('🔍 Decoded redirect URL:', decodeURIComponent(redirectUrl));
+        navigate(decodeURIComponent(redirectUrl));
       } else if (data.user.role === 'DOCTOR') {
         console.log('👨‍⚕️ Navigating to doctor dashboard');
         navigate('/doctor/dashboard');

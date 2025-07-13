@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './Appointments.css';
 import '../../styles/Auth.css';
 import '../../styles/Common.css';
-import DoctorLayout from './DoctorLayout';
 import { useUser } from '../../context/UserContext';
 import { useToast } from '../../context/ToastContext';
 import AppointmentDetails from './AppointmentDetails';
@@ -55,7 +54,7 @@ const DoctorAppointments = () => {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const response = await tokenService.authenticatedFetch('/api/doctors/appointments');
+      const response = await tokenService.authenticatedFetch('/api/appointments/doctor');
       
       if (response.ok) {
         const data = await response.json();
@@ -258,19 +257,16 @@ const DoctorAppointments = () => {
 
   if (loading && appointments.length === 0) {
     return (
-      <DoctorLayout activeTab="appointments">
-        <div className="doctor-appointments-container">
-          <div className="loading-state">
-            <div className="loading-spinner"></div>
-            <p className="loading-text">Loading appointments...</p>
-          </div>
+      <div className="doctor-appointments-container">
+        <div className="loading-state">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">Loading appointments...</p>
         </div>
-      </DoctorLayout>
+      </div>
     );
   }
 
   return (
-    <DoctorLayout activeTab="appointments">
       <>
         {/* Show detailed view if selected */}
         {showDetailedView && selectedAppointment ? (
@@ -655,7 +651,6 @@ const DoctorAppointments = () => {
           </div>
         )}
       </>
-    </DoctorLayout>
   );
 };
 

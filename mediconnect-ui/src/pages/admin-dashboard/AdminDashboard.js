@@ -5,11 +5,14 @@ import '../../styles/Common.css';
 import '../../styles/Auth.css';
 import tokenService from '../../services/tokenService';
 import { handleLogout } from '../../utils/logout';
+import { useToast } from '../../context/ToastContext';
+import CommonHeader from '../../components/CommonHeader';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [activeMenu, setActiveMenu] = useState('approvals');
   const [activeTab, setActiveTab] = useState('PENDING');
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -61,6 +64,13 @@ const AdminDashboard = () => {
     fetchAllStatuses();
   }, []); // Empty dependency array means this runs once on mount
 
+  // Refresh data when tab changes
+  useEffect(() => {
+    if (activeTab) {
+      fetchDoctorsByStatus(activeTab);
+    }
+  }, [activeTab]);
+
   useEffect(() => {
     if (showDocumentViewer) {
       document.body.classList.add('document-viewer-open');
@@ -75,12 +85,8 @@ const AdminDashboard = () => {
   const fetchDoctorsByStatus = async (status) => {
     try {
       setLoading(true);
-      const token = tokenService.getToken();
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
+      console.log(`Fetching doctors with status: ${status}`);
+      
       const response = await tokenService.authenticatedFetch(`/api/admin/doctors/approvals?status=${status}`);
 
       if (!response.ok) {
@@ -88,6 +94,8 @@ const AdminDashboard = () => {
       }
 
       const data = await response.json();
+      console.log(`Received ${data.length} doctors for status ${status}:`, data);
+      
       setDoctorData(prev => ({
         ...prev,
         [status]: data
@@ -143,13 +151,6 @@ const AdminDashboard = () => {
   const handleDoctorSelect = async (doctor) => {
     try {
       setLoading(true);
-      const token = tokenService.getToken();
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
-      // Debug logs
       console.log('Doctor selected from tile:', doctor);
 
       // Use the doctor's ID directly from the list data
@@ -182,11 +183,7 @@ const AdminDashboard = () => {
   const handleDocumentView = async (doctorId, documentType) => {
     try {
       setLoading(true);
-      const token = tokenService.getToken();
-      if (!token) {
-        navigate('/login');
-        return;
-      }
+      console.log(`Fetching document: ${documentType} for doctor: ${doctorId}`);
 
       const response = await tokenService.authenticatedFetch(`/api/s3/documents/${doctorId}/${documentType}`);
 
@@ -225,12 +222,6 @@ const AdminDashboard = () => {
     
     try {
       setLoading(true);
-      const token = tokenService.getToken();
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
       console.log('Sending verification request:', {
         doctorId: selectedDoctor.id,
         action,
@@ -271,11 +262,22 @@ const AdminDashboard = () => {
         id: selectedDoctor.id
       });
 
+      // Show success toast based on action
+      const actionMessages = {
+        'approve': `Dr. ${selectedDoctor.fullName} has been approved successfully!`,
+        'reject': `Dr. ${selectedDoctor.fullName} has been rejected.`,
+        'review': `More information requested from Dr. ${selectedDoctor.fullName}.`
+      };
+      
+      const toastType = action === 'approve' ? 'success' : action === 'reject' ? 'error' : 'warning';
+      showToast(actionMessages[action], toastType, 4000);
+
       // Close the details panel after successful update
       setSelectedDoctor(null);
     } catch (error) {
       console.error('Error processing verification:', error);
-      alert('Failed to process the request. Please try again.');
+      const errorMessage = error.message || 'Failed to process the request. Please try again.';
+      showToast(`${errorMessage}`, 'error', 5000);
     } finally {
       setLoading(false);
     }
@@ -308,6 +310,18 @@ const AdminDashboard = () => {
     return getCurrentTabData().length;
   };
 
+  const refreshData = async () => {
+    try {
+      setLoading(true);
+      const statuses = ['PENDING', 'VERIFIED', 'REJECTED'];
+      await Promise.all(statuses.map(status => fetchDoctorsByStatus(status)));
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading && activeMenu === 'approvals') {
     return (
       <div className="admin-dashboard">
@@ -331,113 +345,59 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      {/* Enhanced Header */}
-      <header className="common-header">
-        <div className="header-container">
-          <div className="header-logo">
-            <span className="logo-icon">⚕️</span>
-            <span className="logo-text">MediConnect</span>
-          </div>
-          
-          <nav className="header-menu">
-            <button 
-              className={`menu-item ${activeMenu === 'approvals' ? 'active' : ''}`}
-              onClick={() => setActiveMenu('approvals')}
-            >
-              Approvals
-            </button>
-            <button 
-              className={`menu-item ${activeMenu === 'analytics' ? 'active' : ''}`}
-              onClick={() => setActiveMenu('analytics')}
-            >
-              Analytics
-            </button>
-            <button 
-              className={`menu-item ${activeMenu === 'notifications' ? 'active' : ''}`}
-              onClick={() => setActiveMenu('notifications')}
-            >
-              Notifications
-            </button>
-          </nav>
-          
-          <div className="header-right">
-          
-            <button className="plain-btn logout" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+      <CommonHeader 
+        activeTab={activeMenu}
+        onMenuClick={setActiveMenu}
+        onLogout={handleLogout}
+        menuItems={[
+          { id: 'approvals', label: 'Approvals' },
+          { id: 'analytics', label: 'Analytics' }
+        ]}
+      />
 
       {/* Main Content */}
       <main className="admin-content">
-        {/* Stats Dashboard */}
-        <div className="admin-stats">
-          <div className="admin-stat-card">
-            <div className="stat-icon">⏳</div>
-            <div className="stat-content">
-              <h3>Pending Approvals</h3>
-              <div className="stat-value">{stats.pendingApprovals.value}</div>
-              
-            </div>
-          </div>
-          <div className="admin-stat-card">
-            <div className="stat-icon">👨‍⚕️</div>
-            <div className="stat-content">
-              <h3>Total Doctors</h3>
-              <div className="stat-value">{stats.totalDoctors.value}</div>
-              
-            </div>
-          </div>
-          <div className="admin-stat-card">
-            <div className="stat-icon">❌</div>
-            <div className="stat-content">
-              <h3>Rejected Applications</h3>
-              <div className="stat-value">{stats.rejectedApplications.value}</div>
-              
-            </div>
-          </div>
-          <div className="admin-stat-card">
-            <div className="stat-icon">✅</div>
-            <div className="stat-content">
-              <h3>Verified Today</h3>
-              <div className="stat-value">{stats.verifiedToday.value}</div>
-              <div className={`stat-change ${stats.verifiedToday.trend}`}>
-                {stats.verifiedToday.change} from yesterday
-              </div>
-            </div>
-          </div>
-        </div>
-
         {activeMenu === 'approvals' && (
-          <div className="approvals-section">
+          <>
+            {/* Section Header with Stats */}
             <div className="section-header">
               <div>
-                <h2 className="section-title">Doctor Verification</h2>
-                <p className="section-subtitle">Review and approve doctor applications</p>
+                <h2 className="section-title">Application Verification</h2>
+                <p className="section-subtitle">Oversee physician application lifecycle management and approval flows</p>
+              </div>
+              
+              <div className="header-actions">
+                <div className="stats-display">
+                  <span>⏳ Pending: {stats.pendingApprovals.value}</span>
+                  <span>👨‍⚕️ Total: {stats.totalDoctors.value}</span>
+                  <span>❌ Rejected: {stats.rejectedApplications.value}</span>
+                  <span>✅ Verified Today: {stats.verifiedToday.value}</span>
+                </div>
               </div>
             </div>
+
+                        <div className="approvals-section">
 
             <div className="approval-tabs">
               <button 
                 className={`tab ${activeTab === 'PENDING' ? 'active' : ''}`}
                 onClick={() => setActiveTab('PENDING')}
               >
-                ⏳ Pending 
+                Pending 
                 <span className="tab-count">{doctorData.PENDING.length}</span>
               </button>
               <button 
                 className={`tab ${activeTab === 'VERIFIED' ? 'active' : ''}`}
                 onClick={() => setActiveTab('VERIFIED')}
               >
-                ✅ Verified 
+                Verified 
                 <span className="tab-count">{doctorData.VERIFIED.length}</span>
               </button>
               <button 
                 className={`tab ${activeTab === 'REJECTED' ? 'active' : ''}`}
                 onClick={() => setActiveTab('REJECTED')}
               >
-                ❌ Rejected 
+                Rejected 
                 <span className="tab-count">{doctorData.REJECTED.length}</span>
               </button>
             </div>
@@ -469,22 +429,18 @@ const AdminDashboard = () => {
                   return (
                     <div key={doctor.id} className="doctor-tile">
                       <div className="doctor-header">
-                        <h3>{doctor.name}</h3>
+                        <h3 className="doctor-name">Dr. {doctor.name}</h3>
                       </div>
                       
-                      <div className="doctor-info">
+                      <div className="admin-doctor-info">
                         <p className="specialty">
-                          <span className="specialty-icon">
-                            {specializationIcons[doctor.specialty] || '🏥'}
-                          </span>
+                          
                           {doctor.specialty || 'Unknown Specialty'}
                         </p>
                         <p className="experience">
-                          <span className="info-icon">⏱️</span>
-                          {doctor.experience ? `${doctor.experience} years` : 'Unknown Experience'}
+                          {doctor.experience ? `${doctor.experience} years experience` : 'Unknown Experience'}
                         </p>
-                        <p className="experience">
-                          <span className="info-icon">📍</span>
+                        <p className="location">
                           {doctor.location || 'Unknown Location'}
                         </p>
                       </div>
@@ -503,7 +459,10 @@ const AdminDashboard = () => {
                       </div>
                       
                       <button 
-                        className="details-btn"
+                        className="plain-btn sec-submit-btn"
+                        style={{
+                          width: '100%',
+                        }}
                         onClick={() => handleDoctorSelect(doctor)}
                       >
                         {activeTab === 'PENDING' ? 'Review Application' : 'View Details'}
@@ -514,6 +473,7 @@ const AdminDashboard = () => {
               </div>
             )}
           </div>
+          </>
         )}
 
         {activeMenu === 'analytics' && (
@@ -557,17 +517,20 @@ const AdminDashboard = () => {
                 {activeTab === 'PENDING' ? 'Review Application' : 'Doctor Details'}
               </h2>
               <button 
-                className="close-btn"
+                className="modal-close"
                 onClick={() => setSelectedDoctor(null)}
               >
-                ×
+                ✕
               </button>
             </div>
             
             <div className="panel-content">
               <div className="documents-section">
-              <h3>ℹ️ Doctor Information</h3>
-              <div className="doctor-info">
+                <div className="section-header-wrapper">
+                  <div className="section-header-with-background">
+                    <h3>Doctor Information</h3>
+                  </div>
+                </div>
                 <div className="profile-photo-section">
                   {selectedDoctor.id ? (
                     <img 
@@ -614,56 +577,76 @@ const AdminDashboard = () => {
                     />
                   )}
                 </div>
-                <h3>
-                  <span className="info-icon">👨‍⚕️</span>
-                  {selectedDoctor.fullName}
-                </h3>
-                <p>
-                  <span className="info-icon">🏥</span>
-                  <strong>Specialty:</strong> {selectedDoctor.specialization}
-                </p>
-                <p>
-                  <span className="info-icon">⏱️</span>
-                  <strong>Experience:</strong> {selectedDoctor.yearsOfExperience}
-                </p>
-                <p>
-                  <span className="info-icon">📋</span>
-                  <strong>License:</strong> {selectedDoctor.licenseNumber}
-                </p>
-                
-                <p>
-                  <span className="info-icon">📧</span>
-                  <strong>Email:</strong> {selectedDoctor.email}
-                </p>
-              
-              
-                <p>
-                  <span className="info-icon">📱</span>
-                  <strong>Phone:</strong> {selectedDoctor.phoneNumber}
-                </p>
-              
-              
-                <p>
-                  <span className="info-icon">📍</span>
-                  <strong>Location:</strong> {formatAddress(selectedDoctor.address)}
-                </p>
+              <div className="admin-doctor-info">
+                <div className="doctor-info-list">
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">Full Name</div>
+                      <div className="info-value">{selectedDoctor.fullName}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">Specialty</div>
+                      <div className="info-value">{selectedDoctor.specialization}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">Experience</div>
+                      <div className="info-value">{selectedDoctor.yearsOfExperience} years experience</div>
+                    </div>
+                  </div>
+                  
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">License Number</div>
+                      <div className="info-value">{selectedDoctor.licenseNumber}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">Email Address</div>
+                      <div className="info-value">{selectedDoctor.email}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">Phone Number</div>
+                      <div className="info-value">{selectedDoctor.phoneNumber}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">Location</div>
+                      <div className="info-value">{formatAddress(selectedDoctor.address)}</div>
+                    </div>
+                  </div>
 
-                <div className="bio-container">
-                  <p>
-                    <span className="info-icon">📋</span>
-                    <strong>Bio:</strong>
-                  </p>
-                  <div className="bio-text-box">
-                    {selectedDoctor.bio}
+                  <div className="info-row">
+                    <div className="info-content">
+                      <div className="info-label">Professional Bio</div>
+                      <div className="bio-text-boxes">
+                        {selectedDoctor.bio}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                </div>
+              </div>
               </div>
 
               {selectedDoctor.documents && (
                 <div className="documents-section">
-                  <h3>📄 Verification Documents</h3>
+                  <div className="section-header-wrapper">
+                    <div className="section-header-with-background">
+                      <h3>Verification Documents</h3>
+                    </div>
+                  </div>
                   <div className="document-list">
                     {['LICENSE', 'QUALIFICATION', 'IDENTITY'].map((docType) => {
                       const isAvailable = selectedDoctor.documents[docType];
@@ -687,7 +670,11 @@ const AdminDashboard = () => {
 
               {activeTab === 'PENDING' && (
                 <div className="documents-section">
-                  <h3>⚖️ Review Actions</h3>
+                  <div className="section-header-wrapper">
+                    <div className="section-header-with-background">
+                      <h3>Review Actions</h3>
+                    </div>
+                  </div>
                 <div className="approval-actions">
                   <div className="form-group">
                     <label htmlFor="review-reason">Review Comments *</label>
@@ -745,7 +732,11 @@ const AdminDashboard = () => {
 
               {activeTab === 'REJECTED' && (
                 <div className="documents-section">
-                  <h3>⚖️ Review Actions</h3>
+                  <div className="section-header-wrapper">
+                    <div className="section-header-with-background">
+                      <h3>⚖️ Review Actions</h3>
+                    </div>
+                  </div>
                 <div className="approval-actions">
                   <div className="form-group">
                     <label htmlFor="review-reason">Review Comments *</label>
@@ -806,7 +797,11 @@ const AdminDashboard = () => {
 
               {activeTab === 'VERIFIED' && (
                 <div className="documents-section">
-                  <h3>⚖️ Review Actions</h3>
+                  <div className="section-header-wrapper">
+                    <div className="section-header-with-background">
+                      <h3>⚖️ Review Actions</h3>
+                    </div>
+                  </div>
                   <div className="approval-actions">
                     <div className="form-group">
                       <label htmlFor="block-reason">Block Reason *</label>
@@ -845,10 +840,10 @@ const AdminDashboard = () => {
             <div className="blur-overlay" />
             <div className="document-viewer-overlay">
               <div className="document-viewer-panel">
-                <div className="viewer-header">
-                  <h3>📄 {currentDocument?.name || 'Document Viewer'}</h3>
+                <div className="modal-header">
+                <h2 className="modal-title">📄 {currentDocument?.name || 'Document Viewer'}</h2>
                   <button 
-                    className="viewer-header close-btn"
+                    className="modal-close"
                     onClick={() => {
                       setShowDocumentViewer(false);
                       if (currentDocument?.url) {
@@ -857,7 +852,7 @@ const AdminDashboard = () => {
                       }
                     }}
                   >
-                    ×
+                    ✕
                   </button>
                 </div>
                 <div className="document-content">

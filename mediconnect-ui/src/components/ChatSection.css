@@ -417,17 +417,13 @@
     box-shadow: none
 }
 
-textarea {
+.chat-input-section textarea {
     border: 1px solid #e2e8f0;
     border-radius: 0.5rem;
     font-size: 1rem;
-    height: 80px;
+    height: 50px;
     resize: vertical;
     font-family: inherit;
-  }
-  
-textarea:focus {
-    outline: none;
 }
 
 .chat-input::placeholder {

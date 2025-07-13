@@ -632,7 +632,7 @@ const AddressMapSelector = ({
                   setIsOverriding(true);
                   setOverrideAddress(address3 || '');
                 }}
-                className="override-button"
+                className="plain-btn sec-submit-btn"
               >
                 Override Street Address
               </button>
@@ -656,7 +656,7 @@ const AddressMapSelector = ({
                     });
                   }}
                   placeholder="Enter custom street address"
-                  className="override-input"
+                  className="form-input"
                 />
                 <button
                   type="button"
@@ -673,9 +673,10 @@ const AddressMapSelector = ({
                       pincode
                     });
                   }}
-                  className="override-cancel-button"
+                  className="plain-btn sec-submit-btn"
+                  style={{padding: '0.9rem 1rem'}}
                 >
-                  ✕
+                  Clear
                 </button>
               </div>
             )}

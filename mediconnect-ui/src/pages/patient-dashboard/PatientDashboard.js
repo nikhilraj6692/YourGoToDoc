@@ -332,9 +332,14 @@ const PatientDashboard = ({
       {/* Common Header */}
       <CommonHeader 
         user={userInfo}
-        activeMenuItem={activeMenuItem}
+        activeTab={activeMenuItem}
         onMenuClick={handleMenuClick}
         onLogout={handleLogout}
+        menuItems={[
+          { id: 'dashboard', label: 'Dashboard' },
+          { id: 'appointments', label: 'Appointments' },
+          { id: 'billing', label: 'Billing' }
+        ]}
       />
 
       <div className="pd-container">

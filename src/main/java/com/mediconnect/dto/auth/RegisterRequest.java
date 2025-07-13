@@ -11,7 +11,7 @@ import lombok.Data;
 public class RegisterRequest {
     @Schema(description = "User's name", example = "Lorem Ipsum", required = true)
     @NotBlank(message = "User name is required")
-    @Pattern(regexp = "^[A-Za-z ]{2,50}$", message = "Name must contain only letters and spaces")
+    @Pattern(regexp = "^[A-Za-z .]{2,50}$", message = "Name must contain only letters and spaces")
     private String name;
 
     @Schema(description = "User's email address", example = "user@example.com", required = true)

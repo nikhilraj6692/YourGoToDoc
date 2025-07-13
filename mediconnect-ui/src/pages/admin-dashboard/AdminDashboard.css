@@ -12,8 +12,7 @@
 
 /* Main Content Styles */
 .admin-content {
-  padding: 2rem;
-  max-width: 1400px;
+  padding: 2rem 5rem;
   margin: 0 auto;
   width: 100%;
   flex: 1;
@@ -77,6 +76,12 @@
   gap: 0.25rem;
 }
 
+.approval-actions textarea:focus {
+  outline: none;
+  border-color: #86bf23;
+  box-shadow: 0 0 0 1px #45660c;
+}
+
 .stat-change.positive {
   color: #38a169;
 }
@@ -85,18 +90,30 @@
   color: #e53e3e;
 }
 
-/* Enhanced Approvals Section */
-.approvals-section {
-  background: white;
-  border-radius: 0.8rem;
-  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
+
 
 /* Section Headers - Using Common.css styles */
 
+/* Header Actions for Admin Dashboard */
+.admin-dashboard .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
+.admin-dashboard .stats-display {
+  display: flex;
+  gap: 0.1rem;
+  font-size: 0.9rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.admin-dashboard .stats-display span {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+}
 
 .approval-tabs {
   display: flex;
@@ -113,7 +130,6 @@
   font-size: 0.9rem;
   color: #4a5568;
   cursor: pointer;
-  border-radius: 0.5rem 0.5rem 0 0;
   transition: all 0.2s ease;
   font-weight: 500;
   position: relative;
@@ -134,6 +150,10 @@
 .tab:hover {
   background: #f7fafc;
   color: #2d3748;
+}
+
+.tab:hover::after {
+  transform: scaleX(1);
 }
 
 .tab.active {
@@ -171,7 +191,7 @@
 .doctor-tile {
   background: #f8fafd;
   border: 1px solid #e2e8f0;
-  border-radius: 0.8rem;
+  border-radius: 0.2rem;
   padding: 1.5rem;
   transition: all 0.3s ease;
   position: relative;
@@ -203,7 +223,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
 }
 
 .doctor-tile h3 {
@@ -235,11 +256,17 @@
   color: #22543d;
 }
 
-.doctor-info {
+.admin-dashboard .doctor-info {
   margin-bottom: 1rem;
 }
 
-.doctor-tile .specialty {
+.doctor-tile .doctor-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.doctor-tile .location {
   margin: 0.5rem 0;
   color: #3182ce;
   font-weight: 600;
@@ -249,17 +276,28 @@
   gap: 0.5rem;
 }
 
+.doctor-tile .specialty {
+  font-size: 1rem;
+  color: #374151;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+}
+
 .specialty-icon {
   font-size: 1.1rem;
 }
 
 .doctor-tile .experience {
-  margin: 0.5rem 0;
-  color: #718096;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 0.25rem 0;
+  font-style: italic;
+}
+
+.doctor-tile .location {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 0.25rem 0;
 }
 
 .doctor-tile .dates {
@@ -267,8 +305,8 @@
   color: #718096;
   margin: 1rem 0;
   background: white;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.6rem;
+  border-radius: 0.1rem;
   border: 1px solid #e2e8f0;
 }
 
@@ -314,21 +352,21 @@
   background: white;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
   padding: 0;
-  overflow-y: auto;
+  overflow: hidden;
   z-index: 1000;
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-header {
-  background: #181f2a;
-  color: white;
-  padding: 1.5rem 2rem;
+  padding: 1.7rem 1.5rem 1.35rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  justify-content: space-between;
+  background: #597d1be8;
+  z-index: 1000;
+  flex-shrink: 0;
 }
 
 .panel-header h2 {
@@ -355,18 +393,50 @@
 }
 
 .panel-content {
-  padding: 2rem;
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
 }
 
-.doctor-info {
+.admin-dashboard .admin-doctor-info {
+  margin-bottom: 1rem;
+}
+
+.doctor-profile-section {
+  display: flex;
+  justify-content: center;
   margin-bottom: 2rem;
-  background: #f8fafd;
-  padding: 1.5rem;
-  border-radius: 0.8rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
   border: 1px solid #e2e8f0;
 }
 
-.doctor-info h3 {
+.admin-dashboard .profile-photo-section {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-dashboard .doctor-details-left .bio-container {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.admin-dashboard .bio-text-boxes {
+  color: #374151;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  background: rgb(244, 243, 243);
+  padding: 1rem;
+  border-radius: 0.2px;
+  border: 1px solid #e5e7eb;
+  width: 100%;
+}
+
+.admin-dashboard .admin-doctor-info h3 {
   margin: 0 0 1rem 0;
   color: #2d3748;
   font-size: 1.3rem;
@@ -376,15 +446,58 @@
   gap: 0.5rem;
 }
 
-.doctor-info p {
-  margin: 0.5rem 0;
+.admin-dashboard .admin-doctor-info p {
   color: #4a5568;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin: 0.2rem 0;
 }
 
-.info-icon {
+
+.doctor-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 95%;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+  transition: background-color 0.2s ease, padding 0.2s ease;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.info-label {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 500;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.info-value {
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 500;
+  flex: 1;
+  text-align: center
+}
+
+.admin-dashboard .info-icon {
   color: #718096;
   width: 1.2rem;
 }
@@ -394,92 +507,96 @@
   margin-bottom: 2rem;
 }
 
-.documents-section h3 {
-  margin: 0 0 1rem 0;
+.section-header-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.section-header-with-background {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.2rem;
+  text-align: center;
+  padding: 0.6rem;
+  display: inline-block;
+  width: fit-content;
+  margin-bottom: 0.6rem;
+}
+
+.section-header-with-background h3 {
+  margin: 0;
   color: #2d3748;
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.admin-dashboard .profile-photo-section {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 2rem;
+}
+
+.documents-section h3 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 1.3rem;
+  font-weight: 600;
 }
 
 .document-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0;
 }
 
 .document-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
-  background: #f8fafc;
-  border-radius: 0.5rem;
-  border: 1px solid #e2e8f0;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.document-item:last-child {
+  border-bottom: none;
 }
 
 .document-item.clickable {
   cursor: pointer;
 }
 
-.document-item.clickable:hover {
-  background: #edf2f7;
-  border-color: #86bf23;
-}
-
-.document-type {
-  font-weight: 500;
-  color: #4a5568;
-}
-
-.document-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.document-btn.available {
-  background: #48bb78;
-  color: white;
-  border: none;
-}
-
-.document-btn.available:hover {
-  background: #38a169;
-}
-
-.document-btn.unavailable {
-  background: #f56565;
-  color: white;
-  border: none;
-  cursor: not-allowed;
+.document-item:not(.clickable) {
   opacity: 0.7;
 }
 
+.document-type {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  text-transform: capitalize;
+  letter-spacing: 0.025em;
+}
+
+.document-item.clickable .document-type {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.document-item:not(.clickable) .document-type {
+  color: #6b7280;
+}
+
 .document-icon {
-  font-size: 1rem;
-}
-
-.document-icon.clickable {
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.document-icon.clickable:hover {
-  transform: scale(1.2);
+  font-size: 1.1rem;
 }
 
 /* Approval Actions */
 .approval-actions {
-  background: #f8fafd;
-  padding: 1.5rem;
   border-radius: 0.8rem;
-  border: 1px solid #e2e8f0;
   width: 100%;
   box-sizing: border-box;
 }
@@ -491,17 +608,18 @@
   font-weight: 700;
 }
 
-.action-buttons {
+.approval-actions .action-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.75rem;
   margin-bottom: 1rem;
+  justify-content: space-between;
 }
 
-.action-btn {
-  padding: 0.75rem 1rem;
+.approval-actions .action-btn {
+  padding: 0.75rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -510,6 +628,8 @@
   gap: 0.5rem;
   justify-content: center;
   font-size: 0.9rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .action-btn.approve {
@@ -544,11 +664,11 @@
   min-height: 100px;
   padding: 0.75rem;
   border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   resize: vertical;
   font-family: inherit;
   font-size: 0.9rem;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   box-sizing: border-box;
 }
 
@@ -675,6 +795,11 @@ body.document-viewer-open {
   z-index: 1000;
 }
 
+/* Override modal-header padding for document viewer */
+.document-viewer-panel .modal-header {
+  padding: 1rem 1.5rem;
+}
+
 
 
 /* Responsive Design */
@@ -704,26 +829,8 @@ body.document-viewer-open {
 }
 
 @media (max-width: 768px) {
-  .admin-header {
-    flex-direction: column;
-    padding: 1rem;
-    gap: 1rem;
-  }
-
   .doctor-details-panel {
     width: 100%;
-  }
-  
-  .header-menu {
-    order: 1;
-    margin: 0;
-    gap: 1rem;
-  }
-  
-  .header-left,
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
   }
   
   .admin-stats {
@@ -739,6 +846,22 @@ body.document-viewer-open {
     height: 100vh;
   }
   
+  .section-header-with-background {
+    padding: 0.75rem 1rem;
+  }
+  
+  .admin-dashboard .profile-photo-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .action-btn {
+    flex: none;
+  }
 
 }
 
@@ -777,14 +900,13 @@ body.document-viewer-open {
 .profile-photo-section {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5rem;
 }
 
 .doctor-profile-photo {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #e2e8f0;
+  border: 2px solid #e2e8f0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }

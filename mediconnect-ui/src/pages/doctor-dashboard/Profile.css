@@ -107,20 +107,7 @@
   color: #4a5568;
   font-size: 0.9rem;
 }
-textarea {
-  padding: 0.75rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  min-height: 120px;
-  resize: vertical;
-  font-family: inherit;
-}
-textarea:focus {
-  outline: none;
-  border-color: #b6ff3c;
-  box-shadow: 0 0 0 3px rgba(182,255,60,0.2);
-}
+
 .input-note {
   font-size: 0.85rem;
   color: #718096;

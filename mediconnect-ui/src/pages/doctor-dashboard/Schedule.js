@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Schedule.css';
 import '../../styles/Common.css';
-import DoctorLayout from './DoctorLayout';
 import tokenService from '../../services/tokenService';
 import { handleLogout } from '../../utils/logout';
 import { useToast } from '../../context/ToastContext';
+import { useUser } from '../../context/UserContext';
 
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
@@ -36,6 +36,7 @@ const customStyles = `
 
 const Schedule = () => {
   const { showToast } = useToast();
+  const { user } = useUser();
   const [currentDate] = useState(new Date());
   const [bookedSlots, setBookedSlots] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -147,13 +148,39 @@ const Schedule = () => {
   const fetchSchedules = async () => {
     try {
       setLoading(true);
-      const response = await tokenService.authenticatedFetch('/api/doctors/schedule');
+      const visibleDays = getVisibleDays();
       
-      if (response.ok) {
-        const data = await response.json();
-        setSchedules(data);
+      // Filter to only include dates from the current month
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+      const currentMonthDates = visibleDays.filter(day => 
+        day.getMonth() === currentMonth && day.getFullYear() === currentYear
+      );
+      
+      // Only make API call if we have dates from current month
+      if (currentMonthDates.length > 0) {
+        const dates = currentMonthDates.map(day => day.toLocaleDateString('en-CA')).join(',');
+        const response = await tokenService.authenticatedFetch(`/api/schedule/daily?dates=${dates}`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          setSchedules(data);
+          
+          // Process the slots data for calendar display
+          const slots = data.slots || data || [];
+          const available = slots.filter(slot => slot.available !== false);
+          const booked = slots.filter(slot => slot.available === false);
+          
+          setAvailableSlots(available);
+          setBookedSlots(booked);
+        } else {
+          setError('Failed to fetch schedule');
+        }
       } else {
-        setError('Failed to fetch schedule');
+        // No current month dates, clear the slots
+        setAvailableSlots([]);
+        setBookedSlots([]);
+        setSchedules([]);
       }
     } catch (err) {
       setError('Error fetching schedule');
@@ -164,7 +191,7 @@ const Schedule = () => {
 
   const handleAddTimeSlot = async (slotData) => {
     try {
-      const response = await tokenService.authenticatedFetch('/api/doctors/schedule/slots', {
+      const response = await tokenService.authenticatedFetch('/api/schedule/slots', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -185,7 +212,7 @@ const Schedule = () => {
 
   const handleUpdateTimeSlot = async (slotId, slotData) => {
     try {
-      const response = await tokenService.authenticatedFetch(`/api/doctors/schedule/slots/${slotId}`, {
+      const response = await tokenService.authenticatedFetch(`/api/schedule/slots/${slotId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -206,7 +233,7 @@ const Schedule = () => {
 
   const handleDeleteTimeSlot = async (slotId) => {
     try {
-      const response = await tokenService.authenticatedFetch(`/api/doctors/schedule/slots/${slotId}`, {
+      const response = await tokenService.authenticatedFetch(`/api/schedule/slots/${slotId}`, {
         method: 'DELETE'
       });
       
@@ -223,7 +250,7 @@ const Schedule = () => {
 
   const handleSetAvailability = async (availabilityData) => {
     try {
-      const response = await tokenService.authenticatedFetch('/api/doctors/schedule/availability', {
+      const response = await tokenService.authenticatedFetch('/api/schedule/availability', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -268,14 +295,14 @@ const Schedule = () => {
       }
 
       const slotData = {
-        date: selectedDate.toISOString().split('T')[0],
+        startDate: selectedDate.toLocaleDateString('en-CA'),
         startTime: selectedStartTime,
         endTime: selectedEndTime,
-        slotDuration: slotDuration,
-        gapDuration: gapDuration,
+        slotDurationMinutes: slotDuration,
+        gapDurationMinutes: gapDuration,
         isRecurring: isRecurring,
-        repeatDays: repeatDays,
-        repeatEndDate: isRecurring ? repeatEndDate.toISOString().split('T')[0] : null
+        recurringDays: repeatDays,
+        recurringEndDate: isRecurring ? repeatEndDate.toLocaleDateString('en-CA') : null
       };
 
       await handleAddTimeSlot(slotData);
@@ -859,7 +886,8 @@ const Schedule = () => {
       if (slotEnd <= end) {
         const endTimeStr = slotEnd.toTimeString().slice(0, 5);
         // Check if this time slot overlaps with any existing slots
-        const isAvailable = !schedules.some(schedule => {
+        const schedulesArray = Array.isArray(schedules) ? schedules : [];
+        const isAvailable = !schedulesArray.some(schedule => {
           const scheduleStart = new Date(schedule.startTime);
           const scheduleEnd = new Date(schedule.endTime);
           const slotStart = new Date(`2000-01-01T${startTime}`);
@@ -1028,9 +1056,9 @@ const Schedule = () => {
   }
 
   const stats = getStatsData();
-
+  
   return (
-    <DoctorLayout activeTab="schedule">
+    <div>
       <div className="schedule-container-wrapper">
         {/* Page Header */}
         <div className="section-header">
@@ -2001,7 +2029,7 @@ const Schedule = () => {
           </div>
         </div>
       )}
-    </DoctorLayout>
+    </div>
   );
 };
 
