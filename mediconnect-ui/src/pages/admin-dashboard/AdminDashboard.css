@@ -1,13 +1,6 @@
 /* AdminDashboard.css - Enhanced with DoctorDashboard styling */
 
 /* Base styles matching DoctorDashboard */
-body {
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f7fafd;
-  color: #23272a;
-}
 
 .admin-dashboard {
   min-height: 100vh;
@@ -101,12 +94,7 @@ body {
   margin-bottom: 2rem;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
+/* Section Headers - Using Common.css styles */
 
 
 
@@ -687,50 +675,7 @@ body.document-viewer-open {
   z-index: 1000;
 }
 
-/* Loading and empty states */
-.loading-state,
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #6b7280;
-  padding: 3rem 2rem;
-}
 
-.empty-state-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
-}
-
-.empty-state h3 {
-  margin: 0 0 0.5rem 0;
-  color: #4a5568;
-  font-size: 1.2rem;
-}
-
-.empty-state p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.loading-skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: 0.5rem;
-}
-
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
 
 /* Responsive Design */
 @media (max-width: 1200px) {
@@ -794,11 +739,7 @@ body.document-viewer-open {
     height: 100vh;
   }
   
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+
 }
 
 @media (max-width: 480px) {
@@ -825,7 +766,7 @@ body.document-viewer-open {
   }
 }
 
-.approval-actions .auth-button {
+.approval-actions .plain-btn {
   width: 100%;
   margin-top: 1rem;
   display: block;

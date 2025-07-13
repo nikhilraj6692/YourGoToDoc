@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './AdminDashboard.css';
 import '../../styles/Common.css';
 import '../../styles/Auth.css';
+import tokenService from '../../services/tokenService';
+import { handleLogout } from '../../utils/logout';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
@@ -73,18 +75,13 @@ const AdminDashboard = () => {
   const fetchDoctorsByStatus = async (status) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getToken();
       if (!token) {
         navigate('/login');
         return;
       }
 
-      const response = await fetch(`/api/admin/doctors/approvals?status=${status}`, {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await tokenService.authenticatedFetch(`/api/admin/doctors/approvals?status=${status}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch doctors');
@@ -141,16 +138,12 @@ const AdminDashboard = () => {
     });
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
+
 
   const handleDoctorSelect = async (doctor) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getToken();
       if (!token) {
         navigate('/login');
         return;
@@ -160,12 +153,7 @@ const AdminDashboard = () => {
       console.log('Doctor selected from tile:', doctor);
 
       // Use the doctor's ID directly from the list data
-      const response = await fetch(`/api/admin/doctors/${doctor.id}`, {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await tokenService.authenticatedFetch(`/api/admin/doctors/${doctor.id}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch doctor profile');
@@ -194,17 +182,13 @@ const AdminDashboard = () => {
   const handleDocumentView = async (doctorId, documentType) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getToken();
       if (!token) {
         navigate('/login');
         return;
       }
 
-      const response = await fetch(`/api/s3/documents/${doctorId}/${documentType}`, {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-        },
-      });
+      const response = await tokenService.authenticatedFetch(`/api/s3/documents/${doctorId}/${documentType}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch document');
@@ -241,7 +225,7 @@ const AdminDashboard = () => {
     
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getToken();
       if (!token) {
         navigate('/login');
         return;
@@ -254,10 +238,9 @@ const AdminDashboard = () => {
         selectedDoctor
       });
 
-      const response = await fetch(`/api/admin/doctors/verify/${selectedDoctor.id}`, {
+      const response = await tokenService.authenticatedFetch(`/api/admin/doctors/verify/${selectedDoctor.id}`, {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -276,12 +259,7 @@ const AdminDashboard = () => {
       await Promise.all(statuses.map(status => fetchDoctorsByStatus(status)));
       
       // Refresh the doctor's data in the main page
-      const doctorResponse = await fetch(`/api/admin/doctors/${selectedDoctor.id}`, {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-      });
+      const doctorResponse = await tokenService.authenticatedFetch(`/api/admin/doctors/${selectedDoctor.id}`);
 
       if (!doctorResponse.ok) {
         throw new Error('Failed to refresh doctor data');
@@ -384,7 +362,7 @@ const AdminDashboard = () => {
           
           <div className="header-right">
           
-            <button className="logout-btn" onClick={handleLogout}>
+            <button className="plain-btn logout" onClick={handleLogout}>
               Logout
             </button>
           </div>
@@ -603,7 +581,7 @@ const AdminDashboard = () => {
                       crossOrigin="anonymous"
                       ref={(img) => {
                         if (img) {
-                          const token = localStorage.getItem('token');
+                          const token = tokenService.getAccessToken();
                           if (token) {
                             img.onload = () => {
                               // Image loaded successfully

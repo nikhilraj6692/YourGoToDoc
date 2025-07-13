@@ -1,13 +1,6 @@
 /* DoctorDashboard.css - Updated styles with requested changes */
 
 /* Base styles */
-body {
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f7fafd;
-  color: #23272a;
-}
 
 /* Main dashboard container */
 .dashboard-main {
@@ -419,19 +412,7 @@ body {
   padding: 1.5rem;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.section-header h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin: 0;
-}
+/* Section Headers - Using Common.css styles */
 
 .view-all-btn {
   background: none;
@@ -847,70 +828,13 @@ body {
   gap: 1rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
 
-.form-group label {
-  font-weight: 600;
-  color: #4a5568;
-  font-size: 0.9rem;
-}
 
-.input-with-icon {
-  position: relative;
-}
 
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #a0aec0;
-  font-size: 1rem;
-}
 
-.input-with-icon input,
-.input-with-icon select {
-  width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
+/* Specialization dropdown styling - inherited from Common.css */
 
-.input-with-icon input:focus,
-.input-with-icon select:focus {
-  outline: none;
-  border-color: #b6ff3c;
-  box-shadow: 0 0 0 3px rgba(182, 255, 60, 0.2);
-}
 
-.input-with-icon input:disabled {
-  background-color: #f3f4f6;
-  cursor: not-allowed;
-  border-color: #e5e7eb;
-  color: #4b5563;
-}
-
-.input-with-icon input:disabled:hover {
-  border-color: #e5e7eb;
-}
-
-/* Specialization dropdown styling */
-.dropdown-select {
-  appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23a0aec0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
-}
-
-.form-group.full-width {
-  grid-column: 1 / -1;
-}
 
 textarea {
   padding: 0.75rem 1rem;
@@ -1041,18 +965,6 @@ textarea:focus {
   font-weight: 500;
 }
 
-/* Error and Success Messages */
-.error-message {
-  background: #fff5f5;
-  color: #c53030;
-  padding: 0.8rem 1rem;
-  border-radius: 0.3rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  border: 1px solid #fed7d7;
-  border-left: 4px solid #c53030;
-}
-
 .success-message {
   background: #f0fff4;
   color: #2f855a;
@@ -1158,7 +1070,7 @@ textarea:focus {
   
   .cancel-button,
   .save-button,
-  .auth-button {
+  .plain-btn {
     width: 100%;
   }
 }
@@ -1203,10 +1115,7 @@ textarea:focus {
   position: relative;
 }
 
-.pincode-search-container .input-with-icon {
-  width: 100%;
-  position: relative;
-}
+
 
 .pincode-search-btn {
   position: absolute;

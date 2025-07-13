@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Schedule.css';
 import '../../styles/Common.css';
 import DoctorLayout from './DoctorLayout';
+import tokenService from '../../services/tokenService';
+import { handleLogout } from '../../utils/logout';
+import { useToast } from '../../context/ToastContext';
 
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
@@ -31,6 +35,7 @@ const customStyles = `
 `;
 
 const Schedule = () => {
+  const { showToast } = useToast();
   const [currentDate] = useState(new Date());
   const [bookedSlots, setBookedSlots] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
@@ -142,138 +147,98 @@ const Schedule = () => {
   const fetchSchedules = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const visibleDays = getVisibleDays();
-
-      const currentMonthDays = visibleDays.filter(day => 
-        day.getMonth() === currentDate.getMonth()
-      );
+      const response = await tokenService.authenticatedFetch('/api/doctors/schedule');
       
-      // Format all dates and join them with commas
-      const dates = currentMonthDays.map(day => 
-        day.toLocaleDateString('en-CA') // 'en-CA' gives YYYY-MM-DD format
-      ).join(',');
-            
-      const response = await axios.get('/api/schedule/daily', {
-        params: { 
-          dates: dates
-        },
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      // Process the response
-      const available = [];
-      const booked = [];
-      
-      const slots = response.data.slots || [];
-      slots.forEach(slot => {
-        const slotData = {
-          id: slot.id,
-          calendarId: slot.calendarId,
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-          patientName: slot.patientName,
-          isAvailable: slot.available
-        };
-        
-        if (slot.available === true) {
-          available.push(slotData);
-        } else {
-          booked.push(slotData);
-        }
-      });
-      
-      setAvailableSlots(available);
-      setBookedSlots(booked);
-      setError(null);
+      if (response.ok) {
+        const data = await response.json();
+        setSchedules(data);
+      } else {
+        setError('Failed to fetch schedule');
+      }
     } catch (err) {
-      setError('Failed to fetch schedules');
-      console.error('Error fetching schedules:', err);
+      setError('Error fetching schedule');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddSlots = async (skipDayValidation = false) => {
+  const handleAddTimeSlot = async (slotData) => {
     try {
-      setLoading(true);
-      setError(null);
-
-      // Validate slot duration
-      const startTimeObj = new Date(`2000-01-01T${selectedStartTime}`);
-      const endTimeObj = new Date(`2000-01-01T${selectedEndTime}`);
-      const totalMinutes = (endTimeObj - startTimeObj) / (1000 * 60);
-      
-      if (slotDuration > totalMinutes) {
-        setError(`Slot duration (${slotDuration} minutes) cannot be greater than the total time range (${totalMinutes} minutes). Please decrease the slot duration.`);
-        return;
-      }
-
-      // Check if selected day matches recurring days
-      if (!skipDayValidation && isRecurring && repeatDays.length > 0) {
-        const selectedDayOfWeek = selectedDate.getDay();
-        console.log('Selected day of week:', selectedDayOfWeek); // Debug log
-        console.log('Repeat days:', repeatDays); // Debug log
-        
-        if (!repeatDays.includes(selectedDayOfWeek)) {
-          const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-          const selectedDayName = dayNames[selectedDayOfWeek];
-          const selectedRepeatDays = repeatDays.map(day => dayNames[day]).join(', ');
-          
-          console.log('Setting warning data:', { selectedDayName, selectedRepeatDays }); // Debug log
-          setWarningData({
-            selectedDayName,
-            selectedRepeatDays
-          });
-          setShowWarning(true);
-          setLoading(false);
-          return;
-        }
-      }
-
-      const token = localStorage.getItem('token');
-      
-      // Format dates to ensure they're in the correct timezone
-      const formatDate = (date) => {
-        return date.toLocaleDateString('en-CA');
-      };
-
-      const request = {
-        startDate: formatDate(selectedDate),
-        startTime: selectedStartTime,
-        endTime: selectedEndTime,
-        isRecurring: isRecurring,
-        recurringEndDate: isRecurring ? formatDate(repeatEndDate) : null,
-        recurringDays: isRecurring ? repeatDays : null,
-        slotDurationMinutes: slotDuration,
-        gapDurationMinutes: gapDuration,
-        extendExistingSlot: isExtendingSlot,
-        existingSlotId: selectedSlot?.id,
-        extendStartTime: extendStart,
-        extendEndTime: extendEnd,
-        extensionMinutes: extensionMinutes
-      };
-
-      console.log('Sending request:', request); // Debug log
-
-      const response = await axios.post('/api/schedule/slots', request, {
+      const response = await tokenService.authenticatedFetch('/api/doctors/schedule/slots', {
+        method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slotData)
       });
       
-      console.log('Response:', response.data); // Debug log
-      
-      setShowSlotModal(false);
-      await fetchSchedules();
-      resetForm();
+      if (response.ok) {
+        showToast('Time slot added successfully', 'success');
+        fetchSchedules(); // Refresh the schedule
+      } else {
+        showToast('Failed to add time slot', 'error');
+      }
     } catch (err) {
-      console.error('Error adding slots:', err);
-      setError(err.response?.data?.message || 'Failed to add slots');
-    } finally {
-      setLoading(false);
+      showToast('Error adding time slot', 'error');
+    }
+  };
+
+  const handleUpdateTimeSlot = async (slotId, slotData) => {
+    try {
+      const response = await tokenService.authenticatedFetch(`/api/doctors/schedule/slots/${slotId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slotData)
+      });
+      
+      if (response.ok) {
+        showToast('Time slot updated successfully', 'success');
+        fetchSchedules(); // Refresh the schedule
+      } else {
+        showToast('Failed to update time slot', 'error');
+      }
+    } catch (err) {
+      showToast('Error updating time slot', 'error');
+    }
+  };
+
+  const handleDeleteTimeSlot = async (slotId) => {
+    try {
+      const response = await tokenService.authenticatedFetch(`/api/doctors/schedule/slots/${slotId}`, {
+        method: 'DELETE'
+      });
+      
+      if (response.ok) {
+        showToast('Time slot deleted successfully', 'success');
+        fetchSchedules(); // Refresh the schedule
+      } else {
+        showToast('Failed to delete time slot', 'error');
+      }
+    } catch (err) {
+      showToast('Error deleting time slot', 'error');
+    }
+  };
+
+  const handleSetAvailability = async (availabilityData) => {
+    try {
+      const response = await tokenService.authenticatedFetch('/api/doctors/schedule/availability', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(availabilityData)
+      });
+      
+      if (response.ok) {
+        showToast('Availability updated successfully', 'success');
+        fetchSchedules(); // Refresh the schedule
+      } else {
+        showToast('Failed to update availability', 'error');
+      }
+    } catch (err) {
+      showToast('Error updating availability', 'error');
     }
   };
 
@@ -287,10 +252,45 @@ const Schedule = () => {
     setWarningData(null);
   };
 
+  const handleAddSlots = async (skipDayValidation = false) => {
+    try {
+      // Validate selected date if not skipping validation
+      if (!skipDayValidation) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDateOnly = new Date(selectedDate);
+        selectedDateOnly.setHours(0, 0, 0, 0);
+        
+        if (selectedDateOnly < today) {
+          showToast('Cannot add slots for past dates', 'error');
+          return;
+        }
+      }
+
+      const slotData = {
+        date: selectedDate.toISOString().split('T')[0],
+        startTime: selectedStartTime,
+        endTime: selectedEndTime,
+        slotDuration: slotDuration,
+        gapDuration: gapDuration,
+        isRecurring: isRecurring,
+        repeatDays: repeatDays,
+        repeatEndDate: isRecurring ? repeatEndDate.toISOString().split('T')[0] : null
+      };
+
+      await handleAddTimeSlot(slotData);
+      setShowSlotModal(false);
+      resetForm();
+    } catch (error) {
+      console.error('Error adding slots:', error);
+      showToast('Error adding slots', 'error');
+    }
+  };
+
   const handleDeleteSlot = async (slotId, calendarId) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       await axios.delete(`/api/schedule/calendar/${calendarId}/slots/${slotId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -907,7 +907,7 @@ const Schedule = () => {
       setLoading(true);
       setError(null);
 
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       
       // Format dates to ensure they're in the correct timezone
       const formatDate = (date) => {
@@ -948,7 +948,7 @@ const Schedule = () => {
   const handleReschedule = async () => {
     try {
       setRescheduleLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       
       const response = await axios.post('/api/schedule/reschedule', {
         oldSlotId: selectedSlotForReschedule.id,
@@ -976,7 +976,7 @@ const Schedule = () => {
   const fetchAvailableSlotsForReschedule = async (date) => {
     try {
       setRescheduleLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       const formattedDate = date.toLocaleDateString('en-CA');
       
       const response = await axios.get('/api/schedule/daily', {
@@ -1427,7 +1427,7 @@ const Schedule = () => {
                   console.log('Add Slots button clicked'); // Debug log
                   handleAddSlots(false); // Explicitly pass false to ensure day validation
                 }} 
-                className="auth-button"
+                className="plain-btn submit"
                 disabled={loading || isDateInPast(new Date(selectedDate)) || isDateInFutureMonth(new Date(selectedDate))}
               >
                 {loading ? 'Adding...' : 'Add Slots'}
@@ -1551,7 +1551,7 @@ const Schedule = () => {
             }}>
               <button 
                 onClick={handleDeleteSlots}
-                className="auth-button"
+                className="plain-btn"
                 style={{
                   background: 'linear-gradient(135deg, #e53e3e 0%, #c53030 100%)',
                   color: 'white'
@@ -1677,7 +1677,7 @@ const Schedule = () => {
             }}>
               <button 
                 onClick={() => handleDeleteSlot(selectedSlotForDelete.id, selectedSlotForDelete.calendarId)}
-                className="auth-button"
+                className="plain-btn"
                 style={{
                   background: 'linear-gradient(135deg, #e53e3e 0%, #c53030 100%)',
                   color: 'white'
@@ -1806,7 +1806,7 @@ const Schedule = () => {
             }}>
               <button 
                 onClick={() => handleDeleteSlot(selectedSlotForCancel.id, selectedSlotForCancel.calendarId)}
-                className="auth-button"
+                className="plain-btn"
                 style={{
                   background: 'linear-gradient(135deg, #e53e3e 0%, #c53030 100%)',
                   color: 'white'
@@ -1981,7 +1981,7 @@ const Schedule = () => {
             }}>
               <button 
                 onClick={handleReschedule}
-                className="auth-button"
+                className="plain-btn submit"
                 disabled={rescheduleLoading || !selectedNewSlot}
               >
                 {rescheduleLoading ? 'Rescheduling...' : 'Reschedule Appointment'}

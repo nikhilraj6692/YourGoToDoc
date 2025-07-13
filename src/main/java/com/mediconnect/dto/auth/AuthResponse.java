@@ -10,8 +10,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "Authentication response")
 public class AuthResponse {
-    @Schema(description = "JWT token")
-    private String token;
+    @Schema(description = "JWT access token")
+    private String accessToken;
+    @Schema(description = "JWT refresh token")
+    private String refreshToken;
     @Schema(description = "User information")
     private UserDto user;
+
+    // Constructor for backward compatibility
+    public AuthResponse(String token, UserDto user) {
+        this.accessToken = token;
+        this.refreshToken = null;
+        this.user = user;
+    }
 } 

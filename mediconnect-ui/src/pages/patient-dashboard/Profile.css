@@ -9,12 +9,12 @@
   font-weight: 600;
 }
 
-.profile-form {
+.profile-page .profile-form {
   max-width: 800px;
   margin: 0 auto;
 }
 
-.form-section {
+.profile-page .form-section {
   background: white;
   border-radius: 0.5rem;
   padding: 1.5rem;
@@ -22,59 +22,26 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.form-section h2 {
+.profile-page .form-section h2 {
   color: #181f2a;
   font-size: 1.4rem;
   margin: 0 0 1.5rem 0;
   font-weight: 600;
 }
 
-.form-grid {
+.profile-page .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  color: #4a5568;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.form-group input,
-.form-group select {
-  padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
-  font-size: 0.9rem;
-  color: #2d3748;
-  transition: border-color 0.2s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-}
-
-.form-group input::placeholder {
-  color: #a0aec0;
-}
-
-.form-actions {
+.profile-page .form-actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 2rem;
 }
 
-.btn-save {
+.profile-page .btn-save {
   background: #4299e1;
   color: white;
   padding: 0.75rem 1.5rem;
@@ -86,7 +53,7 @@
   transition: all 0.2s ease;
 }
 
-.btn-save:hover {
+.profile-page .btn-save:hover {
   background: #3182ce;
 }
 
@@ -95,7 +62,7 @@
     padding: 0.5rem;
   }
   
-  .form-grid {
+  .profile-page .form-grid {
     grid-template-columns: 1fr;
   }
   
@@ -104,7 +71,7 @@
     margin-bottom: 1.5rem;
   }
   
-  .form-section h2 {
+  .profile-page .form-section h2 {
     font-size: 1.2rem;
   }
 } 

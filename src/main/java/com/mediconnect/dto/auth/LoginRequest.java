@@ -16,4 +16,7 @@ public class LoginRequest {
     @NotBlank
     @Schema(description = "User password", example = "password123")
     private String password;
+
+    @Schema(description = "Login context (e.g., 'booking' for appointment booking)", example = "booking")
+    private String context;
 } 

@@ -3,6 +3,8 @@ package com.mediconnect.controller;
 import com.mediconnect.dto.appointment.AppointmentRequest;
 import com.mediconnect.dto.appointment.AppointmentResponse;
 import com.mediconnect.dto.common.ErrorVO;
+import com.mediconnect.dto.common.StructuredErrorResponse;
+import com.mediconnect.enums.ErrorCode;
 import com.mediconnect.enums.AppointmentStatus;
 import com.mediconnect.enums.AppointmentType;
 import com.mediconnect.enums.UserRole;
@@ -27,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -41,6 +44,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/appointments")
 @Tag(name = "Appointment Management", description = "APIs for managing appointments")
+@Slf4j
 public class AppointmentController {
 
     @Autowired
@@ -63,6 +67,9 @@ public class AppointmentController {
     public ResponseEntity<?> createAppointment(
             @Valid @RequestBody AppointmentRequest request) {
 
+        log.info("Creating appointment - Doctor: {}, Calendar: {}, Slot: {}", 
+                request.getDoctorId(), request.getCalendarId(), request.getSlotId());
+
         String userEmail = UserContext.getCurrentUserEmail();
         User patient = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -70,6 +77,7 @@ public class AppointmentController {
         Optional<Calendar> calendarOpt = calendarRepository.findById(request.getCalendarId());
 
         if (calendarOpt.isEmpty()) {
+            log.error("Calendar not found for ID: {}", request.getCalendarId());
             return ResponseEntity.status(400).build();
         }
 
@@ -81,8 +89,9 @@ public class AppointmentController {
                 .findFirst();
 
         if (slotOpt.isEmpty()) {
-            ErrorVO errorVO = ErrorVO.builder().message("Selected slot is not available").build();
-            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body(errorVO);
+            log.error("Slot not available - Calendar: {}, Slot: {}", request.getCalendarId(), request.getSlotId());
+            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON)
+                    .body(StructuredErrorResponse.fromErrorCode(ErrorCode.SLOT_NOT_AVAILABLE));
         }
 
         Calendar.Slot slot = slotOpt.get();
@@ -92,9 +101,10 @@ public class AppointmentController {
                 patient.getId(), request.getCalendarId());
 
         if (!conflicts.isEmpty()) {
-            ErrorVO errorVO = ErrorVO.builder().message("An existing schedule exists on the same day " +
-                    "Please cancel existing one to proceed").build();
-            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).body(errorVO);
+            log.warn("Scheduling conflict detected - Patient: {}, Calendar: {}, Conflicts: {}", 
+                    patient.getId(), request.getCalendarId(), conflicts.size());
+            return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON)
+                    .body(StructuredErrorResponse.fromErrorCode(ErrorCode.SCHEDULING_CONFLICT));
         }
 
         Appointment appointment = new Appointment();
@@ -141,7 +151,7 @@ public class AppointmentController {
             );
         } catch (MessagingException e) {
             // Log the error but don't fail the request
-            e.printStackTrace();
+            log.error("Failed to send email notifications for appointment: {}", appointment.getId(), e);
         }
 
         return ResponseEntity.ok(AppointmentResponse.fromAppointment(appointment));

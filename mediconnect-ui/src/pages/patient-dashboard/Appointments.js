@@ -1,58 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import './Appointments.css';
 import '../../styles/Auth.css';
 import '../../styles/Common.css';
+import CommonHeader from '../../components/CommonHeader';
 import { useUser } from '../../context/UserContext';
+import { useToast } from '../../context/ToastContext';
+import tokenService from '../../services/tokenService';
+import { handleLogout } from '../../utils/logout';
 
-// Common Header Component (matching your FindDoctor pattern)
-const CommonHeader = ({ user, activeMenuItem, onMenuClick, onLogout }) => {
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'appointments', label: 'Appointments' },
-    { id: 'billing', label: 'Billing' }
-  ];
 
-  return (
-    <div className="common-header">
-      <div className="header-container">
-        <div className="header-logo">
-          <span className="logo-icon">⚕️</span>
-          <span className="logo-text">MediConnect</span>
-        </div>
-        
-        <div className="header-menu">
-          {menuItems.map(item => (
-            <button
-              key={item.id}
-              className={`menu-item ${activeMenuItem === item.id ? 'active' : ''}`}
-              onClick={() => onMenuClick(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-        
-        <div className="header-right">
-          <div className="user-profile-mini">
-            <div className="user-info">
-              <span className="user-greeting">Hello, {user?.name?.split(' ')[0]}</span>
-              <span className="user-account">Manage your account</span>
-            </div>
-          </div>
-          <button className="logout-btn" onClick={onLogout}>
-            Logout
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const PatientAppointments = () => {
   const { user } = useUser();
+  const navigate = useNavigate();
+  const { showToast } = useToast();
   
   // State management
   const [activeTab, setActiveTab] = useState('all');
@@ -92,29 +57,16 @@ const PatientAppointments = () => {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      setError(null);
-      const token = localStorage.getItem('token');
+      const response = await tokenService.authenticatedFetch('/api/appointments/patient');
       
-      const params = {
-        page: currentPage,
-        size: PAGE_SIZE,
-        status: activeTab === 'all' ? '' : activeTab
-      };
-
-      const response = await axios.get('/api/appointments', {
-        params,
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      setAppointments(response.data.content || []);
-      setTotalPages(response.data.totalPages || 0);
+      if (response.ok) {
+        const data = await response.json();
+        setAppointments(data);
+      } else {
+        setError('Failed to fetch appointments');
+      }
     } catch (err) {
-      setError('Failed to fetch appointments');
-      console.error('Error fetching appointments:', err);
-      // Mock data fallback for development
-      setMockData();
+      setError('Error fetching appointments');
     } finally {
       setLoading(false);
     }
@@ -248,90 +200,66 @@ const PatientAppointments = () => {
   });
 
   // Action handlers
-  const handleCancelAppointment = async () => {
-    if (!cancelReason.trim()) {
-      setError('Please provide a cancellation reason');
-      return;
-    }
-    
-    setLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(`/api/appointments/${selectedAppointment.id}/cancel`, {
-        reason: cancelReason
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+  const handleCancelAppointment = async (appointmentId) => {
+    if (window.confirm('Are you sure you want to cancel this appointment?')) {
+      try {
+        const response = await tokenService.authenticatedFetch(`/api/appointments/${appointmentId}/cancel`, {
+          method: 'PUT'
+        });
+        
+        if (response.ok) {
+          showToast('Appointment cancelled successfully', 'success');
+          fetchAppointments(); // Refresh the list
+        } else {
+          showToast('Failed to cancel appointment', 'error');
         }
-      });
-      
-      // Update local state
-      setAppointments(prev => 
-        prev.map(apt => 
-          apt.id === selectedAppointment.id 
-            ? { ...apt, status: 'cancelled' }
-            : apt
-        )
-      );
-      
-      setShowCancelModal(false);
-      setCancelReason('');
-      setSelectedAppointment(null);
-    } catch (err) {
-      setError('Failed to cancel appointment');
-      console.error('Error cancelling appointment:', err);
-    } finally {
-      setLoading(false);
+      } catch (err) {
+        showToast('Error cancelling appointment', 'error');
+      }
     }
   };
 
-  const handleRescheduleAppointment = async () => {
-    if (!selectedNewSlot) {
-      setError('Please select a new time slot');
-      return;
-    }
-    
-    setRescheduleLoading(true);
+  const handleRescheduleAppointment = async (appointmentId, newDate, newTime) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(`/api/appointments/${selectedAppointment.id}/reschedule`, {
-        newSlotId: selectedNewSlot.id,
-        newDateTime: selectedNewSlot.startTime
-      }, {
+      const response = await tokenService.authenticatedFetch(`/api/appointments/${appointmentId}/reschedule`, {
+        method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date: newDate, time: newTime })
       });
       
-      // Update local state
-      setAppointments(prev => 
-        prev.map(apt => 
-          apt.id === selectedAppointment.id 
-            ? { 
-                ...apt, 
-                date: new Date(selectedNewSlot.startTime).toISOString().split('T')[0],
-                time: new Date(selectedNewSlot.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-                status: 'confirmed'
-              }
-            : apt
-        )
-      );
-      
-      setShowRescheduleModal(false);
-      setSelectedAppointment(null);
-      setSelectedNewSlot(null);
+      if (response.ok) {
+        showToast('Appointment rescheduled successfully', 'success');
+        fetchAppointments(); // Refresh the list
+      } else {
+        showToast('Failed to reschedule appointment', 'error');
+      }
     } catch (err) {
-      setError('Failed to reschedule appointment');
-      console.error('Error rescheduling appointment:', err);
-    } finally {
-      setRescheduleLoading(false);
+      showToast('Error rescheduling appointment', 'error');
+    }
+  };
+
+  const handleJoinCall = async (appointmentId) => {
+    try {
+      const response = await tokenService.authenticatedFetch(`/api/appointments/${appointmentId}/join-call`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        // Handle joining the call (e.g., open video call interface)
+        showToast('Joining video call...', 'success');
+      } else {
+        showToast('Failed to join call', 'error');
+      }
+    } catch (err) {
+      showToast('Error joining call', 'error');
     }
   };
 
   const fetchAvailableSlotsForReschedule = async (date) => {
     try {
       setRescheduleLoading(true);
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       const formattedDate = date.toLocaleDateString('en-CA');
       
       const response = await axios.get('/api/doctors/slots/available', {
@@ -394,14 +322,6 @@ const PatientAppointments = () => {
         break;
       default:
         break;
-    }
-  };
-
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
     }
   };
 
@@ -534,7 +454,7 @@ const PatientAppointments = () => {
               </div>
 
               <button 
-                className="auth-button"
+                className="plain-btn submit"
                 onClick={() => console.log('Book new appointment')}
               >
                 Book New Appointment
@@ -633,7 +553,7 @@ const PatientAppointments = () => {
                     
                     <div className="action-buttons">
                       <button 
-                        className="dark-bg-btn"
+                        className="plain-btn sec-submit-btn"
                         onClick={() => {
                           setSelectedAppointment(appointment);
                           setShowDetailsModal(true);
@@ -643,7 +563,7 @@ const PatientAppointments = () => {
                       </button>
                       
                       <button 
-                        className="dark-bg-btn"
+                        className="plain-btn sec-submit-btn"
                         onClick={() => {
                           window.location.href = `/patient/appointment-details/${appointment.id}`;
                         }}
@@ -654,7 +574,7 @@ const PatientAppointments = () => {
                       {/* Video Call Button */}
                       {appointment.status === 'confirmed' && appointment.type === 'video' && (
                         <button 
-                          className="dark-bg-btn video"
+                          className="plain-btn sec-submit-btn video"
                           onMouseEnter={(e) => handleMouseEnter(e, 'Join video call')}
                           onMouseLeave={handleMouseLeave}
                         >
@@ -665,7 +585,7 @@ const PatientAppointments = () => {
                       {/* Reschedule Button */}
                       {['confirmed', 'pending'].includes(appointment.status) && (
                         <button 
-                          className="dark-bg-btn reschedule"
+                          className="plain-btn sec-submit-btn reschedule"
                           onClick={() => {
                             setSelectedAppointment(appointment);
                             setRescheduleDate(new Date());
@@ -681,7 +601,7 @@ const PatientAppointments = () => {
                       {/* Cancel Button */}
                       {['confirmed', 'pending'].includes(appointment.status) && (
                         <button 
-                          className="dark-bg-btn cancel"
+                          className="plain-btn sec-submit-btn cancel"
                           onClick={() => {
                             setSelectedAppointment(appointment);
                             setShowCancelModal(true);
@@ -696,7 +616,7 @@ const PatientAppointments = () => {
                       {/* Download Prescription */}
                       {appointment.prescription === 'Available' && (
                         <button 
-                          className="dark-bg-btn prescription"
+                          className="plain-btn sec-submit-btn prescription"
                           onMouseEnter={(e) => handleMouseEnter(e, 'Download prescription')}
                           onMouseLeave={handleMouseLeave}
                         >
@@ -850,7 +770,7 @@ const PatientAppointments = () => {
                 <button 
                   onClick={handleCancelAppointment}
                   disabled={!cancelReason.trim() || loading}
-                  className="auth-button"
+                  className="plain-btn"
                   style={{ backgroundColor: '#dc2626' }}
                 >
                   {loading ? 'Cancelling...' : 'Cancel Appointment'}
@@ -956,7 +876,7 @@ const PatientAppointments = () => {
                 <button 
                   onClick={handleRescheduleAppointment}
                   disabled={rescheduleLoading || !selectedNewSlot}
-                  className="auth-button"
+                  className="plain-btn submit"
                 >
                   {rescheduleLoading ? 'Rescheduling...' : 'Reschedule Appointment'}
                 </button>

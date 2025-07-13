@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getProfile } from '../utils/api';
+import { getProfile, logout } from '../utils/api';
+import tokenService from '../services/tokenService';
 
 const UserContext = createContext();
 
@@ -10,8 +11,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchUserProfile = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
+      if (!tokenService.isAuthenticated()) {
         setUser(null);
         setLoading(false);
         return;
@@ -27,10 +27,24 @@ export const UserProvider = ({ children }) => {
       });
       setError(null);
     } catch (err) {
+      console.log('Profile fetch failed:', err.message);
       setError(err.message);
+      
+      // Only clear user and redirect for specific authentication errors
+      // Don't logout for refresh token failures or temporary network issues
       if (err.message === 'No authentication token found') {
         setUser(null);
+        // Don't redirect here as the API utility will handle it
+      } else if (err.message.includes('Authentication failed') && 
+                 !err.message.includes('Token refresh failed')) {
+        setUser(null);
+        // Don't redirect here as the API utility will handle it
+      } else if (err.message.includes('Token has expired')) {
+        setUser(null);
+        // Don't redirect here as the API utility will handle it
       }
+      // For other errors (like refresh token failures), keep the user logged in
+      // and let the access token handle logout when it expires
     } finally {
       setLoading(false);
     }
@@ -40,11 +54,19 @@ export const UserProvider = ({ children }) => {
     fetchUserProfile();
   }, []);
 
+  const handleLogout = () => {
+    setUser(null);
+    setError(null);
+    tokenService.clearTokens();
+    logout();
+  };
+
   const value = {
     user,
     loading,
     error,
-    refreshProfile: fetchUserProfile
+    refreshProfile: fetchUserProfile,
+    logout: handleLogout
   };
 
   return (

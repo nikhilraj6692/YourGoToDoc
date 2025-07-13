@@ -1,55 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './PatientDashboard.css';
+import CommonHeader from '../../components/CommonHeader';
 import { useUser } from '../../context/UserContext';
 import { useChat } from '../../contexts/ChatContext';
 import { handleLogoutWithWebSocketCleanup } from '../../utils/logout';
-import './PatientDashboard.css';
+import tokenService from '../../services/tokenService';
 
-// Common Header Component
-const CommonHeader = ({ user, activeMenuItem, onMenuClick, onLogout }) => {
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'appointments', label: 'Appointments' },
-    { id: 'records', label: 'Medical Records' },
-    { id: 'prescriptions', label: 'Prescriptions' },
-    { id: 'billing', label: 'Billing' }
-  ];
 
-  return (
-    <div className="common-header">
-      <div className="header-container">
-        <div className="header-logo">
-          <span className="logo-icon">⚕️</span>
-          <span className="logo-text">MediConnect</span>
-        </div>
-        
-        <div className="header-menu">
-          {menuItems.map(item => (
-            <button
-              key={item.id}
-              className={`menu-item ${activeMenuItem === item.id ? 'active' : ''}`}
-              onClick={() => onMenuClick(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-        
-        <div className="header-right">
-          <div className="user-profile-mini">
-            <div className="user-info">
-              <span className="user-greeting">Hello, {user?.name?.split(' ')[0]}</span>
-              <span className="user-account">Manage your account</span>
-            </div>
-          </div>
-          <button className="logout-btn" onClick={onLogout}>
-            Logout
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const PatientDashboard = ({ 
   patientInfo = {
@@ -465,7 +423,7 @@ const PatientDashboard = ({
         <div className="pd-grid">
           {/* Appointments Section */}
           <div className="pd-appointments">
-            <div className="pd-section-header">
+            <div className="section-header pd-section-header">
               <h3>My Appointments</h3>
               <button className="pd-book-btn" onClick={handleBookAppointment}>
                 Book Appointment
@@ -555,7 +513,7 @@ const PatientDashboard = ({
           <div>
             {/* Health Metrics */}
             <div className="pd-health-metrics">
-              <div className="pd-section-header">
+              <div className="section-header pd-section-header">
                 <h3>Health Metrics</h3>
               </div>
               
@@ -579,7 +537,7 @@ const PatientDashboard = ({
 
             {/* Quick Actions */}
             <div className="pd-quick-actions">
-              <div className="pd-section-header">
+              <div className="section-header pd-section-header">
                 <h3>Quick Actions</h3>
               </div>
 
@@ -626,7 +584,7 @@ const PatientDashboard = ({
 
         {/* Prescriptions Section */}
         <div className="pd-prescriptions">
-          <div className="pd-section-header">
+          <div className="section-header pd-section-header">
             <h3>Active Prescriptions</h3>
             <button className="pd-book-btn" onClick={() => handleQuickAction('prescriptions')}>
               View All Prescriptions
@@ -677,7 +635,7 @@ const PatientDashboard = ({
         <div className="pd-grid">
           {/* Medical History */}
           <div className="pd-medical-history">
-            <div className="pd-section-header">
+            <div className="section-header pd-section-header">
               <h3>Recent Medical History</h3>
               <button className="pd-book-btn" onClick={() => handleQuickAction('records')}>
                 View Full History
@@ -702,7 +660,7 @@ const PatientDashboard = ({
 
           {/* Payment History */}
           <div className="pd-payment-history">
-            <div className="pd-section-header">
+            <div className="section-header pd-section-header">
               <h3>Payment History</h3>
               <button className="pd-book-btn" onClick={() => handleQuickAction('billing')}>
                 View All Payments

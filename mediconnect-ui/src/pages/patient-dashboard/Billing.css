@@ -9,49 +9,49 @@
   font-weight: 600;
 }
 
-.billing-summary {
+.billing-page .billing-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2.5rem;
 }
 
-.summary-card {
+.billing-page .summary-card {
   background: white;
   border-radius: 0.5rem;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.summary-card h3 {
+.billing-page .summary-card h3 {
   color: #4a5568;
   font-size: 1rem;
   margin: 0 0 0.5rem 0;
   font-weight: 500;
 }
 
-.summary-card .amount {
+.billing-page .summary-card .amount {
   color: #181f2a;
   font-size: 1.8rem;
   font-weight: 600;
   margin: 0;
 }
 
-.bills-container {
+.billing-page .bills-container {
   background: white;
   border-radius: 0.5rem;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.bills-container h2 {
+.billing-page .bills-container h2 {
   color: #181f2a;
   font-size: 1.4rem;
   margin: 0 0 1.5rem 0;
   font-weight: 600;
 }
 
-.bill-card {
+.billing-page .bill-card {
   background: #f7fafd;
   border-radius: 0.5rem;
   padding: 1.25rem;
@@ -59,58 +59,58 @@
   border: 1px solid #e2e8f0;
 }
 
-.bill-header {
+.billing-page .bill-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.bill-header h3 {
+.billing-page .bill-header h3 {
   color: #181f2a;
   font-size: 1.1rem;
   margin: 0;
   font-weight: 600;
 }
 
-.status {
+.billing-page .status {
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
   font-weight: 500;
 }
 
-.status.paid {
+.billing-page .status.paid {
   background: #f0fff4;
   color: #2f855a;
 }
 
-.status.pending {
+.billing-page .status.pending {
   background: #fff5f5;
   color: #c53030;
 }
 
-.bill-details {
+.billing-page .bill-details {
   margin-bottom: 1.5rem;
 }
 
-.bill-details p {
+.billing-page .bill-details p {
   color: #4a5568;
   margin: 0.5rem 0;
   font-size: 0.9rem;
 }
 
-.bill-details strong {
+.billing-page .bill-details strong {
   color: #2d3748;
   font-weight: 500;
 }
 
-.bill-actions {
+.billing-page .bill-actions {
   display: flex;
   justify-content: flex-end;
 }
 
-.btn-pay {
+.billing-page .btn-pay {
   background: #48bb78;
   color: white;
   padding: 0.5rem 1.5rem;
@@ -122,7 +122,7 @@
   transition: all 0.2s ease;
 }
 
-.btn-pay:hover {
+.billing-page .btn-pay:hover {
   background: #38a169;
 }
 
@@ -131,7 +131,7 @@
     padding: 0.5rem;
   }
   
-  .billing-summary {
+  .billing-page .billing-summary {
     grid-template-columns: 1fr;
   }
   
@@ -140,7 +140,7 @@
     margin-bottom: 1.5rem;
   }
   
-  .bills-container h2 {
+  .billing-page .bills-container h2 {
     font-size: 1.2rem;
   }
 } 

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useUser } from '../context/UserContext';
+import tokenService from '../services/tokenService';
 
 const ChatContext = createContext();
 
@@ -132,7 +133,7 @@ export const ChatProvider = ({ children }) => {
       setConnectionError(null);
 
       // Get JWT token
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       if (!token) {
         throw new Error('No authentication token found');
       }
@@ -375,7 +376,7 @@ export const ChatProvider = ({ children }) => {
   // Load chat history
   const loadChatHistory = useCallback(async (appointmentId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       const response = await fetch(`/api/chat/history/${appointmentId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -404,7 +405,7 @@ export const ChatProvider = ({ children }) => {
           console.log('📖 Found unread messages, marking as read and broadcasting...');
           setTimeout(async () => {
             try {
-              const token = localStorage.getItem('token');
+              const token = tokenService.getAccessToken();
               await fetch(`/api/chat/mark-read/${appointmentId}`, {
                 method: 'POST',
                 headers: {
@@ -531,7 +532,7 @@ export const ChatProvider = ({ children }) => {
   // Mark messages as read
   const markMessagesAsRead = useCallback(async (appointmentId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = tokenService.getAccessToken();
       await fetch(`/api/chat/mark-read/${appointmentId}`, {
         method: 'POST',
         headers: {

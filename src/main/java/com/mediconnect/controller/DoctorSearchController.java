@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/doctors/search")
 @Tag(name = "Doctor Search", description = "APIs for searching doctors")
-@PreAuthorize("hasRole('PATIENT')")
+@PreAuthorize("permitAll()")
 public class DoctorSearchController {
 
     @Autowired

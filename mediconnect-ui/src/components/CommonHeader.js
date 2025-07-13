@@ -29,7 +29,7 @@ const CommonHeader = ({ user, activeTab, onMenuClick, onLogout, menuItems }) => 
               <span className="user-account">Manage your account</span>
             </div>
           </div>
-          <button className="logout-btn" onClick={onLogout}>
+          <button className="plain-btn logout" onClick={onLogout}>
             Logout
           </button>
         </div>

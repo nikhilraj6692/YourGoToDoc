@@ -1,13 +1,5 @@
 /* Comprehensive Auth.css with all fixes */
 
-body {
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f7fafd;
-  color: #23272a;
-}
-
 /* Header/Navigation */
 .main-header {
   display: flex;
@@ -31,7 +23,7 @@ body {
 
 .logo-text {
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   color: white;
 }
 
@@ -54,7 +46,7 @@ body {
   opacity: 1;
 }
 
-.auth-buttons {
+.button-group {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -64,39 +56,6 @@ body {
   color: #e2e8f0;
   font-size: 0.9rem;
   white-space: nowrap;
-}
-
-.sign-up-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.4375rem;
-  border: 1px solid #fff;
-  background: transparent;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.sign-up-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #b6ff3c;
-}
-
-.login-btn {
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.4375rem;
-  background: #181f2a;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.login-btn:hover {
-  background: #23272a;
-  color: #b6ff3c;
-  transform: translateY(-2px);
 }
 
 /* Split page layout for login */
@@ -133,7 +92,7 @@ body {
   width: 80%;
   max-width: 340px;
   margin-bottom: 2.5rem;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12);
   background: #fff;
   object-fit: contain;
@@ -141,11 +100,12 @@ body {
 
 .auth-benefits {
   background: rgba(34, 40, 49, 0.7);
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   padding: 1.5rem 1.5rem 1.2rem 1.5rem;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   color: #fff;
-  max-width: 340px;
+  max-width: 400px;
+  padding: 2rem;
 }
 
 .auth-benefits h2 {
@@ -180,7 +140,7 @@ body {
 /* Form container for login */
 .auth-form-container {
   background: white;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 650px;
@@ -253,7 +213,7 @@ body {
 .signup-content {
   display: flex;
   background: #fff;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   box-shadow: 0 4px 18px rgba(0,0,0,0.08);
   overflow: hidden;
 }
@@ -300,7 +260,7 @@ body {
 .step-number {
   width: 30px;
   height: 30px;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   background: #e2e8f0;
   color: #4a5568;
   display: flex;
@@ -343,54 +303,7 @@ body {
   flex-direction: column;
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
-  width: 100%;
-}
 
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #4a5568;
-}
-
-.input-with-icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  color: #a0aec0;
-  font-size: 1rem;
-}
-
-.input-with-icon input,
-.input-with-icon select {
-  width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.5rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.4375rem;
-  font-size: 1rem;
-  transition: all 0.3s;
-  box-sizing: border-box;
-  background-color: #ffffff;
-}
-
-.input-with-icon input:focus,
-.input-with-icon select:focus {
-  border-color: #45660c;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(182, 255, 60, 0.1);
-}
-
-.input-with-icon input::placeholder {
-  color: #a0aec0;
-}
 
 /* Role Selection with Icons */
 .role-selection {
@@ -406,7 +319,7 @@ body {
   align-items: center;
   padding: 1rem;
   border: 1px solid #e2e8f0;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -464,7 +377,7 @@ body {
   margin-top: 1rem;
   padding: 1rem;
   background: #f8fafc;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   font-size: 0.85rem;
 }
 
@@ -534,7 +447,7 @@ body {
 }
 
 .forgot-link {
-  color: #2d3748;
+  color: #181f2a;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s;
@@ -542,8 +455,7 @@ body {
 }
 
 .forgot-link:hover {
-  color: #000000;
-  text-decoration: underline;
+  color: #0b1524;
 }
 
 
@@ -557,7 +469,7 @@ body {
 .back-button {
   flex: 0.4;
   padding: 0.8rem;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   background: #fff;
   color: #4a5568;
   border: 1px solid #e2e8f0;
@@ -572,7 +484,7 @@ body {
   color: #181f2a;
 }
 
-.button-group .auth-button {
+.button-group .plain-btn {
   flex: 1;
 }
 
@@ -580,7 +492,7 @@ body {
 .signup-box {
   background: #f7fafc;
   color: #2d3748;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   padding: 0.8rem 1rem;
   margin-top: 1.7rem;
   text-align: center;
@@ -590,7 +502,7 @@ body {
 }
 
 .signup-box .signup-link, .auth-link {
-  color: #1a365d;
+  color: #181f2a;
   font-weight: 700;
   text-decoration: none;
   margin-left: 0.25rem;
@@ -598,8 +510,7 @@ body {
 }
 
 .signup-box .signup-link:hover, .auth-link:hover {
-  color: #2c5282;
-  text-decoration: underline;
+  color: #0b1524;
 }
 
 /* Login tips box */
@@ -609,7 +520,7 @@ body {
   gap: 0.7rem;
   background: #f7fafc;
   color: #4a5568;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   padding: 1rem 1.2rem;
   margin-top: 1.5rem;
   font-size: 0.95rem;
@@ -708,7 +619,7 @@ body {
   margin-top: 2rem;
   padding: 1.5rem;
   background: #fff;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   position: relative;
 }
@@ -738,17 +649,7 @@ body {
   font-weight: 600;
 }
 
-/* Error message */
-.error-message {
-  background: #fff5f5;
-  color: #c53030;
-  padding: 0.8rem 1rem;
-  border-radius: 0.4375rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  border: 1px solid #fed7d7;
-  border-left: 4px solid #c53030;
-}
+
 
 /* Responsive Design */
 @media (max-width: 900px) {
@@ -865,7 +766,7 @@ body {
   font-size: 1rem;
   font-weight: 600;
   padding: 0.5rem 1.1rem;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
@@ -881,7 +782,7 @@ body {
   border: none;
   font-weight: 700;
   font-size: 1rem;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   padding: 0.5rem 1.2rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -903,7 +804,7 @@ body {
 
 .dashboard-card {
   background: #fff;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   padding: 2.2rem 2rem 2rem 2rem;
   margin-bottom: 2rem;
@@ -935,7 +836,7 @@ body {
   background: #b6ff3c;
   color: #181f2a;
   border: none;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   padding: 0.7rem 1.2rem;
   font-size: 1rem;
   font-weight: 700;
@@ -949,38 +850,7 @@ body {
   color: #181f2a;
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 0.2rem 0.7rem;
-  border-radius: 0.4375rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  background: #e2e8f0;
-  color: #181f2a;
-  margin-left: 0.5rem;
-}
-.status-badge.verified {
-  background: #b6ff3c;
-  color: #181f2a;
-}
-.status-badge.pending {
-  background: #f6ad55;
-  color: #fff;
-}
-.status-badge.rejected {
-  background: #fc8181;
-  color: #fff;
-}
 
-.success-message {
-  background: #e6ffed;
-  color: #22863a;
-  padding: 0.8rem 1rem;
-  border-radius: 0.4375rem;
-  margin-bottom: 1.2rem;
-  font-size: 0.95rem;
-  border: 1px solid #b6ff3c;
-}
 
 @media (max-width: 900px) {
   .dashboard-cards {
@@ -996,20 +866,4 @@ body {
   .dashboard-main {
     padding: 1.2rem 0.5rem;
   }
-}
-
-/* Logout button variant */
-.auth-button.logout {
-  background: #e59a2a;
-  color: #181f2a;
-  }
-
-.auth-button.logout:hover {
-  background: #d7850a;
-  color: #181f2a;
-}
-
-.submit-button-container {
-  width: 100%;
-  margin-top: 1rem;
 }

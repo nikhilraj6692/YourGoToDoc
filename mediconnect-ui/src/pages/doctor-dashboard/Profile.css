@@ -92,42 +92,20 @@
   flex-direction: column;
   gap: 1.5rem;
 }
-.form-row {
+.form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
 }
-.form-group {
+.form-section {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.form-group label {
+.form-section label {
   font-weight: 600;
   color: #4a5568;
   font-size: 0.9rem;
-}
-.input-with-icon { position: relative; }
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #a0aec0;
-  font-size: 1rem;
-}
-.input-with-icon input, .input-with-icon select {
-  width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-.input-with-icon input:focus, .input-with-icon select:focus {
-  outline: none;
-  border-color: #b6ff3c;
-  box-shadow: 0 0 0 3px rgba(182,255,60,0.2);
 }
 textarea {
   padding: 0.75rem 1rem;

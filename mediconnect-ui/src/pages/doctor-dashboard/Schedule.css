@@ -402,56 +402,12 @@
 /* ENHANCED MODAL STYLES - MEDICONNECT THEME */
 /* ================================= */
 
-/* Enhanced Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  animation: modalFadeIn 0.3s ease;
-}
+/* Enhanced Modal Overlay - Uses Common.css modal-overlay */
 
-@keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Enhanced Modal Content */
-.modal-content {
-  background: white;
-  border-radius: 0.8rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  animation: modalSlideUp 0.3s ease;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  max-height: 90vh;
-  width: 600px;
-  max-width: 95vw;
-  display: flex;
-  flex-direction: column;
-}
-
-@keyframes modalSlideUp {
-  from { 
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Enhanced Modal Content - Uses Common.css modal-content */
 
 /* Modal Header */
-.modal-content h3 {
+.schedule-container .modal-content h3 {
   margin: 0;
   padding: 1.5rem 2rem;
   color: #2d3748;
@@ -464,34 +420,23 @@
   gap: 0.5rem;
 }
 
-.modal-content h3::before {
+.schedule-container .modal-content h3::before {
   content: '⏰';
   font-size: 1.3rem;
 }
 
 /* Modal Body Scrollable Area */
-.modal-content > div[style*="flex: 1"] {
+.schedule-container .modal-content > div[style*="flex: 1"] {
   padding: 2rem;
   overflow-y: auto;
 }
 
-/* Enhanced Input Groups */
-.input-group {
-  margin-bottom: 1.5rem;
-}
 
-.input-group label {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: #2d3748;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
 
 /* Enhanced DatePicker Styling */
 .custom-datepicker {
   width: 100%;
-  padding: 0.875rem 1rem;
+  padding: 0.8rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 0.95rem;
@@ -517,7 +462,7 @@
 /* Enhanced Select Styling */
 .custom-select {
   width: 100%;
-  padding: 0.875rem 1rem;
+  padding: 0.8rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 0.95rem;
@@ -592,7 +537,7 @@
 /* Enhanced Time Input */
 .custom-time-input {
   width: 100%;
-  padding: 0.875rem 1rem;
+  padding: 0.8rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 0.95rem;
@@ -695,7 +640,7 @@
   font-size: 0.9rem;
   color: #4a5568;
   cursor: pointer;
-  padding: 0.875rem;
+  padding: 0.8rem;
   background: white;
   border-radius: 0.5rem;
   border: 2px solid #e2e8f0;
@@ -743,7 +688,7 @@
 }
 
 /* Enhanced Modal Actions */
-.modal-actions {
+.schedule-container .modal-actions {
   display: flex;
   gap: 1rem;
   padding: 1.5rem 2rem;
@@ -751,7 +696,7 @@
   background: #f8fafd;
 }
 
-.modal-actions button {
+.schedule-container .modal-actions button {
   flex: 1;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
@@ -783,18 +728,6 @@
   box-shadow: none;
 }
 
-/* Enhanced Error Message */
-.error-message {
-  background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-  color: #c53030;
-  padding: 1.25rem;
-  border-radius: 0.8rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border: 2px solid #f56565;
-  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.2);
-}
 
 /* Extension Options Styling */
 .extension-options {
@@ -848,7 +781,7 @@
 /* Enhanced Custom Input */
 .custom-input {
   width: 100%;
-  padding: 0.875rem 1rem;
+  padding: 0.8rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 0.95rem;
@@ -1123,12 +1056,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   margin: 1.5rem 0;
 }
 
-.time-inputs .input-group {
-  flex: 1 1 50%; /* Equal flex basis */
-  margin-bottom: 0;
-  min-width: 0;
-  max-width: 50%; /* Ensures equal maximum width */
-}
+
 
 .time-inputs .custom-time-input,
 .time-inputs .custom-select {
@@ -1286,7 +1214,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     padding: 0.75rem;
   }
   
-  .modal-content {
+  .schedule-container .modal-content {
     width: 90vw;
     max-height: 90vh;
   }
@@ -1332,17 +1260,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     padding: 0.375rem 0.75rem;
   }
   
-  .modal-content {
+  .schedule-container .modal-content {
     width: 95vw;
     max-height: 95vh;
   }
   
-  .modal-content h3 {
+  .schedule-container .modal-content h3 {
     padding: 1rem 1.5rem;
     font-size: 1.3rem;
   }
   
-  .modal-content > div[style*="flex: 1"] {
+  .schedule-container .modal-content > div[style*="flex: 1"] {
     padding: 1.5rem;
   }
   
@@ -1445,7 +1373,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     font-size: 0.8rem;
   }
   
-  .modal-content {
+  .schedule-container .modal-content {
     width: 100vw;
     height: 100vh;
     border-radius: 0;

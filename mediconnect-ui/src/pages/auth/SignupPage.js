@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/Auth.css';
+import { useToast } from '../../context/ToastContext';
+import tokenService from '../../services/tokenService';
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,9 +15,19 @@ const SignupPage = () => {
     confirmPassword: '',
     role: 'PATIENT',
   });
-  const [error, setError] = useState('');
+  const { showToast } = useToast();
   const [step, setStep] = useState(1);
   const [passwordStrength, setPasswordStrength] = useState(0);
+
+  // Get URL parameters
+  const searchParams = new URLSearchParams(location.search);
+  const userType = searchParams.get('userType');
+  const redirectUrl = searchParams.get('redirect');
+
+  // Set role from URL parameter if provided
+  if (userType && !formData.role) {
+    formData.role = userType;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,25 +70,22 @@ const SignupPage = () => {
   const nextStep = () => {
     if (step === 1) {
       if (!formData.name || !formData.email) {
-        setError('Please fill in all fields');
+        showToast('Please fill in all fields', 'error');
         return;
       }
-      setError('');
       setStep(2);
     }
   };
 
   const prevStep = () => {
     setStep(1);
-    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      showToast('Passwords do not match', 'error');
       return;
     }
 
@@ -97,19 +107,32 @@ const SignupPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Signup failed');
+        // Use the message from the API response if available
+        const errorMessage = data.message || 'Signup failed. Please try again.';
+        showToast(errorMessage, 'error');
+        return;
       }
 
-      localStorage.setItem('token', data.token);
-      if (data.user.role === 'DOCTOR') {
+      // Store new tokens and user data
+      tokenService.setTokens(data.accessToken, data.refreshToken);
+      tokenService.setUser(data.user);
+
+      // Show success toast
+      showToast('Account created successfully!', 'success');
+
+      // If there's a redirect URL, use it; otherwise use default navigation
+      if (redirectUrl) {
+        console.log('📍 Navigating to redirect URL:', redirectUrl);
+        navigate(redirectUrl);
+      } else if (data.user.role === 'DOCTOR') {
         navigate('/doctor/dashboard');
       } else if (data.user.role === 'ADMIN') {
         navigate('/admin/dashboard');
       } else {
-        navigate('/dashboard');
+        navigate('/patient/dashboard');
       }
     } catch (err) {
-      setError(err.message);
+      showToast('Signup failed. Please try after some time.', 'error');
     }
   };
 
@@ -121,7 +144,7 @@ const SignupPage = () => {
           <span className="logo-icon">⚕️</span>
           <span className="logo-text">MediConnect</span>
         </div>
-        <div className="auth-buttons">
+        <div className="button-group">
           <span className="account-text">Already have an account?</span>
           <a href="/login" className="login-btn">Login</a>
         </div>
@@ -149,58 +172,50 @@ const SignupPage = () => {
               </div>
             </div>
 
-            {error && <div className="error-message">{error}</div>}
-
             <form className="signup-form" onSubmit={handleSubmit}>
               {step === 1 && (
                 <>
                   <div className="form-group">
                     <label htmlFor="name">Full Name</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">👤</span>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Enter your full name"
-                        required
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      className="form-input"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Enter your full name"
+                      required
+                    />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">✉️</span>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Enter your email"
-                        required
-                      />
-                    </div>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      className="form-input"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Enter your email"
+                      required
+                    />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="phone">Phone Number</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">📞</span>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="Enter your phone number"
-                        pattern="[0-9]{10,15}"
-                        required
-                      />
-                    </div>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      className="form-input"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Enter your phone number"
+                      pattern="[0-9]{10,15}"
+                      required
+                    />
                   </div>
 
                   <div className="form-group">
@@ -222,7 +237,7 @@ const SignupPage = () => {
                       </div>
                     </div>
                   </div>
-                  <button type="button" className="auth-button" onClick={nextStep}>
+                  <button type="button" className="plain-btn submit" onClick={nextStep}>
                     Continue
                   </button>
                 </>
@@ -231,18 +246,16 @@ const SignupPage = () => {
                 <>
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">🔒</span>
-                      <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder="Create a password"
-                        required
-                      />
-                    </div>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      className="form-input"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Create a password"
+                      required
+                    />
                     {/* Password strength indicator */}
                     {formData.password && (
                       <div className="password-strength">
@@ -285,18 +298,16 @@ const SignupPage = () => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="confirmPassword">Confirm Password</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">🔒</span>
-                      <input
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        placeholder="Confirm your password"
-                        required
-                      />
-                    </div>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      className="form-input"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="Confirm your password"
+                      required
+                    />
                     {formData.password && formData.confirmPassword && (
                       <div className="password-match">
                         {formData.password === formData.confirmPassword ? (
@@ -311,7 +322,7 @@ const SignupPage = () => {
                     <button type="button" className="back-button" onClick={prevStep}>
                       Back
                     </button>
-                    <button type="submit" className="auth-button">
+                    <button type="submit" className="plain-btn submit">
                       Create Account
                     </button>
                   </div>
@@ -320,8 +331,8 @@ const SignupPage = () => {
             </form>
             <div className="terms-privacy">
               By creating an account, you agree to our
-              <a href="/terms" className="terms-link">Terms of Service</a> and
-              <a href="/privacy" className="terms-link">Privacy Policy</a>
+              <a href="/terms" className="terms-link" target="_blank" rel="noopener noreferrer">Terms of Service</a> and
+              <a href="/privacy" className="terms-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
             </div>
           </div>
           {/* Right side - benefits */}

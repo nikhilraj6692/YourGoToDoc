@@ -85,10 +85,12 @@
 
 ### Authentication & User Management
 - [x] User registration and login
-- [x] JWT token-based authentication
+- [x] JWT token-based authentication with refresh tokens
 - [x] Role-based access control (Doctor/Patient)
 - [x] Profile management
 - [x] Password reset functionality
+- [x] Silent token refresh with inactivity tracking
+- [x] Structured 401 responses and proper error handling
 
 ### Doctor Management
 - [x] Doctor registration with specialization
@@ -96,6 +98,8 @@
 - [x] Doctor search and filtering
 - [x] Doctor availability management
 - [x] Consultation fee management
+- [x] Public doctor search API (no authentication required)
+- [x] Doctor profile photo serving via public endpoint
 
 ### Appointment System
 - [x] Calendar integration
@@ -103,6 +107,8 @@
 - [x] Appointment booking flow
 - [x] Appointment status tracking
 - [x] Basic appointment notifications
+- [x] Public appointment booking for unauthenticated users
+- [x] Login modal integration for booking flow
 
 ### Patient Appointment Details System
 - [x] Patient appointment details screen with modern UI
@@ -116,83 +122,101 @@
 - [x] Loading states and error handling
 - [x] Responsive design implementation
 
+### Real-time Chat System
+- [x] WebSocket backend with message persistence
+- [x] Real-time chat interface with message bubbles
+- [x] Message status indicators (sent/read)
+- [x] Chat history loading and read receipts
+- [x] Connection management and cleanup
+- [x] Integration with appointment workflow
+- [x] Error handling and auto-retry mechanisms
+
 ### UI/UX Improvements
 - [x] Responsive design implementation
-- [x] Modern UI components
+- [x] Modern UI components with consistent styling
 - [x] Loading states and animations
 - [x] Error handling and user feedback
-- [x] Toast notifications
+- [x] Toast notifications with consistent colors
+- [x] Form input standardization (form-input class)
+- [x] Button styling consistency (plain-btn system)
+- [x] Common header component across all pages
+- [x] Login modal for unauthenticated users
 
-## Current Progress (Week 2-3)
-- [x] Implemented appointment booking modal with calendar view
-- [x] Added appointment status indicators (Requested, Confirmed)
-- [x] Integrated slot management with doctor availability
-- [x] Added basic appointment actions (Cancel Request)
-- [x] Implemented responsive design for booking modal
-- [x] Enhanced doctor dashboard with floating chat button
-- [x] Implemented chat modal with modern UI and features
-- [x] Added audio call and attachment capabilities to chat
-- [x] Fixed scrollbar issues and improved responsiveness
-- [x] Created patient appointment details screen structure
-- [x] Improved chat input styling and button alignment
-- [x] **COMPLETED: Patient Appointment Details Screen**
-  - [x] Comprehensive patient information form
-  - [x] Doctor information sidebar with tabs
-  - [x] Form validation and submit functionality
-  - [x] Chat enablement logic based on appointment status and data
-  - [x] API integration for appointment details
-  - [x] Navigation from booking flow
+## Current Progress (Week 3-4)
+- [x] **COMPLETED: JWT Authentication Enhancement**
+  - [x] Short-lived access tokens with refresh tokens
+  - [x] Silent refresh with inactivity tracking
+  - [x] Structured 401 JSON responses
+  - [x] Public endpoints for doctor search and booking
+  - [x] Login modal integration for booking flow
 
-## Current Sprint: Doctor-Patient Chat System
+- [x] **COMPLETED: UI/UX Standardization**
+  - [x] Form input styling consolidation (form-input class)
+  - [x] Button system standardization (plain-btn)
+  - [x] Common header component implementation
+  - [x] Login modal with signup integration
+  - [x] Toast notification color consistency
 
-### Phase 1: Chat Infrastructure (COMPLETED - Week 3)
-- [x] **Real-time Chat Backend**
-  - [x] WebSocket server implementation
-  - [x] Message persistence in database
-  - [x] Chat room management (appointment-based)
-  - [x] Message delivery and read receipts
-  - [x] File attachment support (structure ready)
-  - [x] Message status tracking (sent/read)
+- [x] **COMPLETED: Real-time Chat System**
+  - [x] WebSocket backend with message persistence
+  - [x] Chat interface with message status indicators
+  - [x] Connection management and cleanup
+  - [x] Integration with appointment workflow
+  - [x] Error handling and auto-retry
 
-- [x] **Chat Frontend Components**
-  - [x] Real-time chat interface
-  - [x] Message bubbles and timestamps
-  - [x] File upload structure (UI ready)
-  - [x] Read receipts (single/double blue ticks)
-  - [x] Chat history loading
-  - [x] Message status indicators
+## Current Sprint: Audio Call Feature (Week 4)
 
-- [x] **Chat Integration**
-  - [x] Integrate with existing patient appointment details
-  - [x] Integrate with doctor dashboard
-  - [x] Chat enablement based on appointment status
-  - [x] Real-time notifications
-  - [x] Chat state management
+### Phase 1: Audio Call Infrastructure (In Progress)
+- [ ] **WebRTC Backend**
+  - [ ] Signaling server implementation
+  - [ ] Audio call room management
+  - [ ] Call invitation and acceptance
+  - [ ] Call status tracking
+  - [ ] Call recording (if required)
 
-### Phase 2: Advanced Chat Features (Week 4)
-- [ ] **Enhanced Chat Features**
-  - [ ] Voice messages
-  - [ ] Image sharing and preview
-  - [ ] Document sharing
-  - [ ] Emoji reactions
-  - [ ] Message editing and deletion
-  - [ ] Chat export functionality
+- [ ] **Audio Call Frontend**
+  - [ ] Audio call UI components
+  - [ ] Call controls (mute, speaker, end call)
+  - [ ] Call invitation modal
+  - [ ] Call status indicators
+  - [ ] Integration with chat interface
 
-- [ ] **Chat Management**
-  - [ ] Chat moderation tools
-  - [ ] Message archiving
-  - [ ] Chat analytics
-  - [ ] Spam detection
-  - [ ] Chat backup and restore
+- [ ] **Audio Call Integration**
+  - [ ] Integrate with existing chat system
+  - [ ] Call button in chat interface
+  - [ ] Call notifications
+  - [ ] Call history tracking
 
 ## Pending Features for Current Week
-- [x] Complete real-time chat implementation
-- [x] Add chat notifications
-- [x] Implement file sharing structure in chat
-- [x] Add chat history persistence
-- [x] Integrate chat with appointment workflow
+- [ ] Complete audio call implementation
+- [ ] Add call notifications
+- [ ] Implement call history
+- [ ] Add call quality indicators
+- [ ] Test audio call with multiple users
 
 ## Low Priority Tasks (Next 1-2 Weeks)
+
+### Legal and Compliance Pages
+- [ ] **Terms of Service Page**
+  - [ ] Create comprehensive terms of service
+  - [ ] Design modern, readable layout
+  - [ ] Include user rights and responsibilities
+  - [ ] Add version tracking and update notifications
+  - [ ] Integrate with registration flow
+
+- [ ] **Privacy Policy Page**
+  - [ ] Create detailed privacy policy
+  - [ ] Cover data collection and usage
+  - [ ] Include GDPR compliance sections
+  - [ ] Add cookie policy information
+  - [ ] Design accessible, readable layout
+
+- [ ] **Forgot Password Page**
+  - [ ] Create forgot password form
+  - [ ] Implement email-based password reset
+  - [ ] Add security questions (optional)
+  - [ ] Design password strength requirements
+  - [ ] Add password reset confirmation
 
 ### Chat System Improvements
 - [ ] **Fix Read/Sent Indicators**
@@ -222,28 +246,7 @@
   - [ ] Test connection management with multiple users
   - [ ] Performance testing with multiple concurrent chats
 
-## Next Week's Tasks (Week 4)
-
-### Audio Call Feature (High Priority)
-- [ ] **Audio Call Backend**
-  - [ ] WebRTC signaling server implementation
-  - [ ] Audio call room management
-  - [ ] Call invitation and acceptance
-  - [ ] Call status tracking
-  - [ ] Call recording (if required)
-
-- [ ] **Audio Call Frontend**
-  - [ ] Audio call UI components
-  - [ ] Call controls (mute, speaker, end call)
-  - [ ] Call invitation modal
-  - [ ] Call status indicators
-  - [ ] Integration with chat interface
-
-- [ ] **Audio Call Integration**
-  - [ ] Integrate with existing chat system
-  - [ ] Call button in chat interface
-  - [ ] Call notifications
-  - [ ] Call history tracking
+## Next Week's Tasks (Week 5)
 
 ### Doctor Appointment Screen
 - [ ] Create doctor's appointment dashboard
@@ -442,9 +445,9 @@
 - [ ] Update dependencies
 
 ## Current Focus
-- Implementing patient appointment details screen
-- Enhancing doctor-patient chat system with real-time messaging
-- Completing appointment booking flow with "View Details" navigation
+- Implementing audio call feature for doctor-patient communication
+- Enhancing real-time chat system with advanced features
+- Completing appointment booking flow with seamless navigation
 - Adding video consultation features
 - Implementing WebSocket for real-time updates
 - Adding appointment status tracking and management
@@ -452,7 +455,7 @@
 - Maintaining mobile responsiveness and UI consistency
 
 ## Next Steps
-1. Complete patient appointment details screen implementation
+1. Complete audio call implementation
 2. Implement real-time chat between doctor and patient
 3. Add "View Details" navigation from appointment booking flow
 4. Integrate video consultation features
@@ -571,3 +574,75 @@
 ## Current Implementation
 - Doctor info section: 7px border-radius ✅
 - Other components: Need to be updated 
+
+# CSS Selector Prefixing Plan
+
+## Issues Found
+
+### 1. Schedule.css - Missing Container Prefixes
+The following selectors in `mediconnect-ui/src/pages/doctor-dashboard/Schedule.css` need to be prefixed with `.schedule-container`:
+
+**Unprefixed Selectors Found:**
+- `.current-month` (line 35)
+- `.header-actions` (line 47)
+- `.calendar-container` (line 55)
+- `.calendar-grid` (line 67)
+- `.calendar-header-cell` (line 75)
+- `.calendar-cell` (line 87)
+- `.day-header` (line 147)
+- `.add-slots-btn` (line 165)
+- `.time-slots` (line 195)
+- `.time-slot` (line 258)
+- `.schedule-legend` (line 300)
+- `.legend-item` (line 312)
+- `.legend-color` (line 330)
+- `.schedule-loading` (line 358)
+- `.loading-container` (line 371)
+- `.loading-spinner` (line 380)
+- `.custom-datepicker` (line 437)
+- `.custom-select` (line 463)
+- `.custom-range` (line 496)
+- `.custom-time-input` (line 538)
+- `.repeat-group` (line 563)
+- `.repeat-days-group` (line 612)
+- `.repeat-days-checkboxes` (line 628)
+- `.modal-actions` (line 691)
+- `.confirm-btn` (line 712)
+- `.extension-options` (line 733)
+- `.custom-input` (line 782)
+- `.calendar-navigation` (line 805)
+- `.nav-btn` (line 813)
+- `.nav-btn-alt` (line 857)
+- `.slot-info` (line 905)
+- `.custom-datepicker-popper` (line 918)
+- `.react-datepicker-popper` (line 922)
+- `.react-datepicker` (line 935)
+- `.time-inputs` (line 1053)
+- `.slot-preview` (line 1068)
+- `.warning-modal` (line 1098)
+- `.warning-content` (line 1114)
+- `.warning-icon` (line 1120)
+- `.warning-body` (line 1125)
+- `.warning-title` (line 1129)
+- `.warning-description` (line 1136)
+- `.warning-subtitle` (line 1144)
+- `.warning-list` (line 1151)
+- `.warning-actions` (line 1163)
+- `.schedule-container-wrapper` (line 1407)
+- `.stats-display` (line 1416)
+- `.header-buttons` (line 1425)
+- `.delete-slots-btn` (line 1430)
+
+**Action Required:** Prefix all these selectors with `.schedule-container` to prevent cross-component CSS conflicts.
+
+## General Rule
+All CSS selectors in component-specific CSS files must be prefixed with their respective container class:
+- Patient dashboard files: `.profile-page`, `.dashboard-home`, `.settings-page`, `.billing-page`, `.find-doctor-container`
+- Doctor dashboard files: `.schedule-container`, `.doctor-dashboard-container`
+- Component files: `.booking-modal`, etc.
+
+## Benefits
+- Prevents CSS conflicts between components
+- Improves maintainability
+- Makes debugging easier
+- Follows CSS scoping best practices 

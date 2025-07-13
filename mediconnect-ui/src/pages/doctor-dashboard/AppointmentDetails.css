@@ -265,7 +265,7 @@
 .history-item {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     padding: 1rem;
     margin-bottom: 1rem;
 }
@@ -297,7 +297,7 @@
     background: #fef3c7;
     color: #8e4f06;
     padding: 0.25rem 0.75rem;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     font-size: 0.9rem;
     font-weight: 500;
 }
@@ -309,7 +309,7 @@
     padding: 0.75rem;
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     margin-bottom: 0.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -539,51 +539,6 @@
     }
 }
 
-.plain-btn.start {
-    background: #44c66e;
-    color: #000000d3;
-}
-
-.plain-btn.start:hover {
-    background: rgb(44, 203, 94);
-}
-
-.plain-btn.back {
-    border: 1px solid #e2e8f0;
-}
-
-.plain-btn.back:hover {
-    border: 1px solid #e2e8f0;
-    background: #f0f2f4;
-}
-
-.plain-btn.submit {
-    background: #181f2a;
-    color: white;
-}
-
-.plain-btn.submit:hover {
-    background: #23272a;
-    color: #ccd1c4;
-}
-
-.plain-btn.remove {
-    background: #fed7d7;
-    color: #c53030;
-}
-
-.plain-btn.submit-sub {
-    background: #1c779e;
-    color: white;
-}
-
-.plain-btn.submit-sub:hover {
-    background: #2c5282;
-}
-
-.plain-btn.remove:hover {
-    background: #feb2b2;
-}
 
 .end-consultation-btn {
     background: #dc2626;
@@ -712,7 +667,7 @@
 .medication-item {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     padding: 0.75rem;
     margin-bottom: 0.5rem;
     display: flex;
@@ -1146,13 +1101,6 @@
         height: 2rem;
         font-size: 0.8rem;
     }
-}
-
-/* Consultation Page Header */
-
-/* Add box-sizing globally */
-*, *::before, *::after {
-    box-sizing: border-box;
 }
 
 .consultation-container > .main-content,

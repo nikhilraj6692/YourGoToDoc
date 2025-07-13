@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import './App.css';
 import HomePage from './pages/common/HomePage';
 import SignupPage from './pages/auth/SignupPage';
@@ -15,6 +14,8 @@ import PatientAppointmentDetails from './pages/patient-dashboard/PatientAppointm
 import { UserProvider } from './context/UserContext';
 import { ToastProvider } from './context/ToastContext';
 import { ChatProvider } from './contexts/ChatContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
 
 // Import doctor dashboard components
 import Schedule from './pages/doctor-dashboard/Schedule';
@@ -38,22 +39,95 @@ function App() {
           <Router>
             <div className="app-container">
               <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
-                <Route path="/doctor/schedule" element={<Schedule />} />
-                <Route path="/doctor/appointments" element={<Appointments />} />
-                <Route path="/doctor/patients" element={<Patients />} />
-                <Route path="/doctor/messages" element={<Messages />} />
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/patient/dashboard" element={<PatientDashboard />} />
-                <Route path="/patient/find-doctor" element={<FindDoctor />} />
-                <Route path="/patient/appointments" element={<PatientAppointments />} />
-                <Route path="/patient/appointment-details/:id" element={<PatientAppointmentDetails />} />
-                <Route path="/dashboard" element={<DashboardRedirect />} />
+                {/* Public Routes - Redirect authenticated users to their dashboard */}
+                <Route path="/" element={
+                  <PublicRoute>
+                    <HomePage />
+                  </PublicRoute>
+                } />
+                <Route path="/about" element={
+                  <PublicRoute>
+                    <AboutPage />
+                  </PublicRoute>
+                } />
+                <Route path="/contact" element={
+                  <PublicRoute>
+                    <ContactPage />
+                  </PublicRoute>
+                } />
+                <Route path="/signup" element={
+                  <PublicRoute>
+                    <SignupPage />
+                  </PublicRoute>
+                } />
+                <Route path="/login" element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                } />
+                
+                {/* Doctor Routes - Require DOCTOR role */}
+                <Route path="/doctor/dashboard" element={
+                  <ProtectedRoute requiredRole="DOCTOR">
+                    <DoctorDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/doctor/schedule" element={
+                  <ProtectedRoute requiredRole="DOCTOR">
+                    <Schedule />
+                  </ProtectedRoute>
+                } />
+                <Route path="/doctor/appointments" element={
+                  <ProtectedRoute requiredRole="DOCTOR">
+                    <Appointments />
+                  </ProtectedRoute>
+                } />
+                <Route path="/doctor/patients" element={
+                  <ProtectedRoute requiredRole="DOCTOR">
+                    <Patients />
+                  </ProtectedRoute>
+                } />
+                <Route path="/doctor/messages" element={
+                  <ProtectedRoute requiredRole="DOCTOR">
+                    <Messages />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Admin Routes - Require ADMIN role */}
+                <Route path="/admin/dashboard" element={
+                  <ProtectedRoute requiredRole="ADMIN">
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Patient Routes - Require PATIENT role */}
+                <Route path="/patient/dashboard" element={
+                  <ProtectedRoute requiredRole="PATIENT">
+                    <PatientDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/patient/find-doctor" element={
+                  <ProtectedRoute allowUnauthenticated={true}>
+                    <FindDoctor />
+                  </ProtectedRoute>
+                } />
+                <Route path="/patient/appointments" element={
+                  <ProtectedRoute requiredRole="PATIENT">
+                    <PatientAppointments />
+                  </ProtectedRoute>
+                } />
+                <Route path="/patient/appointment-details/:id" element={
+                  <ProtectedRoute requiredRole="PATIENT">
+                    <PatientAppointmentDetails />
+                  </ProtectedRoute>
+                } />
+                
+                {/* Generic Dashboard Redirect - Requires authentication but no specific role */}
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    <DashboardRedirect />
+                  </ProtectedRoute>
+                } />
               </Routes>
             </div>
           </Router>

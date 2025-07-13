@@ -579,52 +579,48 @@ const AddressMapSelector = ({
       <div className="address-fields">
         <div className="form-group">
           <label htmlFor="address1">Address Line 1</label>
-          <div className="input-with-icon">
-            <span className="input-icon">🏢</span>
-            <input
-              type="text"
-              id="address1"
-              name="address1"
-              value={localAddress1}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                setLocalAddress1(newValue);
-                onAddressChange?.({
-                  address1: newValue,
-                  address2,
-                  city,
-                  state,
-                  pincode
-                });
-              }}
-              placeholder="Enter flat, house, building number or name"
-              required
-              disabled={disabled}
-              autoComplete="off"
-              data-google-places-autocomplete="false"
-            />
-          </div>
+          <input
+            type="text"
+            id="address1"
+            name="address1"
+            className="form-input"
+            value={localAddress1}
+            onChange={(e) => {
+              const newValue = e.target.value;
+              setLocalAddress1(newValue);
+              onAddressChange?.({
+                address1: newValue,
+                address2,
+                city,
+                state,
+                pincode
+              });
+            }}
+            placeholder="Enter flat, house, building number or name"
+            required
+            disabled={disabled}
+            autoComplete="off"
+            data-google-places-autocomplete="false"
+          />
         </div>
 
         <div className="form-group">
           <label htmlFor="address2">Street Address</label>
-          <div className="input-with-icon">
-            <span className="input-icon">📍</span>
-            <input
-              type="text"
-              id="address2"
-              name="address2"
-              value={localAddress2}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                setLocalAddress2(newValue);
-              }}
-              placeholder="Start typing to search address"
-              required
-              disabled={disabled}
-              autoComplete="off"
-            />
-          </div>
+          <input
+            type="text"
+            id="address2"
+            name="address2"
+            className="form-input"
+            value={localAddress2}
+            onChange={(e) => {
+              const newValue = e.target.value;
+              setLocalAddress2(newValue);
+            }}
+            placeholder="Start typing to search address"
+            required
+            disabled={disabled}
+            autoComplete="off"
+          />
           <div className="disclaimer">
             Note: The selected location may not display the exact place name. You can manually <b className="override-text">override</b> the street address below, if needed. Location coordinates will remain unchanged - only the address text will update. Please verify address accuracy before proceeding.
           </div>
@@ -689,51 +685,45 @@ const AddressMapSelector = ({
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="city">City</label>
-            <div className="input-with-icon">
-              <span className="input-icon">🏙️</span>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                value={city}
-                onChange={(e) => onAddressChange?.({ address1, address2, city: e.target.value, state, pincode })}
-                disabled
-                required
-              />
-            </div>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              className="form-input"
+              value={city}
+              onChange={(e) => onAddressChange?.({ address1, address2, city: e.target.value, state, pincode })}
+              disabled
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="state">State</label>
-            <div className="input-with-icon">
-              <span className="input-icon">🗺️</span>
-              <input
-                type="text"
-                id="state"
-                name="state"
-                value={state}
-                onChange={(e) => onAddressChange?.({ address1, address2, city, state: e.target.value, pincode })}
-                disabled
-                required
-              />
-            </div>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              className="form-input"
+              value={state}
+              onChange={(e) => onAddressChange?.({ address1, address2, city, state: e.target.value, pincode })}
+              disabled
+              required
+            />
           </div>
         </div>
 
         <div className="form-group">
           <label htmlFor="pincode">Pincode</label>
           <div className="pincode-search-container">
-            <div className="input-with-icon">
-              <span className="input-icon">📮</span>
-              <input
-                type="text"
-                id="pincode"
-                name="pincode"
-                value={pincode}
-                onChange={handlePincodeChange}
-                required
-                disabled={disabled || (isPincodeFromPlace && pincode?.length === 6) || (!address2 && !city && !state)}
-              />
-            </div>
+            <input
+              type="text"
+              id="pincode"
+              name="pincode"
+              className="form-input"
+              value={pincode}
+              onChange={handlePincodeChange}
+              required
+              disabled={disabled || (isPincodeFromPlace && pincode?.length === 6) || (!address2 && !city && !state)}
+            />
             {!pincode && address2 && city && state && (
               <div className="disclaimer">
                 We could not fetch the pincode. Please enter your pincode.

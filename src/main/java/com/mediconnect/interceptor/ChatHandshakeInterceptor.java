@@ -51,8 +51,10 @@ public class ChatHandshakeInterceptor implements HandshakeInterceptor {
                 }
                 
                 // Validate JWT token
-                if (!tokenProvider.validateToken(token)) {
-                    log.warn("Invalid JWT token in WebSocket request");
+                try {
+                    tokenProvider.validateTokenAndThrow(token);
+                } catch (Exception e) {
+                    log.warn("Invalid JWT token in WebSocket request: {}", e.getMessage());
                     return false;
                 }
                 

@@ -1,36 +1,9 @@
-/* Modal Overlay */
-.booking-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+/* Modal Overlay - Uses Common.css modal-overlay */
 
 /* Modal Container */
 .booking-modal {
-  background: white;
-  border-radius: 0.4375rem;
-  padding: 0;
-  width: 95%;
-  max-width: 700px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  position: relative;
-  animation: slideUp 0.3s ease-out;
+  max-width: 680px;
+  max-height: 75vh;
 }
 
 @keyframes slideUp {
@@ -44,21 +17,7 @@
   }
 }
 
-/* Modal Header */
-.booking-modal .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  background: #181f2a;
-}
 
-.booking-modal .modal-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: white;
-  margin: 0;
-}
 
 
 
@@ -69,11 +28,11 @@
   gap: 1rem;
   padding: 1rem;
   background: #f8fafc;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   margin-bottom: 1.5rem;
 }
 
-.doctor-avatar {
+.booking-modal .doctor-avatar {
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 50%;
@@ -85,91 +44,95 @@
   margin-top: 0.8rem;
 }
 
-.doctor-avatar img {
+.booking-modal .doctor-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.doctor-details-small {
+.booking-modal .doctor-details-small {
   flex: 1;
   min-width: 0;
 }
 
-.doctor-details-small .doctor-name {
+.booking-modal .doctor-details-small .doctor-name {
   font-size: 1.25rem;
   font-weight: 600;
   color: #1e293b;
   margin: 0 0 0.25rem 0;
 }
 
-.doctor-details-small .doctor-specialty {
+.booking-modal .doctor-details-small .doctor-specialty {
   font-size: 0.875rem;
   color: #33373f;
   margin: 0 0 0.25rem 0;
 }
 
-.doctor-details-small .consultation-fee {
+.booking-modal .doctor-details-small .consultation-fee {
   font-size: 0.875rem;
   color: #33373f;
   font-weight: 500;
   margin: 0;
 }
 
-.avatar-initials-small {
+.booking-modal .avatar-initials-small {
   color: white;
   font-weight: 600;
   font-size: 1rem;
 }
 
-.doctor-details-small h3 {
+.booking-modal .doctor-details-small h3 {
   font-size: 1.125rem;
   font-weight: 600;
   color: #042011;
   margin: 0 0 0.25rem 0;
 }
 
-.doctor-details-small p {
+.booking-modal .doctor-details-small p {
   margin: 0.125rem 0;
   font-size: 0.875rem;
 }
 
-.specialty {
+.booking-modal .specialty {
   color: #2563eb;
   font-weight: 500;
 }
 
-.location {
+.booking-modal .location {
   color: #6b7280;
 }
 
-.fee {
+.booking-modal .fee {
   color: #059669;
   font-weight: 500;
 }
 
-/* Section Headers */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2.5rem;
-}
+/* Section Headers - Using Common.css styles */
 
-.section-header h3 {
-  font-size: 1.125rem;
-  font-weight: 600;
+.booking-modal .select-date-text {
+  font-size: 1rem;
+  font-weight: 500;
   color: #1f2937;
   margin: 0;
+  margin-top: 1rem;
+  display: block;
 }
 
-.current-month {
+.booking-modal .section-header {
+  margin-bottom: 1rem;
+}
+
+.booking-modal .current-month {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #2d3748;
   font-weight: 500;
+  background: #f8fafd;
+  padding: 0.5rem 1rem;
+  border-radius: 0.2rem;
+  border: 1px solid #e2e8f0;
 }
 
-.selected-date {
+.booking-modal .selected-date {
   font-size: 0.875rem;
   color: #1f2127ce;
   font-weight: 500;
@@ -177,22 +140,20 @@
 }
 
 /* Calendar Section */
-.calendar-section {
-  padding: 1.5rem 2rem;
+.booking-modal .calendar-section {
+  padding: 1.5rem 2rem 0rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
 /* Calendar Legend */
-.calendar-legend {
+.booking-modal .calendar-legend {
   display: flex;
   gap: 1.5rem;
   margin-bottom: 1rem;
   padding: 1rem;
-  background-color: #f8fafc;
-  border-radius: 0.4375rem;
 }
 
-.legend-item {
+.booking-modal .legend-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -200,55 +161,58 @@
   color: #6b7280;
 }
 
-.legend-dot {
+.booking-modal .legend-dot {
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
 }
 
-.legend-dot.available {
+.booking-modal .legend-dot.available {
   background-color: #10b981;
 }
 
-.legend-dot.booked {
+.booking-modal .legend-dot.booked {
   background-color: #ef4444;
 }
 
-.legend-dot.no-slots {
+.booking-modal .legend-dot.no-slots {
   background-color: #9ca3af;
 }
 
-.legend-dot.scheduled {
+.booking-modal .legend-dot.scheduled {
   background-color: #f59e0b;
 }
 
-.legend-dot.confirmed {
+.booking-modal .legend-dot.confirmed {
   background-color: #1770d4;
 }
 
 /* Calendar Grid */
-.calendar-grid {
+.booking-modal .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafd;
+  padding: 1.5rem;
 }
 
-.calendar-header {
-  padding: 0.5rem;
+.booking-modal .calendar-header {
+  padding: 0.8rem;
   text-align: center;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #6b7280;
-  background-color: #f8fafc;
-  border-radius: 0.4375rem;
+  color: #41464e;
+  background: linear-gradient(135deg, #aec2d4 0%, #4c6d97 100%);
+  border-radius: 0.2rem;
 }
 
-.calendar-day {
+.booking-modal .calendar-day {
   position: relative;
   padding: 0.75rem;
   text-align: center;
   border: 2px solid transparent;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   cursor: pointer;
   transition: all 0.2s ease;
   background-color: #f9fafb;
@@ -260,70 +224,70 @@
   font-weight: 500;
 }
 
-.calendar-day.available {
+.booking-modal .calendar-day.available {
   background-color: #ecfdf5;
   border-color: #10b981;
   color: #047857;
 }
 
-.calendar-day.booked {
+.booking-modal .calendar-day.booked {
   background-color: #fef2f2;
   border-color: #ef4444;
   color: #dc2626;
 }
 
-.calendar-day.no-slots,
-.calendar-day.past {
+.booking-modal .calendar-day.no-slots,
+.booking-modal .calendar-day.past {
   background-color: #f3f4f6;
   color: #9ca3af;
   cursor: not-allowed;
   border-color: #e5e7eb;
 }
 
-.calendar-day.selected {
+.booking-modal .calendar-day.selected {
   background-color: #62b489;
 }
 
-.calendar-day.confirmed {
+.booking-modal .calendar-day.confirmed {
   background-color: #dbeafe;
   border-color: #3b82f6;
   color: #1e40af;
   font-weight: 500;
 }
 
-.calendar-day.scheduled {
+.booking-modal .calendar-day.scheduled {
   background-color: #fffbeb;
   border-color: #f59e0b;
   color: #b45309;
   font-weight: 500;
 }
 
-.day-number {
+.booking-modal .day-number {
   font-size: 0.875rem;
   font-weight: 600;
 }
 
-.availability-indicator {
+.booking-modal .availability-indicator {
   font-size: 1.25rem;
   color: #10b981;
   line-height: 1;
   margin-top: 0.125rem;
 }
 
-.calendar-day.selected .availability-indicator {
+.booking-modal .calendar-day.selected .availability-indicator {
   color: white;
 }
 
 /* Slots Section */
-.slots-section {
+.booking-modal .slots-section {
   padding: 1.5rem 2rem;
   border-bottom: 1px solid #e5e7eb;
-  min-height: 200px;
+  min-height: 175px;
 }
 
-.no-date-selected,
-.loading-slots,
-.no-slots-available {
+.booking-modal .no-date-selected,
+.booking-modal .loading-slots,
+.booking-modal .no-slots-available {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -333,17 +297,17 @@
   color: #6b7280;
 }
 
-.no-date-selected span,
-.no-slots-available span {
-  font-size: 3rem;
+.booking-modal .no-date-selected span,
+.booking-modal .no-slots-available span {
+  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
-.loading-slots {
+.booking-modal .loading-slots {
   gap: 1rem;
 }
 
-.loading-spinner-small {
+.booking-modal .loading-spinner-small {
   width: 2rem;
   height: 2rem;
   border: 2px solid #e5e7eb;
@@ -352,13 +316,13 @@
   animation: spin 1s linear infinite;
 }
 
-.no-slots-available small {
+.booking-modal .no-slots-available small {
   color: #9ca3af;
   margin-top: 0.5rem;
 }
 
 /* Slots Grid */
-.slots-grid {
+.booking-modal .slots-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 0.5rem;
@@ -369,11 +333,11 @@
   padding: 0.5rem;
 }
 
-.slot-btn {
+.booking-modal .slot-btn {
   padding: 0.5rem;
   background-color: white;
   border: 1px solid #10b981;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
@@ -387,17 +351,17 @@
   position: relative;
 }
 
-.slot-btn:hover {
+.booking-modal .slot-btn:hover {
   box-shadow: 0 2px 4px rgba(49, 151, 149, 0.2);
 }
 
-.slot-btn.selected {
+.booking-modal .slot-btn.selected {
   background-color: #ecfdf5;
   border: 2px solid #10b981;
   box-shadow: 0 2px 4px rgba(49, 151, 149, 0.2);
 }
 
-.slot-btn.booked {
+.booking-modal .slot-btn.booked {
   background-color: #f3f4f6;
   border-color: #d1d5db;
   color: #9ca3af;
@@ -405,12 +369,12 @@
   position: relative;
 }
 
-.slot-btn.booked:hover {
+.booking-modal .slot-btn.booked:hover {
   box-shadow: none;
   transform: none;
 }
 
-.booked-indicator {
+.booking-modal .booked-indicator {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -418,38 +382,18 @@
   background-color: rgba(239, 68, 68, 0.1);
   color: #dc2626;
   padding: 2px 8px;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   font-size: 0.75rem;
   font-weight: 500;
 }
 
-.slot-time {
+.booking-modal .slot-time {
   font-size: 0.9rem;
   font-weight: 500;
 }
 
-/* Error Message */
-.error-message {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  background-color: #fef2f2;
-  border-left: 4px solid #ef4444;
-  color: #991b1b;
-}
-
-.error-message span {
-  font-size: 1.25rem;
-}
-
-.error-message p {
-  margin: 0;
-  font-size: 0.875rem;
-}
-
 /* Modal Footer */
-.modal-footer {
+.booking-modal .modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
@@ -458,12 +402,16 @@
   border-radius: 0 0 1rem 1rem;
 }
 
-.book-btn {
+.booking-modal .modal-body {
+  padding: 0rem !important;
+}
+
+.booking-modal .book-btn {
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: white;
   border: none;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -472,13 +420,13 @@
   gap: 0.5rem;
 }
 
-.book-btn:hover:not(:disabled) {
+.booking-modal .book-btn:hover:not(:disabled) {
   background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-.book-btn:disabled {
+.booking-modal .book-btn:disabled {
   background: #9ca3af;
   cursor: not-allowed;
   transform: none;
@@ -486,7 +434,7 @@
 }
 
 /* Small Compact Appointment Info */
-.appointment-info {
+.booking-modal .appointment-info {
   background: #e0f2fe;
   padding: 6px 8px;
   border-radius: 4px;
@@ -495,7 +443,7 @@
   font-size: 11px;
 }
 
-.appointment-status {
+.booking-modal .appointment-status {
   font-weight: 600;
   font-size: 16px;
   text-align: center;
@@ -504,14 +452,14 @@
   letter-spacing: 0.3px;
 }
 
-.appointment-time {
+.booking-modal .appointment-time {
   font-weight: 500;
   color: #0c4a6e;
   margin-bottom: 2px;
   text-align: center;
 }
 
-.view-details-link {
+.booking-modal .view-details-link {
   color: #440bc0;
   text-decoration: none;
   font-size: 11.5px;
@@ -520,37 +468,37 @@
   transition: color 0.2s ease;
 }
 
-.view-details-link:hover {
+.booking-modal .view-details-link:hover {
   color: #1d4ed8;
   text-decoration: underline;
 }
 
 /* Upcoming appointments */
-.appointment-info.upcoming {
+.booking-modal .appointment-info.upcoming {
   background: #d1fae5;
   border-left-color: #10b981;
 }
 
-.appointment-info.upcoming .appointment-status {
+.booking-modal .appointment-info.upcoming .appointment-status {
   color: #047857;
 }
 
-.appointment-info.upcoming .appointment-time {
+.booking-modal .appointment-info.upcoming .appointment-time {
   color: #065f46;
 }
 
 /* Expired appointments */
-.appointment-info.expired {
+.booking-modal .appointment-info.expired {
   background: #fee2e2;
   border-left-color: #ef4444;
   opacity: 0.8;
 }
 
-.appointment-info.expired .appointment-status {
+.booking-modal .appointment-info.expired .appointment-status {
   color: #b91c1c;
 }
 
-.appointment-info.expired .appointment-time {
+.booking-modal .appointment-info.expired .appointment-time {
   color: #7f1d1d;
   text-decoration: line-through;
 }
@@ -565,115 +513,114 @@
     margin: 1rem;
   }
 
-  .modal-header,
-  .doctor-info-card,
-  .calendar-section,
-  .slots-section,
-  .modal-footer {
+  .booking-modal .doctor-info-card,
+  .booking-modal .calendar-section,
+  .booking-modal .slots-section,
+  .booking-modal .modal-footer {
     padding: 1rem 1.5rem;
   }
 
-  .calendar-legend {
+  .booking-modal .calendar-legend {
     flex-direction: column;
     gap: 0.75rem;
   }
 
-  .calendar-day {
+  .booking-modal .calendar-day {
     min-height: 2.5rem;
     padding: 0.5rem;
   }
 
-  .slots-grid {
+  .booking-modal .slots-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 0.5rem;
   }
 
-  .modal-footer {
+  .booking-modal .modal-footer {
     flex-direction: column;
   }
 
-  .cancel-btn,
-  .book-btn {
+  .booking-modal .cancel-btn,
+  .booking-modal .book-btn {
     width: 100%;
     justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
-  .calendar-grid {
+  .booking-modal .calendar-grid {
     gap: 0.25rem;
   }
 
-  .calendar-day {
+  .booking-modal .calendar-day {
     min-height: 2rem;
     padding: 0.375rem;
     font-size: 0.875rem;
   }
 
-  .slots-grid {
+  .booking-modal .slots-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 /* Appointment Info */
-.appointment-info {
+.booking-modal .appointment-info {
   background-color: #f8fafc;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   padding: 1.5rem;
   text-align: center;
   border: 1px solid #e5e7eb;
   margin: 1rem 0;
 }
 
-.appointment-status {
+.booking-modal .appointment-status {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4375rem;
+  gap: 0.2rem;
   margin-bottom: 1rem;
 }
 
-.appointment-status h4 {
+.booking-modal .appointment-status h4 {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
   color: #1f2937;
 }
 
-.status-dot {
+.booking-modal .status-dot {
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
 }
 
-.status-dot.scheduled {
+.booking-modal .status-dot.scheduled {
   background-color: #f59e0b;
 }
 
-.status-dot.confirmed {
+.booking-modal .status-dot.confirmed {
   background-color: #3b82f6;
 }
 
-.appointment-time {
+.booking-modal .appointment-time {
   font-size: 1rem;
   color: #4b5563;
   margin-bottom: 1.5rem;
 }
 
-.appointment-time p {
+.booking-modal .appointment-time p {
   margin: 0;
 }
 
-.appointment-actions {
+.booking-modal .appointment-actions {
   display: flex;
   gap: 1rem;
   justify-content: center;
 }
 
-.cancel-appointment-btn,
-.pay-appointment-btn {
+.booking-modal .cancel-appointment-btn,
+.booking-modal .pay-appointment-btn {
   padding: 0.75rem 1.5rem;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -682,24 +629,24 @@
   min-width: 140px;
 }
 
-.cancel-appointment-btn {
+.booking-modal .cancel-appointment-btn {
   background-color: #fee2e2;
   color: #dc2626;
   border: 1px solid #fecaca;
 }
 
-.cancel-appointment-btn:hover {
+.booking-modal .cancel-appointment-btn:hover {
   background-color: #fecaca;
 }
 
 /* Indian Rupee Themed Pay Button */
-.pay-appointment-btn {
+.booking-modal .pay-appointment-btn {
   /* Indian currency green with golden accent */
   background: linear-gradient(135deg, #16a34a 0%, #166534 100%);
   color: white;
   border: 2px solid #fbbf24; /* Golden border like Indian coins */
   padding: 12px 24px;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -709,7 +656,7 @@
 }
 
 /* Golden shine effect */
-.pay-appointment-btn::before {
+.booking-modal .pay-appointment-btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -721,46 +668,50 @@
 }
 
 /* Rupee symbol styling */
-.pay-appointment-btn .rupee-symbol {
+.booking-modal .pay-appointment-btn .rupee-symbol {
   font-weight: 700;
   margin-right: 4px;
   color: #fbbf24;
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
-.pay-appointment-btn:hover {
+.booking-modal .pay-appointment-btn:hover {
   background: linear-gradient(135deg, #15803d 0%, #14532d 100%);
   border-color: #f59e0b;
   box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
 }
 
-.pay-appointment-btn:hover::before {
+.booking-modal .pay-appointment-btn:hover::before {
   left: 100%;
 }
 
-.pay-appointment-btn:hover .rupee-symbol {
+.booking-modal .pay-appointment-btn:hover .rupee-symbol {
   color: #f59e0b;
 }
 
-.pay-appointment-btn:active {
+.booking-modal .pay-appointment-btn:active {
   box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
 }
 
 
 
-.modal-actions {
+.booking-modal .modal-actions {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 1rem 1.5rem;
-  border-top: 1px solid #e2e8f0;
   background: white;
 }
 
-.cancel-appointment-btn,
-.pay-appointment-btn {
+.booking-modal .modal-actions .plain-btn {
+  flex: 1;
+  min-width: 0;
+}
+
+.booking-modal .cancel-appointment-btn,
+.booking-modal .pay-appointment-btn {
   padding: 0.75rem 1.5rem;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -769,13 +720,13 @@
   min-width: 140px;
 }
 
-.cancel-appointment-btn {
+.booking-modal .cancel-appointment-btn {
   background-color: #fee2e2;
   color: #dc2626;
   border: 1px solid #fecaca;
 }
 
-.cancel-appointment-btn:hover {
+.booking-modal .cancel-appointment-btn:hover {
   background-color: #fecaca;
 }
 

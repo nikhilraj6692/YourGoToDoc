@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import CommonHeader from '../../components/CommonHeader';
 import { useUser } from '../../context/UserContext';
+import { handleLogout } from '../../utils/logout';
 
 const DoctorLayout = ({ children, activeTab = 'dashboard' }) => {
   const navigate = useNavigate();
@@ -36,14 +37,6 @@ const DoctorLayout = ({ children, activeTab = 'dashboard' }) => {
         break;
       default:
         break;
-    }
-  };
-
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      navigate('/login');
     }
   };
 

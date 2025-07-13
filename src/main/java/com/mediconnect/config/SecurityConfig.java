@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,11 +34,22 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
-                // Explicitly allow signup and login endpoints
-                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                // Auth endpoints
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api-docs/**", "/swagger-ui/**").permitAll()
+                // Health check endpoint
+                .requestMatchers("/api/health").permitAll()
+                // Swagger/OpenAPI documentation
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/api-docs/**").permitAll()
+                // WebSocket endpoints
                 .requestMatchers("/ws/**").permitAll()
+                // Doctor search endpoints - public for unauthenticated users
+                .requestMatchers("/api/doctors/search/**").permitAll()
+                // Public document access - for doctor profile photos
+                .requestMatchers("/api/documents/**").permitAll()
+                // CORS preflight requests
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

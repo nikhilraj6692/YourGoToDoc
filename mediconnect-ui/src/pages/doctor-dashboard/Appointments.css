@@ -17,7 +17,7 @@
      =============================== */
   .appointments-header {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     padding: 0;
     margin-bottom: 2rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -88,16 +88,6 @@
     font-weight: 500;
   }
   
-  
-
-  .section-divider {
-    border: none;
-    height: 1px;
-    background: linear-gradient(to right, #a3b0c1bb, transparent);
-    margin: 1.5rem 0 0 0;
-  }
-  
-  
   .appointment-actions-right .appointment-type {
     color: #4a5568;
     font-size: 0.85rem;
@@ -117,7 +107,7 @@
   }
   
   .doctor-stat-card {
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     background: white;
     padding: 1.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -166,7 +156,7 @@
      =============================== */
   .search-section {
     background: white;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     padding: 2rem;
     margin-bottom: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -220,88 +210,8 @@
     width: 100%;
   }
   
-  .search-form-row .form-group {
-    flex: 1;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 0.5rem;
-  }
-  
-  .form-input {
-    padding: 0.875rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 0.4375rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: white;
-    color: #2d3748;
-    width: 100%;
-  }
-  
-  .form-input:focus {
-    outline: none;
-    border-color: #86bf23;
-    box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.1);
-  }
-  
-  .dropdown-select {
-    padding: 0.875rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 0.4375rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: white;
-    color: #2d3748;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232d3748' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    padding-right: 2.5rem;
-    width: 100%;
-  }
-  
-  .dropdown-select:focus {
-    outline: none;
-    border-color: #86bf23;
-    box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.1);
-  }
-
-  .auth-button {
-    background: linear-gradient(135deg, #86bf23 0%, #7cac1f 100%);
-    color: white;
-    border: none;
-    padding: 0.875rem 1.5rem;
-    border-radius: 0.4375rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(134, 191, 35, 0.3);
-  }
-
-  .auth-button:hover {
-    background: linear-gradient(135deg, #7cac1f 0%, #6ba019 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(134, 191, 35, 0.4);
-  }
-
-  .auth-button:disabled {
-    background: #cbd5e0;
-    transform: none;
-    box-shadow: none;
-    cursor: not-allowed;
-  }
+  /* Form styles inherited from Common.css */
+  /* Customizations for this page can be added below */
   
   /* ===============================
      APPOINTMENTS LIST (Your Improved Styling)
@@ -314,7 +224,7 @@
 
 .doctor-appointments-container .appointment-info {
   background: white;
-  border-radius: 0.4375rem;
+  border-radius: 0.2rem;
   border: 1px solid #e2e8f0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   padding: 16px;
@@ -340,18 +250,7 @@
   margin-top: 0.8rem;
 }
 
-.doctor-appointments-container .patient-avatar .avatar-initials {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: white;
-  text-align: center;
-  line-height: 1;
-}
+
 
 .doctor-appointments-container .patient-avatar.theme-green { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
 .doctor-appointments-container .patient-avatar.theme-purple { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); }
@@ -410,39 +309,7 @@
   flex-shrink: 0;
 }
 
-.doctor-appointments-container .status-badge {
-  padding: 0.5rem 1rem;
-  border-radius: 0.1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
 
-.doctor-appointments-container .status-badge.scheduled {
-  background: #fef5e7;
-  color: #d69e2e;
-}
-
-.doctor-appointments-container .status-badge.pending {
-  background: #fef5e7;
-  color: #d69e2e;
-}
-
-.doctor-appointments-container .status-badge.confirmed {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.doctor-appointments-container .status-badge.completed {
-  background: #e6fffa;
-  color: #319795;
-}
-
-.doctor-appointments-container .status-badge.cancelled {
-  background: #fed7d7;
-  color: #e53e3e;
-}
 
 .doctor-appointments-container .paid-in-full-badge {
   display: inline-block;
@@ -590,87 +457,6 @@
   /* ===============================
      MODALS
      =============================== */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 1rem;
-  }
-  
-  .modal-content {
-    background: white;
-    border-radius: 0.4375rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid #e2e8f0;
-    overflow: hidden;
-    max-height: 90vh;
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .modal-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f8fafc;
-  }
-  
-  .modal-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin: 0;
-  }
-  
-  .modal-close {
-    color: #6b7280;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 1.25rem;
-  }
-  
-  .modal-close:hover {
-    color: #374151;
-    background: #f3f4f6;
-  }
-  
-  .modal-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1.5rem;
-  }
-  
-  .modal-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid #e2e8f0;
-    background: #f8fafc;
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-  }
-  
-  .form-label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
   
   .detail-text {
     color: #4a5568;
@@ -678,35 +464,17 @@
     line-height: 1.5;
   }
   
-  .form-input.textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-  
   /* ===============================
      ERROR AND EMPTY STATES
      =============================== */
-  .error-container {
-    background-color: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 0.4375rem;
-    padding: 1.5rem;
-    text-align: center;
-    margin: 1rem 0;
-  }
-  
-  .error-message {
-    color: #991b1b;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-  }
+
   
   .retry-btn {
     background-color: #dc2626;
     color: white;
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -716,66 +484,12 @@
     background-color: #b91c1c;
   }
   
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin: 2rem auto;
-    max-width: 600px;
-  }
-  
-  .empty-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .empty-state h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #2d3748;
-    margin: 0 0 1rem 0;
-  }
-  
-  .empty-state p {
-    font-size: 1rem;
-    color: #6b7280;
-    line-height: 1.6;
-    margin: 0;
-  }
+
   
   /* ===============================
      LOADING STATES
      =============================== */
-  .loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 0;
-    gap: 1rem;
-  }
-  
-  .loading-spinner {
-    width: 3rem;
-    height: 3rem;
-    border: 3px solid #e5e7eb;
-    border-top: 3px solid #86bf23;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  .loading-text {
-    color: #6b7280;
-    font-size: 1rem;
-    font-weight: 500;
-  }
+
   
   /* ===============================
      PAGINATION
@@ -788,7 +502,7 @@
     margin-top: 2rem;
     padding: 1.5rem;
     background: white;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     border: 1px solid #e2e8f0;
   }
@@ -798,7 +512,7 @@
     background: #86bf23;
     color: white;
     border: none;
-    border-radius: 0.4375rem;
+    border-radius: 0.2rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -868,7 +582,7 @@
       grid-template-columns: 1fr;
     }
     
-    .modal-content {
+    .doctor-appointments-container .modal-content {
       max-width: 95vw;
     }
     
@@ -939,7 +653,7 @@
       padding: 0.75rem;
     }
     
-    .modal-content {
+    .doctor-appointments-container .modal-content {
       width: 100vw;
       height: 100vh;
       border-radius: 0;

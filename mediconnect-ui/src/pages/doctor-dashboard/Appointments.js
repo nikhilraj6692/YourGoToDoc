@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './Appointments.css';
 import '../../styles/Auth.css';
 import '../../styles/Common.css';
@@ -7,10 +7,12 @@ import DoctorLayout from './DoctorLayout';
 import { useUser } from '../../context/UserContext';
 import { useToast } from '../../context/ToastContext';
 import AppointmentDetails from './AppointmentDetails';
+import tokenService from '../../services/tokenService';
 
 const DoctorAppointments = () => {
   const { user } = useUser();
   const { showToast } = useToast();
+  const navigate = useNavigate();
   
   // State management
   const [activeTab, setActiveTab] = useState('today');
@@ -51,40 +53,18 @@ const DoctorAppointments = () => {
   }, [activeTab]);
 
   const fetchAppointments = async () => {
-    setLoading(true);
-    
     try {
-      let url = '/api/appointments/doctor';
-      const params = new URLSearchParams();
+      setLoading(true);
+      const response = await tokenService.authenticatedFetch('/api/doctors/appointments');
       
-      // For 'today' tab, pass the date parameter
-      if (activeTab === 'today') {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const todayStr = `${year}-${month}-${day}`; // YYYY-MM-DD format in local timezone
-        params.append('date', todayStr);
+      if (response.ok) {
+        const data = await response.json();
+        setAppointments(data);
       } else {
-        // For other tabs, pass the status parameter
-        params.append('status', activeTab.toUpperCase());
+        setError('Failed to fetch appointments');
       }
-      
-      if (params.toString()) {
-        url += '?' + params.toString();
-      }
-      
-      const token = localStorage.getItem('token');
-      const response = await axios.get(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      setAppointments(response.data);
-    } catch (error) {
-      console.error('Error fetching appointments:', error);
-      // Handle error silently - don't show error to user
-      setAppointments([]);
+    } catch (err) {
+      setError('Error fetching appointments');
     } finally {
       setLoading(false);
     }
@@ -117,111 +97,72 @@ const DoctorAppointments = () => {
   // Action handlers
   const handleConfirmAppointment = async (appointmentId) => {
     try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-      await axios.put(`/api/appointments/${appointmentId}/confirm`, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await tokenService.authenticatedFetch(`/api/appointments/${appointmentId}/confirm`, {
+        method: 'PUT'
       });
       
-      // Update local state
-      setAppointments(prev => 
-        prev.map(apt => 
-          apt.id === appointmentId 
-            ? { ...apt, status: 'CONFIRMED' }
-            : apt
-        )
-      );
-      
-      showToast('Appointment confirmed successfully', 'success');
+      if (response.ok) {
+        showToast('Appointment confirmed successfully', 'success');
+        fetchAppointments(); // Refresh the list
+      } else {
+        showToast('Failed to confirm appointment', 'error');
+      }
     } catch (err) {
-      showToast('Failed to confirm appointment', 'error');
-      console.error('Error confirming appointment:', err);
-    } finally {
-      setLoading(false);
+      showToast('Error confirming appointment', 'error');
     }
   };
 
-  const handleRejectAppointment = async () => {
-    if (!rejectReason.trim()) {
-      showToast('Please provide a reason for rejection', 'error');
-      return;
-    }
-
+  const handleRejectAppointment = async (appointmentId, reason) => {
     try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-      await axios.put(`/api/appointments/${selectedAppointment.id}/cancel`, 
-        { reason: rejectReason },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
-      
-      // Update local state
-      setAppointments(prev => 
-        prev.map(apt => 
-          apt.id === selectedAppointment.id 
-            ? { ...apt, status: 'CANCELLED' }
-            : apt
-        )
-      );
-      
-      showToast('Appointment rejected successfully', 'success');
-      setShowRejectModal(false);
-      setRejectReason('');
-      setSelectedAppointment(null);
-    } catch (err) {
-      showToast('Failed to reject appointment', 'error');
-      console.error('Error rejecting appointment:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCompleteAppointment = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-      await axios.put(`/api/appointments/${selectedAppointment.id}/complete`, 
-        { 
-          notes: completionNotes,
-          prescription: prescription
+      const response = await tokenService.authenticatedFetch(`/api/appointments/${appointmentId}/reject`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
+        body: JSON.stringify({ reason })
+      });
       
-      // Update local state
-      setAppointments(prev => 
-        prev.map(apt => 
-          apt.id === selectedAppointment.id 
-            ? { 
-                ...apt, 
-                status: 'COMPLETED',
-                notes: completionNotes,
-                prescription: prescription || 'Available'
-              }
-            : apt
-        )
-      );
-      
-      showToast('Appointment completed successfully', 'success');
-      setShowCompleteModal(false);
-      setCompletionNotes('');
-      setPrescription('');
-      setSelectedAppointment(null);
+      if (response.ok) {
+        showToast('Appointment rejected successfully', 'success');
+        fetchAppointments(); // Refresh the list
+      } else {
+        showToast('Failed to reject appointment', 'error');
+      }
     } catch (err) {
-      showToast('Failed to complete appointment', 'error');
-      console.error('Error completing appointment:', err);
-    } finally {
-      setLoading(false);
+      showToast('Error rejecting appointment', 'error');
+    }
+  };
+
+  const handleCompleteAppointment = async (appointmentId) => {
+    try {
+      const response = await tokenService.authenticatedFetch(`/api/appointments/${appointmentId}/complete`, {
+        method: 'PUT'
+      });
+      
+      if (response.ok) {
+        showToast('Appointment completed successfully', 'success');
+        fetchAppointments(); // Refresh the list
+      } else {
+        showToast('Failed to complete appointment', 'error');
+      }
+    } catch (err) {
+      showToast('Error completing appointment', 'error');
+    }
+  };
+
+  const handleJoinCall = async (appointmentId) => {
+    try {
+      const response = await tokenService.authenticatedFetch(`/api/appointments/${appointmentId}/join-call`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        // Handle joining the call (e.g., open video call interface)
+        showToast('Joining video call...', 'success');
+      } else {
+        showToast('Failed to join call', 'error');
+      }
+    } catch (err) {
+      showToast('Error joining call', 'error');
     }
   };
 
@@ -233,13 +174,14 @@ const DoctorAppointments = () => {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      await axios.put(`/api/appointments/${selectedAppointment.id}/cancel`, 
-        { reason: cancelReason },
+      const token = tokenService.getAccessToken();
+      await tokenService.authenticatedFetch(`/api/appointments/${selectedAppointment.id}/cancel`, 
         {
+          method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`
-          }
+          },
+          body: JSON.stringify({ reason: cancelReason })
         }
       );
       
@@ -564,9 +506,9 @@ const DoctorAppointments = () => {
                   Cancel
                 </button>
                 <button 
-                  onClick={handleRejectAppointment}
+                  onClick={() => handleRejectAppointment(selectedAppointment.id, rejectReason)}
                   disabled={!rejectReason.trim() || loading}
-                  className="auth-button"
+                  className="plain-btn"
                   style={{ backgroundColor: '#dc2626' }}
                 >
                   {loading ? 'Rejecting...' : 'Reject Appointment'}
@@ -626,9 +568,9 @@ const DoctorAppointments = () => {
                   Cancel
                 </button>
                 <button 
-                  onClick={handleCompleteAppointment}
+                  onClick={() => handleCompleteAppointment(selectedAppointment.id)}
                   disabled={loading}
-                  className="auth-button"
+                  className="plain-btn submit"
                   style={{ backgroundColor: '#10b981' }}
                 >
                   {loading ? 'Completing...' : 'Complete Appointment'}
@@ -677,9 +619,9 @@ const DoctorAppointments = () => {
                   Keep Appointment
                 </button>
                 <button 
-                  onClick={handleCancelAppointment}
+                  onClick={() => handleCancelAppointment()}
                   disabled={!cancelReason.trim() || loading}
-                  className="auth-button"
+                  className="plain-btn"
                   style={{ backgroundColor: '#dc2626' }}
                 >
                   {loading ? 'Cancelling...' : 'Cancel Appointment'}

@@ -1,0 +1,23 @@
+/* LoginModal.css - Styles specific to the login modal */
+
+/* Login Modal Specific Styles */
+.login-modal {
+  max-width: 650px;
+  max-height: 80vh;
+}
+
+.login-modal .auth-form-container {
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+.login-modal .auth-welcome h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-modal .auth-tagline {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+} 

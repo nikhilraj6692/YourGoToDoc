@@ -4,18 +4,30 @@ import '../../styles/Auth.css';
 import '../../styles/Common.css';
 import { useUser } from '../../context/UserContext';
 import BookingModal from '../../components/BookingModal';
+import LoginModal from '../../components/LoginModal';
 import InfiniteScroll from '../../components/InfiniteScroll';
 import Toast from '../../components/Toast';
 import { useToast } from '../../context/ToastContext';
+import HomeHeader from '../../components/HomeHeader';
+import tokenService from '../../services/tokenService';
+import { handleLogout } from '../../utils/logout';
 
-// Common Header Component
-const CommonHeader = ({ user, activeMenuItem, onMenuClick, onLogout }) => {
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'appointments', label: 'Appointments' },
-    { id: 'billing', label: 'Billing' }
-  ];
+// Minimal Header Component - only logo and logo text
+const MinimalHeader = () => {
+  return (
+    <div className="common-header">
+      <div className="header-container">
+        <div className="header-logo">
+          <span className="logo-icon">⚕️</span>
+          <span className="logo-text">MediConnect</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
+// Common Header Component for authenticated patients
+const CommonHeader = ({ user, activeMenuItem, onMenuClick, onLogout, menuItems }) => {
   return (
     <div className="common-header">
       <div className="header-container">
@@ -43,7 +55,7 @@ const CommonHeader = ({ user, activeMenuItem, onMenuClick, onLogout }) => {
               <span className="user-account">Manage your account</span>
             </div>
           </div>
-          <button className="logout-btn" onClick={onLogout}>
+          <button className="plain-btn logout" onClick={onLogout}>
             Logout
           </button>
         </div>
@@ -51,6 +63,8 @@ const CommonHeader = ({ user, activeMenuItem, onMenuClick, onLogout }) => {
     </div>
   );
 };
+
+// Using HomeHeader component for unauthenticated users
 
 // Specialization options for dropdown
 const specializationOptions = [
@@ -97,9 +111,6 @@ const FindDoctor = () => {
   // State management
   const [activeTab, setActiveTab] = useState('location');
   const [loading, setLoading] = useState(false);
-  const [locationLoading, setLocationLoading] = useState(false);
-  const [pincodeLoading, setPincodeLoading] = useState(false);
-  const [cityLoading, setCityLoading] = useState(false);
   const [error, setError] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
@@ -120,11 +131,21 @@ const FindDoctor = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
+  // Login modal state
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
   // Load more doctors (scroll down)
   const loadMoreDoctors = useCallback(async (page) => {
-    if (loadingMore || !hasMore) return;
+    console.log('🔄 loadMoreDoctors called - loadingMore:', loadingMore, 'hasMore:', hasMore, 'page:', page);
     
+    if (loadingMore || !hasMore) {
+      console.log('🛑 loadMoreDoctors blocked - loadingMore:', loadingMore, 'hasMore:', hasMore);
+      return;
+    }
+    
+    console.log('✅ loadMoreDoctors starting - setting loadingMore to true');
     setLoadingMore(true);
+    
     try {
       const expectedPage = Math.floor(doctors.length / PAGE_SIZE);
       const pageToLoad = (page === expectedPage) ? page : expectedPage;
@@ -133,19 +154,23 @@ const FindDoctor = () => {
         console.warn('Page mismatch - expected:', expectedPage, 'got:', page, 'using:', pageToLoad);
       }
     
+      console.log('📡 Fetching doctors page:', pageToLoad);
       const result = await fetchDoctorsPage(pageToLoad);
       
       if (result && result.doctors && result.doctors.length > 0) {
+        console.log('✅ loadMoreDoctors success - got', result.doctors.length, 'doctors');
         setDoctors(prev => [...prev, ...result.doctors]);
         const newHasMore = result.doctors.length === PAGE_SIZE;
         setHasMore(newHasMore);
       } else {
+        console.log('📭 loadMoreDoctors - no more doctors');
         setHasMore(false);
       }
     } catch (err) {
-      console.error('Error loading more doctors:', err);
+      console.error('❌ Error loading more doctors:', err);
       showToast('Error during operation. Please try after some time', 'error');
     } finally {
+      console.log('🏁 loadMoreDoctors finished - setting loadingMore to false');
       setLoadingMore(false);
     }
   }, [loadingMore, hasMore, doctors.length]);
@@ -324,11 +349,8 @@ const FindDoctor = () => {
       return null;
     }
 
-    const token = localStorage.getItem('token');
     const response = await fetch(`/api/doctors/search?${queryParams}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      credentials: 'omit' // Don't send cookies/session data
     });
 
     if (!response.ok) {
@@ -358,24 +380,28 @@ const FindDoctor = () => {
 
   // Initial search function for location
   const getCurrentLocation = () => {
+    console.log('📍 getCurrentLocation called');
     
     const currentParams = {
       radius: locationSearchParams.radius,
       specialty: locationSearchParams.specialty
     };
     
+    console.log('📍 Current params:', currentParams);
+    console.log('📍 Previous params:', prevLocationParams);
+    console.log('📍 User location:', userLocation);
     
     // Only skip if we have previous params AND they match AND we have location
     if (prevLocationParams && 
         prevLocationParams.radius === currentParams.radius && 
         prevLocationParams.specialty === currentParams.specialty &&
         userLocation && locationSearchParams.currentLocation) {
+      console.log('🛑 getCurrentLocation skipped - same params');
       return;
     }
 
-
+    console.log('✅ getCurrentLocation starting - setting loading to true');
     setLoading(true);
-    setLocationLoading(true);
     setError(null);
     setLocationError(null);
     resetPagination();
@@ -383,12 +409,11 @@ const FindDoctor = () => {
     if (!navigator.geolocation) {
       showToast('Geolocation is not supported by this browser', 'error');
       setLoading(false);
-      setLocationLoading(false);
       return;
     }
 
     const handleLocationSuccess = async (position) => {
-      console.log('Got position:', position.coords);
+      console.log('📍 Got position:', position.coords);
       const location = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
@@ -397,33 +422,49 @@ const FindDoctor = () => {
       setLocationSearchParams(prev => ({ ...prev, currentLocation: location }));
                   
       try {
-        console.log('Making API call with location:', location);
+        console.log('📡 Making API call with location:', location);
         const initialResult = await fetchDoctorsPage(0, location);
-        console.log('Initial API result:', initialResult);
+        console.log('📡 Initial API result:', initialResult);
         
         if (initialResult && initialResult.doctors) {
-          console.log('Setting doctors:', initialResult.doctors.length, 'doctors');
+          console.log('✅ Setting doctors:', initialResult.doctors.length, 'doctors');
           setDoctors(initialResult.doctors);
           setPrevLocationParams(currentParams);
-          console.log('Successfully set initial data');
+          console.log('✅ Successfully set initial data');
         } else {
-          console.log('No doctors in initial result or result is null');
+          console.log('📭 No doctors in initial result or result is null');
         }
       } catch (err) {
-        console.error('Error searching doctors:', err);
+        console.error('❌ Error searching doctors:', err);
         setError(err.message || 'Failed to search doctors. Please try again.');
       } finally {
-        console.log('Setting loading states to false');
+        console.log('🏁 Setting loading to false');
         setLoading(false);
-        setLocationLoading(false);
       }
     };
 
     const handleLocationError = (error) => {
       console.error('Geolocation error:', error);
-      showToast('Error during operation. Please try after some time', 'error');
+      
+      let errorMessage = 'Unable to get your location. ';
+      
+      switch (error.code) {
+        case 1: // PERMISSION_DENIED
+          errorMessage += 'Location access denied. Please enable location access in your browser settings or use pincode/city search.';
+          break;
+        case 2: // POSITION_UNAVAILABLE
+          errorMessage += 'Location services unavailable. This might be due to poor GPS signal, network issues, or location services being disabled. Please try pincode or city search instead.';
+          break;
+        case 3: // TIMEOUT
+          errorMessage += 'Location request timed out. Please try again or use pincode/city search.';
+          break;
+        default:
+          errorMessage += 'Please try pincode or city search instead.';
+      }
+      
+      showToast(errorMessage, 'error');
+      setLocationError(errorMessage);
       setLoading(false);
-      setLocationLoading(false);
     };
 
     const tryHighAccuracy = () => {
@@ -432,11 +473,17 @@ const FindDoctor = () => {
         handleLocationSuccess,
         (error) => {
           console.log('High accuracy failed, trying low accuracy...', error);
-          tryLowAccuracy();
+          if (error.code === 1) {
+            // Permission denied - don't try low accuracy
+            handleLocationError(error);
+          } else {
+            // For other errors (timeout, unavailable), try low accuracy
+            tryLowAccuracy();
+          }
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
+          timeout: 10000, // Increased timeout
           maximumAge: 60000
         }
       );
@@ -446,10 +493,13 @@ const FindDoctor = () => {
       console.log('Trying low accuracy location...');
       navigator.geolocation.getCurrentPosition(
         handleLocationSuccess,
-        handleLocationError,
+        (error) => {
+          console.log('Low accuracy also failed:', error);
+          handleLocationError(error);
+        },
         {
           enableHighAccuracy: false,
-          timeout: 5000,
+          timeout: 15000, // Increased timeout for low accuracy
           maximumAge: 300000
         }
       );
@@ -460,7 +510,6 @@ const FindDoctor = () => {
       if (permissionStatus.state === 'denied') {
         showToast('Location access denied by user. Please enable location access in your browser settings or use pincode search.', 'error');
         setLoading(false);
-        setLocationLoading(false);
         return;
       }
       tryHighAccuracy();
@@ -486,21 +535,18 @@ const FindDoctor = () => {
     }
 
     setLoading(true);
-    setPincodeLoading(true);
     setError(null);
     resetPagination();
 
     if (!pincodeSearchParams.pincode) {
       setError('Please enter a pincode');
       setLoading(false);
-      setPincodeLoading(false);
       return;
     }
 
     if (!/^\d{6}$/.test(pincodeSearchParams.pincode)) {
       setError('Please enter a valid 6-digit pincode');
       setLoading(false);
-      setPincodeLoading(false);
       return;
     }
 
@@ -517,7 +563,6 @@ const FindDoctor = () => {
       showToast('Error during operation. Please try after some time', 'error');
     } finally {
       setLoading(false);
-      setPincodeLoading(false);
     }
   };
 
@@ -537,14 +582,12 @@ const FindDoctor = () => {
     }
 
     setLoading(true);
-    setCityLoading(true);
     setError(null);
     resetPagination();
 
     if (!citySearchParams.city) {
       setError('Please enter a city');
       setLoading(false);
-      setCityLoading(false);
       return;
     }
 
@@ -558,9 +601,7 @@ const FindDoctor = () => {
       });
 
       const response = await fetch(`/api/doctors/search?${queryParams}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        credentials: 'omit' // Don't send cookies/session data
       });
 
       if (!response.ok) {
@@ -581,7 +622,6 @@ const FindDoctor = () => {
       showToast('Error during operation. Please try after some time', 'error');
     } finally {
       setLoading(false);
-      setCityLoading(false);
     }
   };
 
@@ -595,6 +635,31 @@ const FindDoctor = () => {
     setPrevPincodeParams(null);
     setPrevCityParams(null);
     resetPagination();
+    
+    // Reset search parameters for each tab
+    setLocationSearchParams({
+      radius: 10,
+      specialty: '',
+      currentLocation: null
+    });
+    setPincodeSearchParams({
+      pincode: '',
+      radius: 10,
+      specialty: ''
+    });
+    setCitySearchParams({
+      city: '',
+      state: '',
+      specialty: ''
+    });
+    
+    // Reset loading states
+    setLoading(false);
+    
+    // Clear user location for location tab
+    if (tab !== 'location') {
+      setUserLocation(null);
+    }
   };
 
   // Menu navigation
@@ -621,16 +686,27 @@ const FindDoctor = () => {
     }
   };
 
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
-    }
-  };
-
   // Booking modal functions
   const handleOpenBookingModal = (doctor) => {
+    console.log('🎯 handleOpenBookingModal called for doctor:', doctor.fullName);
+    console.log('🎯 User auth status:', { isAuthenticated: tokenService.isAuthenticated(), userRole: user?.role });
+    
+    // Check if user is authenticated and is a PATIENT
+    if (!tokenService.isAuthenticated() || user?.role !== 'PATIENT') {
+      console.log('🎯 User not authenticated or not PATIENT, showing login modal');
+      // Store the doctor for later booking
+      const doctorWithId = {
+        ...doctor,
+        id: doctor._id || doctor.id
+      };
+      setSelectedDoctor(doctorWithId);
+      
+      // Show login modal with callback to open booking modal after login
+      setLoginModalOpen(true);
+      return;
+    }
+    
+    console.log('🎯 User authenticated and is PATIENT, opening booking modal directly');
     const doctorWithId = {
       ...doctor,
       id: doctor._id || doctor.id
@@ -642,6 +718,15 @@ const FindDoctor = () => {
   const handleCloseBookingModal = () => {
     setBookingModalOpen(false);
     setSelectedDoctor(null);
+  };
+
+  const handleLoginSuccess = () => {
+    // After successful login, open the booking modal if a doctor is selected
+    console.log('🎯 Login success callback - selectedDoctor:', selectedDoctor);
+    if (selectedDoctor) {
+      console.log('🎯 Opening booking modal for doctor:', selectedDoctor.fullName);
+      setBookingModalOpen(true);
+    }
   };
 
   const handleBookAppointment = (date, slot, appointmentData) => {
@@ -737,7 +822,7 @@ const FindDoctor = () => {
               '🟢 ' + doctor.availableSlots + ' slots available' : '🔴 All slots booked today'}
             </div>
             <button 
-              className="dark-bg-btn"
+              className="plain-btn plain-btn sec-submit-btn"
               onClick={() => handleOpenBookingModal(doctor)}
             >
               Book Online Visit
@@ -788,17 +873,14 @@ const FindDoctor = () => {
       </div>
       
       <button 
-        className="auth-button"
+        className="plain-btn submit"
         onClick={getCurrentLocation}
-        disabled={loading || locationLoading}
+        disabled={loading}
       >
-        {locationLoading ? (
-          <div className="button-loader">
-            <div className="spinner"></div>
-            <span>Getting Location...</span>
-          </div>
-        ) : 'Find Doctors Near Me'}
+        {loading ? 'Searching...' : 'Find Doctors Near Me'}
       </button>
+      
+      
     </div>
   );
 
@@ -855,16 +937,11 @@ const FindDoctor = () => {
       </div>
       
       <button 
-        className="auth-button"
+        className="plain-btn submit"
         onClick={searchDoctorsByPincode}
-        disabled={loading || pincodeLoading}
+        disabled={loading}
       >
-        {pincodeLoading ? (
-          <div className="button-loader">
-            <div className="spinner"></div>
-            <span>Searching...</span>
-          </div>
-        ) : 'Find Doctors'}
+        {loading ? 'Searching...' : 'Find Doctors'}
       </button>
     </div>
   );
@@ -906,16 +983,11 @@ const FindDoctor = () => {
       </div>
       
       <button 
-        className="auth-button"
+        className="plain-btn submit"
         onClick={searchDoctorsByCity}
-        disabled={loading || cityLoading}
+        disabled={loading}
       >
-        {cityLoading ? (
-          <div className="button-loader">
-            <div className="spinner"></div>
-            <span>Searching...</span>
-          </div>
-        ) : 'Find Doctors'}
+        {loading ? 'Searching...' : 'Find Doctors'}
       </button>
     </div>
   );
@@ -934,15 +1006,30 @@ const FindDoctor = () => {
     }
   };
 
+  // Check if user is authenticated and is a patient
+  const isAuthenticatedPatient = !!user && user.role === 'PATIENT';
+  
+  // Debug logging for header condition
+  console.log('🔍 Header Debug - user:', user, 'isAuthenticatedPatient:', isAuthenticatedPatient);
+
   return (
     <div>
-      {/* Common Header */}
-      <CommonHeader 
-        user={userInfo}
-        activeMenuItem="doctors"
-        onMenuClick={handleMenuClick}
-        onLogout={handleLogout}
-      />
+      {/* Conditional Header */}
+      {isAuthenticatedPatient ? (
+        <CommonHeader 
+          user={user}
+          activeMenuItem="doctors"
+          onMenuClick={handleMenuClick}
+          onLogout={handleLogout}
+          menuItems={[
+            { id: 'dashboard', label: 'Dashboard' },
+            { id: 'appointments', label: 'Appointments' },
+            { id: 'billing', label: 'Billing' }
+          ]}
+        />
+      ) : (
+        <MinimalHeader />
+      )}
 
       <div className="find-doctor-container">
         {/* Page Header */}
@@ -983,49 +1070,73 @@ const FindDoctor = () => {
           {locationError && (
             <div className="error-container">
               <div className="error-message">{locationError}</div>
-              <button className="retry-btn" onClick={getCurrentLocation}>
+              <button className="plain-btn remove" onClick={getCurrentLocation}>
                 Try Again
               </button>
             </div>
           )}
-
-          {/* Initial State - No search performed */}
-          {!loading && !error && doctors.length === 0 && !locationSearchParams.currentLocation && !pincodeSearchParams.pincode && !citySearchParams.city && !locationError && (
-            <div className="empty-state">
-              <div className="empty-title">Ready to Find Your Doctor?</div>
-              <div className="empty-message">
-                Use the search options above to find qualified healthcare professionals in your area.
-              </div>
-              <div className="empty-suggestion">
-                • Enter your pincode for area-specific search<br/>
-                • Filter by medical specialty for targeted results<br/>
-                • Allow location access for nearby doctors<br/>
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* Results Content */}
-        {(loading || doctors.length > 0 || (locationSearchParams.currentLocation || pincodeSearchParams.pincode || citySearchParams.city)) && (
-          <>
-            {/* Results Header */}
-            {doctors.length > 0 && (
-              <div className="results-header">
-                
-              </div>
-            )}
+        {/* Debug logging */}
+        {console.log('🎨 RENDER - loading:', loading, 'loadingMore:', loadingMore, 'doctors.length:', doctors.length, 'hasMore:', hasMore)}
 
-            {doctors.length > 0 && (
-            <InfiniteScroll
-              items={doctors}
-              hasMore={hasMore && doctors.length >= PAGE_SIZE}
-              loading={loadingMore}
-              onLoadMore={loadMoreDoctors}
-              renderItem={renderDoctorCard}
-              className="doctors-list"
-              pageSize={PAGE_SIZE}
-            />
-            )}
+        {/* Main Loading State - Prominent Position */}
+        {loading && (
+          <>
+            {console.log('🎨 RENDERING main loader')}
+            <div className="main-loading-container">
+              <div className="loading-spinner">
+                <div className="spinner"></div>
+              </div>
+              <div className="loading-text">Searching for doctors...</div>
+            </div>
+          </>
+        )}
+
+        {/* Results Section - Only show when not loading */}
+        {!loading && (
+          <>
+            {console.log('🎨 RENDERING results section')}
+            <div className="results-section">
+              {/* Results Content */}
+              {doctors.length > 0 && (
+                <>
+                  {console.log('🎨 RENDERING doctors list with InfiniteScroll')}
+                  {/* Results Header */}
+                  <div className="results-header">
+                    
+                  </div>
+
+                  <InfiniteScroll
+                    items={doctors}
+                    hasMore={hasMore && doctors.length >= PAGE_SIZE}
+                    loading={loadingMore && !loading}
+                    onLoadMore={loadMoreDoctors}
+                    renderItem={renderDoctorCard}
+                    className="doctors-list"
+                    pageSize={PAGE_SIZE}
+                  />
+                </>
+              )}
+
+              {/* Initial State - No search performed */}
+              {!error && doctors.length === 0 && !locationSearchParams.currentLocation && !pincodeSearchParams.pincode && !citySearchParams.city && !locationError && (
+                <>
+                  {console.log('🎨 RENDERING empty state')}
+                  <div className="empty-state">
+                    <div className="empty-title">Ready to Find Your Doctor?</div>
+                    <div className="empty-message">
+                      Use the search options above to find qualified healthcare professionals in your area.
+                    </div>
+                    <div className="empty-suggestion">
+                      • Enter your pincode for area-specific search<br/>
+                      • Filter by medical specialty for targeted results<br/>
+                      • Allow location access for nearby doctors<br/>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </>
         )}
       </div>
@@ -1035,6 +1146,14 @@ const FindDoctor = () => {
         onClose={handleCloseBookingModal}
         doctor={selectedDoctor}
         onBook={handleBookAppointment}
+      />
+
+      <LoginModal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        userType="PATIENT"
+        redirectUrl="/patient/find-doctor"
+        onLoginSuccess={handleLoginSuccess}
       />
     </div>
   );

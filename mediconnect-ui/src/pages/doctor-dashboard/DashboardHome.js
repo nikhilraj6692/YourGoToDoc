@@ -55,7 +55,7 @@ const DashboardHome = ({ stats, upcomingAppointments, formatDate }) => (
     <div className="dh-grid">
       {/* Appointments Section */}
       <div className="dh-appointments">
-        <div className="dh-section-header">
+        <div className="section-header dh-section-header">
           <h3>Upcoming Appointments</h3>
           <button className="dh-view-all">View All</button>
         </div>
@@ -113,7 +113,7 @@ const DashboardHome = ({ stats, upcomingAppointments, formatDate }) => (
 
       {/* Quick Actions Section */}
       <div className="dh-quick-actions">
-        <div className="dh-section-header">
+        <div className="section-header dh-section-header">
           <h3>Quick Actions</h3>
         </div>
 
@@ -151,7 +151,7 @@ const DashboardHome = ({ stats, upcomingAppointments, formatDate }) => (
 
     {/* Recent Activity Section */}
     <div className="dh-recent-activity">
-      <div className="dh-section-header">
+      <div className="section-header dh-section-header">
         <h3>Recent Activity</h3>
         <button className="dh-view-all">View All</button>
       </div>

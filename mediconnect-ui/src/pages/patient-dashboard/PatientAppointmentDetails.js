@@ -5,6 +5,8 @@ import { useUser } from '../../context/UserContext';
 import { useToast } from '../../context/ToastContext';
 import ChatSection from '../../components/ChatSection';
 import CommonHeader from '../../components/CommonHeader';
+import tokenService from '../../services/tokenService';
+import { handleLogout } from '../../utils/logout';
 
 const PatientAppointmentDetails = () => {
   const { id } = useParams();
@@ -43,12 +45,7 @@ const PatientAppointmentDetails = () => {
         setAppointmentLoading(true);
         
         // Fetch appointment data from API
-        const appointmentResponse = await fetch(`/api/appointments/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          signal: abortController.signal
-        });
+        const appointmentResponse = await tokenService.authenticatedFetch(`/api/appointments/${id}`);
         
         if (!appointmentResponse.ok) {
           throw new Error('Failed to fetch appointment data');
@@ -58,12 +55,7 @@ const PatientAppointmentDetails = () => {
         console.log('Fetched appointment data:', appointmentData);
         
         // Fetch appointment details from the new API
-        const detailsResponse = await fetch(`/api/appointment-details/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          signal: abortController.signal
-        });
+        const detailsResponse = await tokenService.authenticatedFetch(`/api/appointment-details/${id}`);
         
         let appointmentDetails = null;
         if (detailsResponse.ok) {
@@ -173,14 +165,6 @@ const PatientAppointmentDetails = () => {
     }
   };
 
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      navigate('/login');
-    }
-  };
-
   const handleBackToAppointments = () => {
     navigate('/patient/appointments');
   };
@@ -266,13 +250,7 @@ const PatientAppointmentDetails = () => {
     const fetchUserProfile = async () => {
       try {
         // Use existing profile API endpoint
-        const response = await fetch('/api/profile', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
+        const response = await tokenService.authenticatedFetch('/api/profile');
         
         if (response.ok) {
           const userData = await response.json();
@@ -433,11 +411,10 @@ const PatientAppointmentDetails = () => {
       };
 
       // Submit to appointment details API
-      const response = await fetch(`/api/appointment-details/${id}`, {
+      const response = await tokenService.authenticatedFetch(`/api/appointment-details/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(appointmentDetailsData)
       });
@@ -789,84 +766,78 @@ const PatientAppointmentDetails = () => {
               <div className="form-grid">
                 <div className="form-group">
                   <label>Full Name *</label>
-                  <div className="input-with-icon">
-                    <input
-                      type="text"
-                      value={patientForm.fullName}
-                      placeholder="Full name"
-                      disabled
-                      style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
-                      title="To change basic information, please update your profile"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={patientForm.fullName}
+                    placeholder="Full name"
+                    disabled
+                    style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
+                    title="To change basic information, please update your profile"
+                  />
                 </div>
                 
                 <div className="form-group">
                   <label>Date of Birth *</label>
-                  <div className="input-with-icon">
-                    <input
-                      type="date"
-                      value={patientForm.dateOfBirth}
-                      disabled
-                      style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
-                      title="To change basic information, please update your profile"
-                    />
-                  </div>
+                  <input
+                    type="date"
+                    className="form-input"
+                    value={patientForm.dateOfBirth}
+                    disabled
+                    style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
+                    title="To change basic information, please update your profile"
+                  />
                 </div>
                 
                 <div className="form-group">
                   <label>Gender *</label>
-                  <div className="input-with-icon">
-                    <select
-                      value={patientForm.gender}
-                      disabled
-                      style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
-                      title="To change basic information, please update your profile"
-                    >
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
+                  <select
+                    className="form-input"
+                    value={patientForm.gender}
+                    disabled
+                    style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
+                    title="To change basic information, please update your profile"
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
                 
                 <div className="form-group">
                   <label>Phone Number *</label>
-                  <div className="input-with-icon">
-                    <input
-                      type="tel"
-                      value={patientForm.phoneNumber}
-                      onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                      placeholder="Enter your phone number"
-                    />
-                  </div>
+                  <input
+                    type="tel"
+                    className="form-input"
+                    value={patientForm.phoneNumber}
+                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                    placeholder="Enter your phone number"
+                  />
                 </div>
                 
                 <div className="form-group">
                   <label>Email Address *</label>
-                  <div className="input-with-icon">
-                    <input
-                      type="email"
-                      value={patientForm.email}
-                      placeholder="Email address"
-                      disabled
-                      style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
-                      title="To change basic information, please update your profile"
-                    />
-                  </div>
+                  <input
+                    type="email"
+                    className="form-input"
+                    value={patientForm.email}
+                    placeholder="Email address"
+                    disabled
+                    style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }}
+                    title="To change basic information, please update your profile"
+                  />
                 </div>
                 
                 
                 <div className="form-group">
                   <label>Emergency Contact</label>
-                  <div className="input-with-icon">
-                    <input
-                      type="tel"
-                      value={patientForm.emergencyPhone}
-                      onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
-                      placeholder="Emergency contact phone"
-                    />
-                  </div>
+                  <input
+                    type="tel"
+                    className="form-input"
+                    value={patientForm.emergencyPhone}
+                    onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
+                    placeholder="Emergency contact phone"
+                  />
                 </div>
               </div>
               <div style={{ 
@@ -888,14 +859,13 @@ const PatientAppointmentDetails = () => {
               
               <div className="form-group">
                 <label>Chief Complaint *</label>
-                <div className="input-with-icon">
-                  <textarea
-                    value={patientForm.chiefComplaint}
-                    onChange={(e) => handleInputChange('chiefComplaint', e.target.value)}
-                    placeholder="Describe your main concern or reason for this appointment"
-                    rows="3"
-                  />
-                </div>
+                <textarea
+                  className="form-input"
+                  value={patientForm.chiefComplaint}
+                  onChange={(e) => handleInputChange('chiefComplaint', e.target.value)}
+                  placeholder="Describe your main concern or reason for this appointment"
+                  rows="3"
+                />
               </div>
               
               <div className="form-group">
@@ -968,20 +938,19 @@ const PatientAppointmentDetails = () => {
               <div className="form-grid">
                 <div className="form-group">
                   <label>How long have you had these symptoms? *</label>
-                  <div className="input-with-icon">
-                    <select
-                      value={patientForm.symptomDuration}
-                      onChange={(e) => handleInputChange('symptomDuration', e.target.value)}
-                    >
-                      <option value="">Select duration</option>
-                      <option value="less-than-day">Less than a day</option>
-                      <option value="1-3-days">1-3 days</option>
-                      <option value="4-7-days">4-7 days</option>
-                      <option value="1-2-weeks">1-2 weeks</option>
-                      <option value="2-4-weeks">2-4 weeks</option>
-                      <option value="more-than-month">More than a month</option>
-                    </select>
-                  </div>
+                  <select
+                    className="form-input"
+                    value={patientForm.symptomDuration}
+                    onChange={(e) => handleInputChange('symptomDuration', e.target.value)}
+                  >
+                    <option value="">Select duration</option>
+                    <option value="less-than-day">Less than a day</option>
+                    <option value="1-3-days">1-3 days</option>
+                    <option value="4-7-days">4-7 days</option>
+                    <option value="1-2-weeks">1-2 weeks</option>
+                    <option value="2-4-weeks">2-4 weeks</option>
+                    <option value="more-than-month">More than a month</option>
+                  </select>
                 </div>
                 
                 <div className="form-group">
@@ -1007,26 +976,24 @@ const PatientAppointmentDetails = () => {
               <div className="form-grid">
                 <div className="form-group">
                   <label>Known Allergies</label>
-                  <div className="input-with-icon">
-                    <textarea
-                      value={patientForm.allergies}
-                      onChange={(e) => handleInputChange('allergies', e.target.value)}
-                      placeholder="List any allergies to medications, foods, or other substances"
-                      rows="2"
-                    />
-                  </div>
+                  <textarea
+                    className="form-input"
+                    value={patientForm.allergies}
+                    onChange={(e) => handleInputChange('allergies', e.target.value)}
+                    placeholder="List any allergies to medications, foods, or other substances"
+                    rows="2"
+                  />
                 </div>
                 
                 <div className="form-group">
                   <label>Current Medications</label>
-                  <div className="input-with-icon">
-                    <textarea
-                      value={patientForm.currentMedications}
-                      onChange={(e) => handleInputChange('currentMedications', e.target.value)}
-                      placeholder="List all medications you are currently taking"
-                      rows="2"
-                    />
-                  </div>
+                  <textarea
+                    className="form-input"
+                    value={patientForm.currentMedications}
+                    onChange={(e) => handleInputChange('currentMedications', e.target.value)}
+                    placeholder="List all medications you are currently taking"
+                    rows="2"
+                  />
                 </div>
               </div>
             </div>
@@ -1036,14 +1003,13 @@ const PatientAppointmentDetails = () => {
               <h3 className="section-title">Additional Information</h3>
               <div className="form-group">
                 <label>Additional Notes</label>
-                <div className="input-with-icon">
-                  <textarea
-                    value={patientForm.additionalNotes}
-                    onChange={(e) => handleInputChange('additionalNotes', e.target.value)}
-                    placeholder="Any additional information you'd like to share with the doctor"
-                    rows="3"
-                  />
-                </div>
+                <textarea
+                  className="form-input"
+                  value={patientForm.additionalNotes}
+                  onChange={(e) => handleInputChange('additionalNotes', e.target.value)}
+                  placeholder="Any additional information you'd like to share with the doctor"
+                  rows="3"
+                />
               </div>
             </div>
           </div>

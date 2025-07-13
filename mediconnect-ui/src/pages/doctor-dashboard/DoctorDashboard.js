@@ -9,6 +9,8 @@ import Messages from './Messages';
 import Schedule from './Schedule';
 import AddressMapSelector from '../../components/AddressMapSelector';
 import DoctorLayout from './DoctorLayout';
+import tokenService from '../../services/tokenService';
+import { handleLogout } from '../../utils/logout';
 
 const menuOptions = [
   { label: 'Dashboard', id: 'dashboard' },
@@ -122,6 +124,7 @@ const DoctorDashboard = () => {
   const mapContainerRef = useRef(null);
 
   useEffect(() => {
+    console.log('🏥 DoctorDashboard component mounted');
     fetchProfile();
   }, []);
 
@@ -528,22 +531,23 @@ const DoctorDashboard = () => {
 
   const fetchProfile = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
+      console.log('📡 Fetching doctor profile...');
+      
+      if (!tokenService.isAuthenticated()) {
+        console.log('❌ No token found, redirecting to login');
         navigate('/login');
         return;
       }
 
-      const response = await fetch('/api/doctors/profile', {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await tokenService.authenticatedFetch('/api/doctors/profile');
+      console.log('📥 Profile response status:', response.status);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch profile');
       }
+      
       const data = await response.json();
+      console.log('✅ Profile data received:', data);
       setProfile(data);
       setIsVerified(data.verificationStatus === 'VERIFIED');
       
@@ -575,11 +579,7 @@ const DoctorDashboard = () => {
 
       // Load profile photo if exists
       if (data.profilePhotoId) {
-        const photoResponse = await fetch(`/api/doctors/documents/PROFILE_PHOTO?documentId=${encodeURIComponent(data.profilePhotoId)}`, {
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        });
+        const photoResponse = await tokenService.authenticatedFetch(`/api/doctors/documents/PROFILE_PHOTO?documentId=${encodeURIComponent(data.profilePhotoId)}`);
         if (photoResponse.ok) {
           const blob = await photoResponse.blob();
           const imageUrl = URL.createObjectURL(blob);
@@ -589,6 +589,7 @@ const DoctorDashboard = () => {
 
       setLoading(false);
     } catch (err) {
+      console.error('💥 Profile fetch error:', err);
       setError(err.message);
       setLoading(false);
     }
@@ -620,13 +621,7 @@ const DoctorDashboard = () => {
     const pincode = formData.address.pincode;
     if (pincode && pincode.length === 6) {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`/api/location/pincode/${pincode}`, {
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-          }
-        });
+        const response = await tokenService.authenticatedFetch(`/api/location/pincode/${pincode}`);
         if (response.ok) {
           const addressData = await response.json();
           setFormData(prev => ({
@@ -663,13 +658,10 @@ const DoctorDashboard = () => {
     const formDataData = new FormData();
     formDataData.append('file', file);
     formDataData.append('documentType', selectedDocType);
-    const token = localStorage.getItem('token');
+    
     try {
-      const response = await fetch('/api/doctors/documents', {
+      const response = await tokenService.authenticatedFetch('/api/doctors/documents', {
         method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + token
-        },
         body: formDataData
       });
       if (response.ok) {
@@ -696,23 +688,16 @@ const DoctorDashboard = () => {
     const formDataData = new FormData();
     formDataData.append('file', file);
     formDataData.append('documentType', 'PROFILE_PHOTO');
-    const token = localStorage.getItem('token');
+    
     try {
-      const uploadResponse = await fetch('/api/doctors/documents', {
+      const uploadResponse = await tokenService.authenticatedFetch('/api/doctors/documents', {
         method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + token
-        },
         body: formDataData
       });
       if (uploadResponse.ok) {
         const documentId = await uploadResponse.text();
         // Download the file using the documentId
-        const downloadResponse = await fetch(`/api/doctors/documents/PROFILE_PHOTO?documentId=${encodeURIComponent(documentId)}`, {
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        });
+        const downloadResponse = await tokenService.authenticatedFetch(`/api/doctors/documents/PROFILE_PHOTO?documentId=${encodeURIComponent(documentId)}`);
         if (downloadResponse.ok) {
           const blob = await downloadResponse.blob();
           const imageUrl = URL.createObjectURL(blob);
@@ -740,8 +725,6 @@ const DoctorDashboard = () => {
     setSuccess(null);
 
     try {
-      const token = localStorage.getItem('token');
-      
       // Prepare the data with location coordinates
       const profileData = {
         ...formData,
@@ -754,10 +737,9 @@ const DoctorDashboard = () => {
         }
       };
 
-      const response = await fetch('/api/doctors/profile', {
+      const response = await tokenService.authenticatedFetch('/api/doctors/profile', {
         method: 'PUT',
         headers: {
-          'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(profileData),
@@ -771,12 +753,6 @@ const DoctorDashboard = () => {
     } catch (err) {
       setError(err.message);
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
   };
 
   if (loading) {
@@ -914,12 +890,11 @@ const DoctorDashboard = () => {
                     <li>Practice Certificate</li>
                   </ul>
                   
-                  <div className="input-with-icon" style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className="input-icon">📄</span>
+                  <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <select
                       value={selectedDocType}
                       onChange={e => setSelectedDocType(e.target.value)}
-                      className="dropdown-select"
+                      className="form-input dropdown-select"
                       style={{ width: '100%' }}
                     >
                       <option value="LICENSE">Medical License</option>
@@ -932,7 +907,7 @@ const DoctorDashboard = () => {
                         className="file-upload-btn"
                         style={{ height: '40.5px', minWidth: '110px', fontSize: '1rem', background: '#3182ce', marginLeft: '0.5rem' }}
                         onClick={async () => {
-                          const token = localStorage.getItem('token');
+                          const token = tokenService.getToken();
                           const res = await fetch(`/api/doctors/documents/${selectedDocType}?documentId=${getSelectedDocument().documentId}`, {
                             headers: { 'Authorization': 'Bearer ' + token }
                           });
@@ -987,31 +962,27 @@ const DoctorDashboard = () => {
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="fullName">Full Name</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">👤</span>
-                      <input
-                        type="text"
-                        id="fullName"
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      id="fullName"
+                      name="fullName"
+                      className="form-input"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
+                      required
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="phoneNumber">Phone Number</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">📱</span>
-                      <input
-                        type="tel"
-                        id="phoneNumber"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
+                    <input
+                      type="tel"
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      className="form-input"
+                      value={formData.phoneNumber}
+                      onChange={handleInputChange}
+                      required
+                    />
                   </div>
                 </div>
 
@@ -1033,52 +1004,46 @@ const DoctorDashboard = () => {
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="specialization">Specialization</label>
-                    <div className="input-with-icon">
-                      <select
-                        id="specialization"
-                        name="specialization"
-                        value={formData.specialization}
-                        onChange={handleInputChange}
-                        required
-                        className="dropdown-select"
-                      >
-                        {specializationOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.value && specializationIcons[option.value] ? specializationIcons[option.value] + ' ' : ''}{option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                    <select
+                      id="specialization"
+                      name="specialization"
+                      className="form-input dropdown-select"
+                      value={formData.specialization}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      {specializationOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.value && specializationIcons[option.value] ? specializationIcons[option.value] + ' ' : ''}{option.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="form-group">
                     <label htmlFor="yearsOfExperience">Years of Experience</label>
-                    <div className="input-with-icon">
-                      <span className="input-icon">⏱️</span>
-                      <input
-                        type="number"
-                        id="yearsOfExperience"
-                        name="yearsOfExperience"
-                        value={formData.yearsOfExperience}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
+                    <input
+                      type="number"
+                      id="yearsOfExperience"
+                      name="yearsOfExperience"
+                      className="form-input"
+                      value={formData.yearsOfExperience}
+                      onChange={handleInputChange}
+                      required
+                    />
                   </div>
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="licenseNumber">License Number</label>
-                  <div className="input-with-icon">
-                    <span className="input-icon">📋</span>
-                    <input
-                      type="text"
-                      id="licenseNumber"
-                      name="licenseNumber"
-                      value={formData.licenseNumber}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    id="licenseNumber"
+                    name="licenseNumber"
+                    className="form-input"
+                    value={formData.licenseNumber}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </div>
 
                 <div className="form-group full-width">
@@ -1096,7 +1061,7 @@ const DoctorDashboard = () => {
 
                 <div className="form-actions">
                   {profile && profile.verificationStatus !== 'REJECTED' && (
-                    <button type="submit" className="auth-button">
+                    <button type="submit" className="plain-btn submit">
                       Submit for Verification
                     </button>
                   )}

@@ -57,7 +57,7 @@ const InfiniteScroll = ({
   useEffect(() => {
     const options = {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '-100px 0px 0px 0px', // Trigger when last item is 100px past the bottom
       threshold: 0.1
     };
 
@@ -93,6 +93,8 @@ const InfiniteScroll = ({
 
   return (
     <div className={`infinite-scroll-container ${className}`}>
+      {console.log('🔄 InfiniteScroll RENDER - loading:', loading, 'items.length:', items.length, 'hasMore:', hasMore)}
+      
       {/* Items List */}
       <div className="infinite-scroll-items">
         {items.map((item, index) => (
@@ -104,10 +106,13 @@ const InfiniteScroll = ({
 
       {/* Loading Indicator */}
       {loading && (
-        <div className="infinite-scroll-loading">
-          <div className="spinner"></div>
-          <span>{loadingMessage}</span>
-        </div>
+        <>
+          {console.log('🔄 InfiniteScroll RENDERING loading indicator')}
+          <div className="infinite-scroll-loading">
+            <div className="spinner"></div>
+            <span>{loadingMessage}</span>
+          </div>
+        </>
       )}
 
       {/* End Message */}

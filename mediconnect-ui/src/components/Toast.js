@@ -9,8 +9,7 @@ const Toast = ({
   duration = 4000,
   showProgress = true 
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
-
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     if (duration > 0) {
@@ -37,7 +36,6 @@ const Toast = ({
   return (
     <div className={`toast ${type}`}>
       <div className="toast-content">
-    
         <div className="toast-message">
           {title && <div className="toast-title">{title}</div>}
           <div className={title ? "toast-description" : ""}>{message}</div>
@@ -85,7 +83,7 @@ export const useToast = () => {
     const id = Date.now() + Math.random();
     const newToast = {
       id,
-      type: 'info',
+      type: 'success', // Changed default from 'info' to 'success'
       duration: 4000,
       showProgress: true,
       ...toastData
@@ -116,20 +114,6 @@ export const useToast = () => {
     return addToast({ ...options, message, type: 'warning' });
   };
 
-  const showInfo = (message, options = {}) => {
-    return addToast({ ...options, message, type: 'info' });
-  };
-
-  const showLoading = (message, options = {}) => {
-    return addToast({ 
-      ...options, 
-      message, 
-      type: 'loading', 
-      duration: 0, // Loading toasts don't auto-dismiss
-      showProgress: false 
-    });
-  };
-
   return {
     toasts,
     addToast,
@@ -137,9 +121,7 @@ export const useToast = () => {
     removeAllToasts,
     showSuccess,
     showError,
-    showWarning,
-    showInfo,
-    showLoading
+    showWarning
   };
 };
 
