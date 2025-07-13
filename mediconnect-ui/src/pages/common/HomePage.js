@@ -85,7 +85,7 @@ function HomePage() {
         </div>
         
         <div className="start-booking-container">
-          <Link to="/signup" className="plain-btn start-booking-btn">Start Booking</Link>
+          <Link to="/patient/find-doctor" className="plain-btn sec-submit-btn">Start Booking</Link>
         </div>
       </section>
 

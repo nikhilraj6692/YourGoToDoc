@@ -150,7 +150,7 @@
   display: flex;
   gap: 1.5rem;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .booking-modal .legend-item {
@@ -159,12 +159,30 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   color: #6b7280;
+  background: none !important;
+  border: none;
+  transition: none;
+  cursor: default;
 }
+
+.booking-modal .legend-item:hover {
+  background: none !important;
+  border: none !important;
+  transition: none;
+  color: #6b7280;
+} 
 
 .booking-modal .legend-dot {
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
+}
+
+.booking-modal .legend-dot:hover {
+  background: inherit !important;
+  border: none;
+  transition: none;
+  transform: none;
 }
 
 .booking-modal .legend-dot.available {

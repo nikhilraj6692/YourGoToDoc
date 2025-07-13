@@ -265,7 +265,7 @@
 /* Steps Section */
 .steps-section {
   background: white;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   margin: -3.4rem auto 4rem;
   max-width: 1200px;
   padding: 3rem 2rem;
@@ -302,7 +302,7 @@
 
 .step-card {
   background: #f8f9fa;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   padding: 2rem 1.5rem;
   flex: 1;
   max-width: 300px;
@@ -310,15 +310,12 @@
   transition: transform 0.3s ease;
 }
 
-.step-card:hover {
-  transform: translateY(-5px);
-}
 
 .step-icon {
   margin-bottom: 1.5rem;
   width: 64px;
   height: 64px;
-  background-color: rgba(182, 255, 60, 0.2);
+  background-color: #25ae92;
   border-radius: 50%;
   display: flex;
   align-items: center;

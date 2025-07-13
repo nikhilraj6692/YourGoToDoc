@@ -13,6 +13,8 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 - **UI/UX**: Modern responsive design with loading states, error handling, and consistent styling
 - **JWT Enhancement**: Short-lived tokens with refresh, silent refresh, structured 401 responses
 - **Form Standardization**: Consistent form-input styling and plain-btn button system
+- **FindDoctor Page**: Enhanced doctor search with location-based filtering, improved UI alignment, and mobile responsiveness
+- **Home Page Navigation**: Updated "Start Booking" buttons to navigate directly to find doctor page
 
 ### 🔄 In Progress
 - **Audio Call Feature**: WebRTC-based audio calls between doctors and patients
@@ -26,6 +28,7 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 - **Chat System**: Real-time communication with doctors with message status indicators
 - **Appointment History**: Track past and upcoming appointments
 - **Public Access**: Search doctors and book appointments without login (login required for confirmation)
+- **Doctor Search**: Advanced search with location, specialty, and rating filters
 
 ### For Doctors
 - **Appointment Management**: View and manage patient appointments
@@ -33,6 +36,7 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 - **Chat System**: Real-time communication with patients with read receipts
 - **Profile Management**: Update availability, fees, and specializations
 - **Document Management**: Upload and manage licenses and certificates
+- **Schedule Management**: Calendar-based availability management with recurring schedules
 
 ## 🛠 Technical Stack
 
@@ -50,6 +54,19 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 - **WebSocket**: Real-time chat integration with connection management
 
 ## 📱 Recent Updates
+
+### FindDoctor Page Enhancements ✅ (Latest)
+- **UI Alignment Fixes**: Fixed doctor information (name, specialty, experience, consultation fee) alignment issues
+- **Mobile Responsiveness**: Improved mobile layout and text alignment
+- **Search Functionality**: Enhanced location-based doctor search with pincode and city options
+- **Calendar Integration**: Fixed slot display issues and API endpoint corrections
+- **Timezone Handling**: Fixed date formatting to prevent timezone-related issues
+- **API Integration**: Corrected payload field names to match backend DTOs
+
+### Home Page Navigation Update ✅ (Latest)
+- **Start Booking Button**: Updated "Start Booking" button in steps section to navigate to find doctor page
+- **User Experience**: Improved flow by allowing users to start booking immediately without forced signup
+- **Consistent Navigation**: Both hero and steps section buttons now lead to doctor search
 
 ### JWT Authentication Enhancement ✅ (Week 3-4)
 - **Short-lived Tokens**: Access tokens with automatic refresh mechanism
@@ -212,6 +229,8 @@ For support and questions:
 - [x] Real-time chat system
 - [x] JWT authentication enhancement
 - [x] UI/UX standardization
+- [x] FindDoctor page enhancements
+- [x] Home page navigation improvements
 - [ ] Audio call feature
 - [ ] Video consultation
 

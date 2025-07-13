@@ -734,7 +734,7 @@ const AdminDashboard = () => {
                 <div className="documents-section">
                   <div className="section-header-wrapper">
                     <div className="section-header-with-background">
-                      <h3>⚖️ Review Actions</h3>
+                      <h3>Review Actions</h3>
                     </div>
                   </div>
                 <div className="approval-actions">
@@ -799,7 +799,7 @@ const AdminDashboard = () => {
                 <div className="documents-section">
                   <div className="section-header-wrapper">
                     <div className="section-header-with-background">
-                      <h3>⚖️ Review Actions</h3>
+                      <h3>Review Actions</h3>
                     </div>
                   </div>
                   <div className="approval-actions">
