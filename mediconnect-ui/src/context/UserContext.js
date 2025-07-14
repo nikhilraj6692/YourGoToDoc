@@ -7,7 +7,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Removed error state - using console.log for debugging instead
 
   const fetchUserProfile = async () => {
     try {
@@ -35,7 +35,6 @@ export const UserProvider = ({ children }) => {
         console.log('👤 UserContext: Setting user data from localStorage:', userData);
         setUser(userData);
         setLoading(false);
-        setError(null);
         return;
       }
 
@@ -52,10 +51,8 @@ export const UserProvider = ({ children }) => {
       };
       console.log('👤 UserContext: Setting user data:', userData);
       setUser(userData);
-      setError(null);
     } catch (err) {
       console.log('Profile fetch failed:', err.message);
-      setError(err.message);
       
       // Only clear user and redirect for specific authentication errors
       // Don't logout for refresh token failures or temporary network issues
@@ -97,7 +94,6 @@ export const UserProvider = ({ children }) => {
 
   const handleLogout = () => {
     setUser(null);
-    setError(null);
     tokenService.clearTokens();
     logout();
   };
@@ -105,7 +101,6 @@ export const UserProvider = ({ children }) => {
   const value = {
     user,
     loading,
-    error,
     refreshProfile: fetchUserProfile,
     logout: handleLogout
   };

@@ -1,0 +1,49 @@
+/* AddSlotsModal.css */
+
+.time-inputs {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1rem !important;
+  margin-bottom: 0.9rem;
+}
+
+.time-inputs > div {
+  width: 100%;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #2d3748;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: #86bf23;
+  box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.1);
+}
+
+.custom-input:hover {
+  border-color: #cbd5e0;
+}
+
+.recurring-disclaimer {
+  font-size: 0.85rem;
+  color: #718096;
+  font-style: italic;
+  margin-top: 0.5rem;
+  margin-bottom: 0.1rem;
+  line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .time-inputs {
+    grid-template-columns: 1fr !important;
+  }
+} 

@@ -1,0 +1,139 @@
+/* TimePicker component styles */
+
+/* Custom Time Input Styles */
+.custom-time-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.2rem;
+  font-size: 0.95rem;
+  background: white;
+  color: #2d3748;
+  cursor: pointer;
+  font-weight: 500;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.custom-time-input:focus {
+  outline: none !important;
+  border: 1px solid #86bf23 !important;
+  box-shadow: 0 0 0 1px #45660c !important;
+}
+
+.custom-time-input:hover {
+  border-color: #cbd5e0;
+}
+
+/* Time Input Calendar Picker Styling */
+.custom-time-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.custom-time-input::-webkit-datetime-edit {
+  color: #2d3748;
+  padding: 0;
+}
+
+.custom-time-input::-webkit-datetime-edit-fields-wrapper {
+  color: #2d3748;
+  padding: 0;
+}
+
+.custom-time-input::-webkit-datetime-edit-text {
+  color: #2d3748;
+  padding: 0 0.2rem;
+}
+
+.custom-time-input::-webkit-datetime-edit-hour-field,
+.custom-time-input::-webkit-datetime-edit-minute-field,
+.custom-time-input::-webkit-datetime-edit-ampm-field {
+  color: #2d3748;
+  padding: 0 0.2rem;
+  cursor: text;
+}
+
+/* Override text selection styling for time input fields */  
+.custom-time-input::-webkit-datetime-edit-hour-field::selection,
+.custom-time-input::-webkit-datetime-edit-minute-field::selection,
+.custom-time-input::-webkit-datetime-edit-ampm-field::selection,
+.custom-time-input::-webkit-datetime-edit-hour-field::-moz-selection,
+.custom-time-input::-webkit-datetime-edit-minute-field::-moz-selection,
+.custom-time-input::-webkit-datetime-edit-ampm-field::-moz-selection {
+  background-color: #86bf23 !important;
+  color: white !important;
+}
+
+/* Remove default time input styling */
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-clear-button {
+  display: none;
+}
+
+/* Time Inputs Container */
+.time-inputs {
+  display: flex;
+  gap: 2rem;
+}
+
+.time-inputs .custom-time-input,
+.time-inputs .custom-select {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 120px;
+}
+
+/* TimePicker specific styles */
+.time-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.time-picker-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.25rem;
+}
+
+.time-picker-error {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .time-picker-container {
+    gap: 0.4rem;
+  }
+  
+  .time-picker-label {
+    font-size: 0.85rem;
+  }
+  
+  .time-inputs {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .time-picker-container {
+    gap: 0.3rem;
+  }
+  
+  .time-picker-label {
+    font-size: 0.8rem;
+  }
+  
+  .time-inputs {
+    gap: 0.8rem;
+  }
+} 

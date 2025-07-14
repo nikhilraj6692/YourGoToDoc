@@ -2,8 +2,7 @@
 
 /* Main Container */
 .dh-container {
-  padding: 2rem;
-  max-width: 1400px;
+  padding: 2rem 5rem;
   margin: 0 auto;
   background: #f8fafd;
   min-height: 90vh;

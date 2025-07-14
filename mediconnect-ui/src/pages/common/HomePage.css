@@ -31,7 +31,7 @@
   flex: 1;
   text-align: left;
   z-index: 2;
-  padding-top: 7rem;
+  padding-top: 6rem;
   padding-left: 1rem;
 }
 
@@ -148,7 +148,7 @@
   justify-content: flex-start;
   max-width: 250px;
   left: -1rem;
-  bottom: 4rem;
+  bottom: 5rem;
 }
 
 .top-right-card {

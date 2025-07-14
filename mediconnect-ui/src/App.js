@@ -20,6 +20,7 @@ import PublicRoute from './components/PublicRoute';
 // Import doctor dashboard components
 import Schedule from './pages/doctor-dashboard/Schedule';
 import Appointments from './pages/doctor-dashboard/Appointments';
+import AppointmentDetails from './pages/doctor-dashboard/AppointmentDetails';
 import Patients from './pages/doctor-dashboard/Patients';
 import Messages from './pages/doctor-dashboard/Messages';
 
@@ -80,6 +81,11 @@ function App() {
                 <Route path="/doctor/appointments" element={
                   <ProtectedRoute requiredRole="DOCTOR">
                     <Appointments />
+                  </ProtectedRoute>
+                } />
+                <Route path="/doctor/appointment-details/:id" element={
+                  <ProtectedRoute requiredRole="DOCTOR">
+                    <AppointmentDetails />
                   </ProtectedRoute>
                 } />
                 <Route path="/doctor/patients" element={

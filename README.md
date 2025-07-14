@@ -15,6 +15,10 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 - **Form Standardization**: Consistent form-input styling and plain-btn button system
 - **FindDoctor Page**: Enhanced doctor search with location-based filtering, improved UI alignment, and mobile responsiveness
 - **Home Page Navigation**: Updated "Start Booking" buttons to navigate directly to find doctor page
+- **Doctor Schedule Management**: Advanced calendar-based schedule management with slot operations
+- **Booking Modal Enhancements**: Status-based slot management, cancelled appointments, completed appointments, expired appointments
+- **Deep Linking**: Appointment details navigation with return URL support
+- **Doctor Appointment Details**: Standalone appointment details page with navigation support
 
 ### 🔄 In Progress
 - **Audio Call Feature**: WebRTC-based audio calls between doctors and patients
@@ -37,6 +41,7 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 - **Profile Management**: Update availability, fees, and specializations
 - **Document Management**: Upload and manage licenses and certificates
 - **Schedule Management**: Calendar-based availability management with recurring schedules
+- **Appointment Details**: Comprehensive appointment details view with patient information
 
 ## 🛠 Technical Stack
 
@@ -54,6 +59,21 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 - **WebSocket**: Real-time chat integration with connection management
 
 ## 📱 Recent Updates
+
+### Doctor Schedule & Appointment Management ✅ (Latest)
+- **Advanced Schedule Management**: Calendar-based schedule with slot operations (add, delete, reschedule)
+- **Booking Modal Enhancements**: Status-based slot management with cancelled, completed, and expired appointments
+- **Deep Linking**: Appointment details navigation with return URL support for seamless navigation
+- **Eye Icon Navigation**: Direct navigation from schedule to appointment details using appointment ID
+- **Status Management**: Comprehensive appointment status handling with proper UI feedback
+- **Slot Operations**: Bulk and individual slot management with confirmation modals
+
+### Modular Component Architecture ✅ (Latest)
+- **DatePicker Component**: Created reusable DatePicker component with dedicated CSS file
+- **TimePicker Component**: Modular TimePicker component with isolated styling
+- **CSS Organization**: Moved component-specific styles from Common.css to dedicated component CSS files
+- **Code Maintainability**: Improved modularity and reduced global CSS pollution
+- **Consistent Pattern**: Established pattern for component-specific styling and imports
 
 ### FindDoctor Page Enhancements ✅ (Latest)
 - **UI Alignment Fixes**: Fixed doctor information (name, specialty, experience, consultation fee) alignment issues
@@ -108,11 +128,14 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 
 ## 🚧 Upcoming Features
 
-### Audio Call Feature (Week 4 - High Priority)
-- **WebRTC Backend**: Signaling server for audio calls
-- **Call Interface**: Audio call controls (mute, speaker, end call)
-- **Call Management**: Invitation, acceptance, and status tracking
-- **Integration**: Seamless integration with chat system
+### Next Week Tasks (High Priority)
+1. **Reschedule Appointment Functionality**: Check and fix reschedule appointment functionality
+2. **Appointments Screen Fixes**: Fix appointments screen and appointment details screen issues
+3. **Booking Modal Time Restrictions**: Implement 5-hour cancellation and rescheduling restrictions for confirmed appointments
+4. **Feedback and Rating System**: Add comprehensive feedback and rating system for appointments
+5. **Dynamic Feedback Display**: Show feedback and ratings dynamically on home screen
+6. **Patient Appointment Screen**: Create patient appointment screen similar to doctor appointment screen
+7. **Audio Call Feature**: Complete WebRTC-based audio calls between doctors and patients
 
 ### Legal and Compliance Pages (Low Priority - Next 1-2 Weeks)
 - **Terms of Service**: Comprehensive terms with modern, readable layout
@@ -174,8 +197,15 @@ MediConnect/
 ├── mediconnect-ui/         # React frontend
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
+│   │   │   ├── DatePicker.js    # Date picker component
+│   │   │   ├── DatePicker.css   # Date picker styles
+│   │   │   ├── TimePicker.js    # Time picker component
+│   │   │   ├── TimePicker.css   # Time picker styles
+│   │   │   └── ...              # Other components
 │   │   ├── pages/         # Page components
 │   │   ├── services/      # API services
+│   │   ├── styles/        # Global styles
+│   │   │   └── Common.css # Global utilities and shared styles
 │   │   └── utils/         # Utility functions
 │   └── public/
 └── docs/                  # Documentation
@@ -188,6 +218,13 @@ MediConnect/
 - Implement proper error handling
 - Add comprehensive logging
 - Write unit tests for critical functions
+
+### Component Architecture
+- **Modular Components**: Create reusable components with their own CSS files
+- **CSS Organization**: Keep component-specific styles in dedicated CSS files (e.g., `DatePicker.css`, `TimePicker.css`)
+- **Global Styles**: Use `Common.css` only for truly global styles and utilities
+- **Component Imports**: Import component CSS within the component file, not in consuming components
+- **Consistent Pattern**: Follow established patterns for component structure and styling
 
 ### UI/UX Standards
 - Use consistent color scheme (#86bf23 primary)
@@ -227,23 +264,9 @@ For support and questions:
 - [x] Core appointment system
 - [x] Patient appointment details
 - [x] Real-time chat system
-- [x] JWT authentication enhancement
-- [x] UI/UX standardization
-- [x] FindDoctor page enhancements
-- [x] Home page navigation improvements
+- [x] Doctor schedule management
+- [x] Booking modal enhancements
+- [x] Deep linking and navigation
+- [ ] Feedback and rating system
 - [ ] Audio call feature
-- [ ] Video consultation
-
-### Q2 2024
-- [ ] Prescription management
-- [ ] Medical records system
-- [ ] Payment integration
-- [ ] Mobile app development
-- [ ] Terms of service and privacy policy
-- [ ] Forgot password functionality
-
-### Q3 2024
-- [ ] Advanced analytics
-- [ ] AI-powered features
-- [ ] Multi-language support
-- [ ] Enterprise features 
+- [ ] Patient appointment screen 

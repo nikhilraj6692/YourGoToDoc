@@ -16,6 +16,7 @@ public interface AppointmentRepository extends MongoRepository<Appointment, Stri
     List<Appointment> findByDoctorIdAndStatus(String doctorId, String status);
     List<Appointment> findByPatientIdAndStatus(String patientId, String status);
     List<Appointment> findByPatientIdAndCalendarId(String patientId, String calendarId);
+    List<Appointment> findByPatientIdAndCalendarIdAndStatusIsNot(String patientId, String calendarId, String status);
 
     @Query("{ 'patientId': ?0, 'calendarId': ?1, 'status': { $nin: ['CANCELLED', 'COMPLETED'] } }")
     List<Appointment> findByPatientIdAndCalendarIdActive(String patientId, String calendarId);
@@ -29,4 +30,6 @@ public interface AppointmentRepository extends MongoRepository<Appointment, Stri
     
     @Query("{ 'doctorId': ?0, 'status': { $in: ?1 }, 'calendarId': { $in: ?2 } }")
     List<Appointment> findByDoctorIdAndStatusInAndCalendarIds(String doctorId, List<String> statuses, List<String> calendarIds);
+
+    List<Appointment> findAllBySlotIdIn(List<String> slotIds);
 }

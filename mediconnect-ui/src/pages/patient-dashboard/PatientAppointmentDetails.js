@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import './PatientAppointmentDetails.css';
 import { useUser } from '../../context/UserContext';
 import { useToast } from '../../context/ToastContext';
@@ -11,11 +11,17 @@ import { handleLogout } from '../../utils/logout';
 const PatientAppointmentDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useUser();
   const { showToast } = useToast();
   
+  // Get return URL from query parameters
+  const searchParams = new URLSearchParams(location.search);
+  const returnUrl = searchParams.get('returnUrl');
+  
   // Debug: Log the appointment ID and user data
   console.log('Appointment ID from URL:', id);
+  console.log('Return URL:', returnUrl);
   console.log('User data in PatientAppointmentDetails:', user);
   console.log('User ID:', user?.id);
   console.log('User name:', user?.name);
@@ -166,7 +172,14 @@ const PatientAppointmentDetails = () => {
   };
 
   const handleBackToAppointments = () => {
-    navigate('/patient/appointments');
+    if (returnUrl) {
+      // Decode the return URL and navigate to it
+      const decodedReturnUrl = decodeURIComponent(returnUrl);
+      navigate(decodedReturnUrl);
+    } else {
+      // Fallback to appointments page
+      navigate('/patient/appointments');
+    }
   };
 
   // Patient form data (most fields come from user profile API)
@@ -530,9 +543,14 @@ const PatientAppointmentDetails = () => {
       <div className="patient-appointment-details">
         <CommonHeader 
           user={userInfo}
-          activeMenuItem="appointments"
+          activeTab=""
           onMenuClick={handleMenuClick}
           onLogout={handleLogout}
+          menuItems={[
+            { id: 'dashboard', label: 'Dashboard' },
+            { id: 'appointments', label: 'Appointments' },
+            { id: 'billing', label: 'Billing' }
+          ]}
         />
         <div style={{ 
           display: 'flex', 
@@ -554,9 +572,14 @@ const PatientAppointmentDetails = () => {
       <div className="patient-appointment-details">
         <CommonHeader 
           user={userInfo}
-          activeMenuItem="appointments"
+          activeTab=""
           onMenuClick={handleMenuClick}
           onLogout={handleLogout}
+          menuItems={[
+            { id: 'dashboard', label: 'Dashboard' },
+            { id: 'appointments', label: 'Appointments' },
+            { id: 'billing', label: 'Billing' }
+          ]}
         />
         <div style={{ 
           display: 'flex', 
@@ -577,9 +600,14 @@ const PatientAppointmentDetails = () => {
       {/* Common Header */}
       <CommonHeader 
         user={userInfo}
-        activeMenuItem="appointments"
+        activeTab=""
         onMenuClick={handleMenuClick}
         onLogout={handleLogout}
+        menuItems={[
+          { id: 'dashboard', label: 'Dashboard' },
+          { id: 'appointments', label: 'Appointments' },
+          { id: 'billing', label: 'Billing' }
+        ]}
       />
       
       <div className="appointment-details-scroll-wrapper">

@@ -1,13 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './AppointmentDetails.css';
 import { useUser } from '../../context/UserContext';
 import { useToast } from '../../context/ToastContext';
 import ChatSection from '../../components/ChatSection';
+import tokenService from '../../services/tokenService';
 
-const AppointmentDetails = ({ appointment, onClose }) => {
+const AppointmentDetails = ({ appointment: propAppointment, onClose }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useUser();
   const { showToast } = useToast();
+  
+  // State for appointment data
+  const [appointment, setAppointment] = useState(propAppointment);
+  const [appointmentLoading, setAppointmentLoading] = useState(false);
   
   // State management
   const [activePatientTab, setActivePatientTab] = useState('overview');
@@ -24,7 +33,7 @@ const AppointmentDetails = ({ appointment, onClose }) => {
       dosage: 'Take 1 capsule twice daily for 7 days • 14 capsules'
     }
   ]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(!propAppointment);
   const [consultationStarted, setConsultationStarted] = useState(false);
   const [consultationStartTime, setConsultationStartTime] = useState(new Date());
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -145,7 +154,7 @@ const AppointmentDetails = ({ appointment, onClose }) => {
   const handleCompleteConsultation = () => {
     if (window.confirm('Are you sure you want to complete this consultation? This action cannot be undone.')) {
       showToast('Consultation completed successfully!', 'success');
-      onClose();
+      handleBack();
     }
   };
 
@@ -153,7 +162,7 @@ const AppointmentDetails = ({ appointment, onClose }) => {
   const handleEndConsultation = () => {
     if (window.confirm('Are you sure you want to return to appointments list? Any unsaved notes will be lost.')) {
       showToast('Returning to appointments list', 'info');
-      onClose();
+      handleBack();
     }
   };
 
@@ -176,8 +185,97 @@ const AppointmentDetails = ({ appointment, onClose }) => {
     }
   }, [consultationStarted, isChatOpen]);
 
+  // Fetch appointment data when accessed via URL
+  useEffect(() => {
+    if (id && !propAppointment) {
+      fetchAppointmentData();
+    }
+  }, [id, propAppointment]);
+
+  // Fetch appointment data from API
+  const fetchAppointmentData = async () => {
+    try {
+      setAppointmentLoading(true);
+      const response = await tokenService.authenticatedFetch(`/api/appointments/${id}`);
+      
+      if (response.ok) {
+        const appointmentData = await response.json();
+        setAppointment(appointmentData);
+      } else {
+        showToast('Failed to fetch appointment details', 'error');
+        navigate('/doctor/appointments');
+      }
+    } catch (error) {
+      console.error('Error fetching appointment:', error);
+      showToast('Error fetching appointment details', 'error');
+      navigate('/doctor/appointments');
+    } finally {
+      setAppointmentLoading(false);
+      setLoading(false);
+    }
+  };
+
+  // Handle navigation back
+  const handleBack = () => {
+    if (onClose) {
+      // If used as modal, call onClose
+      onClose();
+    } else {
+      // If used as standalone page, navigate back
+      const returnUrl = new URLSearchParams(location.search).get('returnUrl');
+      if (returnUrl) {
+        navigate(returnUrl);
+      } else {
+        navigate('/doctor/appointments');
+      }
+    }
+  };
+
+  // Show loading state
+  if (loading || appointmentLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading appointment details...</p>
+      </div>
+    );
+  }
+
+  // Show error state if no appointment data
+  if (!appointment) {
+    return (
+      <div className="error-container">
+        <p>No appointment data found</p>
+        <button className="plain-btn" onClick={handleBack}>
+          Go Back
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="appointment-details-scroll-wrapper">
+      {/* Back button for standalone page */}
+      {!onClose && (
+        <div className="back-button-container" style={{
+          padding: '1rem',
+          borderBottom: '1px solid #e2e8f0',
+          backgroundColor: '#f8fafc'
+        }}>
+          <button 
+            className="plain-btn"
+            onClick={handleBack}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.9rem'
+            }}
+          >
+            ← Back to Appointments
+          </button>
+        </div>
+      )}
       <div className={`consultation-container ${isChatOpen ? 'chat-open' : ''}`}>
         {/* Left Sidebar - Patient Information */}
         <div className="patient-sidebar">

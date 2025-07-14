@@ -16,5 +16,6 @@ public class ScheduleResponse {
         private LocalDateTime endTime;
         private boolean isAvailable;
         private String patientName;
+        private String appointmentId;
     }
 } 

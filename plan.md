@@ -142,6 +142,35 @@
 - [x] Common header component across all pages
 - [x] Login modal for unauthenticated users
 
+### Doctor Schedule Management ✅ (Latest)
+- [x] **Advanced Calendar Management**
+  - [x] Calendar-based schedule with 3-day view navigation
+  - [x] Slot operations (add, delete, reschedule) with confirmation modals
+  - [x] Bulk slot management with date range selection
+  - [x] Individual slot operations with proper validation
+  - [x] Recurring schedule support with day selection
+
+- [x] **Booking Modal Enhancements**
+  - [x] Status-based slot management (available, booked, cancelled, completed, expired)
+  - [x] Cancelled appointments with proper UI indicators
+  - [x] Completed appointments with green status badges
+  - [x] Expired appointments with time-based filtering
+  - [x] Legend system for different appointment statuses
+  - [x] Date selection with cancelled appointments support
+
+- [x] **Deep Linking and Navigation**
+  - [x] Appointment details navigation with return URL support
+  - [x] Eye icon navigation from schedule to appointment details
+  - [x] Standalone appointment details page with back navigation
+  - [x] Proper route handling for both modal and standalone views
+  - [x] Appointment ID-based navigation instead of slot ID
+
+- [x] **Status Management**
+  - [x] Comprehensive appointment status handling
+  - [x] Proper UI feedback for different statuses
+  - [x] Status-based interaction restrictions
+  - [x] Dynamic status updates with real-time feedback
+
 ### FindDoctor Page Enhancements ✅ (Latest)
 - [x] **UI Alignment Fixes**
   - [x] Fixed doctor information (name, specialty, experience, consultation fee) alignment issues
@@ -173,7 +202,14 @@
   - [x] Maintained consistency with hero section "Find Doctor" button
   - [x] Enhanced user flow for appointment booking process
 
-## Current Progress (Week 3-4)
+## Current Progress (Week 4-5)
+- [x] **COMPLETED: Doctor Schedule Management**
+  - [x] Advanced calendar-based schedule management
+  - [x] Booking modal enhancements with status management
+  - [x] Deep linking and navigation improvements
+  - [x] Eye icon navigation to appointment details
+  - [x] Comprehensive status handling and UI feedback
+
 - [x] **COMPLETED: JWT Authentication Enhancement**
   - [x] Short-lived access tokens with refresh tokens
   - [x] Silent refresh with inactivity tracking
@@ -206,15 +242,74 @@
   - [x] Start booking button navigation improvement
   - [x] Enhanced user experience flow for appointment booking
 
-## Current Sprint: Audio Call Feature (Week 4)
+## Next Week Tasks (Week 5 - High Priority)
 
-### Phase 1: Audio Call Infrastructure (In Progress)
+### 1. Reschedule Appointment Functionality
+- [ ] **Check Current Implementation**
+  - [ ] Review existing reschedule functionality in Schedule.js
+  - [ ] Test reschedule modal and API integration
+  - [ ] Identify and fix any issues with reschedule flow
+  - [ ] Ensure proper validation and error handling
+
+### 2. Appointments Screen Fixes
+- [ ] **Doctor Appointments Screen**
+  - [ ] Review and fix any UI/UX issues
+  - [ ] Ensure proper appointment status display
+  - [ ] Fix appointment details modal integration
+  - [ ] Improve loading states and error handling
+
+- [ ] **Appointment Details Screen**
+  - [ ] Review standalone appointment details page
+  - [ ] Fix any navigation or data loading issues
+  - [ ] Ensure proper patient information display
+  - [ ] Test appointment details API integration
+
+### 3. Booking Modal Time Restrictions
+- [ ] **5-Hour Cancellation Restriction**
+  - [ ] Implement time-based validation for confirmed appointments
+  - [ ] Disable cancellation button if appointment is within 5 hours
+  - [ ] Show appropriate error messages for restricted actions
+  - [ ] Add visual indicators for time restrictions
+
+- [ ] **5-Hour Rescheduling Restriction**
+  - [ ] Implement time-based validation for rescheduling
+  - [ ] Disable reschedule button if appointment is within 5 hours
+  - [ ] Show appropriate error messages for restricted actions
+  - [ ] Add visual indicators for time restrictions
+
+### 4. Feedback and Rating System
+- [ ] **Backend Implementation**
+  - [ ] Create feedback and rating models
+  - [ ] Implement feedback API endpoints (POST, GET)
+  - [ ] Add rating calculation logic
+  - [ ] Implement feedback validation
+
+- [ ] **Frontend Implementation**
+  - [ ] Create feedback form component
+  - [ ] Implement star rating system
+  - [ ] Add feedback submission flow
+  - [ ] Create feedback display components
+
+### 5. Dynamic Feedback Display
+- [ ] **Home Screen Integration**
+  - [ ] Display doctor ratings on home screen
+  - [ ] Show recent feedback and testimonials
+  - [ ] Implement dynamic rating updates
+  - [ ] Add feedback carousel/slider
+
+### 6. Patient Appointment Screen
+- [ ] **Create Patient Appointment Interface**
+  - [ ] Design patient appointment screen similar to doctor appointment screen
+  - [ ] Implement appointment listing with status indicators
+  - [ ] Add appointment details view
+  - [ ] Include appointment management actions (cancel, reschedule)
+
+### 7. Audio Call Feature (Continued)
 - [ ] **WebRTC Backend**
   - [ ] Signaling server implementation
   - [ ] Audio call room management
   - [ ] Call invitation and acceptance
   - [ ] Call status tracking
-  - [ ] Call recording (if required)
 
 - [ ] **Audio Call Frontend**
   - [ ] Audio call UI components
@@ -222,19 +317,6 @@
   - [ ] Call invitation modal
   - [ ] Call status indicators
   - [ ] Integration with chat interface
-
-- [ ] **Audio Call Integration**
-  - [ ] Integrate with existing chat system
-  - [ ] Call button in chat interface
-  - [ ] Call notifications
-  - [ ] Call history tracking
-
-## Pending Features for Current Week
-- [ ] Complete audio call implementation
-- [ ] Add call notifications
-- [ ] Implement call history
-- [ ] Add call quality indicators
-- [ ] Test audio call with multiple users
 
 ## Low Priority Tasks (Next 1-2 Weeks)
 
@@ -248,174 +330,100 @@
 
 - [ ] **Privacy Policy Page**
   - [ ] Create detailed privacy policy
-  - [ ] Cover data collection and usage
-  - [ ] Include GDPR compliance sections
-  - [ ] Add cookie policy information
-  - [ ] Design accessible, readable layout
-
-- [ ] **Forgot Password Page**
-  - [ ] Create forgot password form
-  - [ ] Implement email-based password reset
-  - [ ] Add security questions (optional)
-  - [ ] Design password strength requirements
-  - [ ] Add password reset confirmation
+  - [ ] Ensure GDPR compliance
+  - [ ] Design user-friendly layout
+  - [ ] Add cookie policy section
+  - [ ] Integrate with registration flow
 
 ### Chat System Improvements
-- [ ] **Fix Read/Sent Indicators**
-  - [ ] Ensure proper display of single blue tick (✓) for sent messages
-  - [ ] Ensure proper display of double blue ticks (✓✓) for read messages
-  - [ ] Test with multiple users to verify status updates
-  - [ ] Debug message status synchronization issues
+- [ ] **Read/Sent Indicators**
+  - [ ] Fix message status display issues
+  - [ ] Implement proper read receipt logic
+  - [ ] Test message status updates
+  - [ ] Add visual indicators for message states
 
-- [ ] **WebSocket Connection Testing**
-  - [ ] Test WebSocket closure on logout
-  - [ ] Test WebSocket closure on chat close
-  - [ ] Test WebSocket closure on tab close
-  - [ ] Verify connection cleanup in all scenarios
-  - [ ] Test reconnection logic after connection loss
+- [ ] **Connection Management**
+  - [ ] Test WebSocket closure on logout/close/tab close
+  - [ ] Implement proper connection cleanup
+  - [ ] Add connection status indicators
+  - [ ] Handle network disconnections gracefully
 
-- [ ] **Backend Failure Scenarios**
-  - [ ] Test message sending when backend is down
-  - [ ] Test message broadcasting when backend is down
-  - [ ] Implement proper error handling for failed broadcasts
-  - [ ] Test message queue/retry mechanism
-  - [ ] Verify message delivery after backend recovery
-
-- [ ] **Multi-User Testing**
-  - [ ] Test chat with multiple simultaneous users
-  - [ ] Test read status updates across multiple users
-  - [ ] Test message delivery to all connected users
-  - [ ] Test connection management with multiple users
-  - [ ] Performance testing with multiple concurrent chats
-
-## Next Week's Tasks (Week 5)
-
-### High Priority
-- [ ] **Complete Audio Call Feature**
-  - [ ] Finish WebRTC backend implementation
-  - [ ] Complete frontend audio call UI
-  - [ ] Integrate with chat system
-  - [ ] Add call notifications and history
-  - [ ] Test with multiple users
-
-### Medium Priority
-- [ ] **Performance Optimization**
-  - [ ] Optimize API calls and reduce unnecessary requests
+### Performance Optimizations
+- [ ] **API Optimization**
   - [ ] Implement proper caching strategies
-  - [ ] Improve loading states and user feedback
+  - [ ] Add request debouncing for search inputs
   - [ ] Optimize database queries
+  - [ ] Add pagination for large datasets
 
-### Low Priority
-- [ ] **Documentation Updates**
-  - [ ] Update API documentation
-  - [ ] Create user guides
-  - [ ] Document deployment procedures
-  - [ ] Create troubleshooting guides
+- [ ] **Frontend Optimization**
+  - [ ] Implement proper memoization
+  - [ ] Add lazy loading for components
+  - [ ] Optimize bundle size
+  - [ ] Add service worker for offline support
 
 ## Future Enhancements (Phase 2)
 
 ### Video Consultation
 - [ ] **WebRTC Video Implementation**
   - [ ] Video call backend with signaling
-  - [ ] Video call UI with controls
+  - [ ] Video call interface with controls
   - [ ] Screen sharing functionality
-  - [ ] Video quality optimization
-  - [ ] Bandwidth management
+  - [ ] Call recording capabilities
 
 ### Prescription Management
 - [ ] **Digital Prescription System**
   - [ ] Prescription creation and management
   - [ ] Digital signature integration
   - [ ] Prescription history tracking
-  - [ ] Medication reminders
-  - [ ] Drug interaction checking
+  - [ ] Medication interaction checking
 
 ### Medical Records
 - [ ] **Comprehensive Patient History**
   - [ ] Medical history management
   - [ ] Lab results integration
-  - [ ] Imaging results storage
-  - [ ] Allergy and medication lists
-  - [ ] Family history tracking
+  - [ ] Document upload and management
+  - [ ] Health analytics and insights
 
 ### Payment Integration
 - [ ] **Secure Payment Processing**
   - [ ] Payment gateway integration
-  - [ ] Secure payment processing
+  - [ ] Subscription management
   - [ ] Invoice generation
   - [ ] Payment history tracking
-  - [ ] Refund processing
 
 ### Analytics Dashboard
 - [ ] **Insights and Reporting**
   - [ ] Appointment analytics
   - [ ] Revenue tracking
-  - [ ] Patient satisfaction metrics
-  - [ ] Doctor performance analytics
-  - [ ] System usage statistics
+  - [ ] Patient engagement metrics
+  - [ ] Performance insights
 
-## Testing Strategy
+## Development Guidelines
 
-### Unit Testing
-- [ ] Backend service layer tests
-- [ ] Frontend component tests
-- [ ] API endpoint tests
-- [ ] Utility function tests
+### Code Quality Standards
+- Follow consistent naming conventions
+- Implement comprehensive error handling
+- Add proper logging and debugging
+- Write unit tests for critical functions
+- Maintain code documentation
 
-### Integration Testing
-- [ ] End-to-end appointment flow
-- [ ] Chat system integration
-- [ ] Payment processing flow
-- [ ] User authentication flow
+### UI/UX Standards
+- Use consistent color scheme (#86bf23 primary)
+- Implement responsive design patterns
+- Add loading states for all async operations
+- Provide clear user feedback
+- Follow accessibility guidelines
 
-### Performance Testing
-- [ ] Load testing for concurrent users
-- [ ] Database performance optimization
-- [ ] API response time optimization
-- [ ] Frontend performance optimization
+### API Design Principles
+- Follow RESTful principles
+- Use consistent error responses
+- Implement proper HTTP status codes
+- Add comprehensive API documentation
+- Include proper validation
 
-### Security Testing
-- [ ] Authentication and authorization tests
-- [ ] Data encryption verification
-- [ ] Input validation testing
-- [ ] SQL injection prevention
-
-## Deployment Strategy
-
-### Development Environment
-- [ ] Local development setup
-- [ ] Development database configuration
-- [ ] Hot reload configuration
-- [ ] Debug logging setup
-
-### Staging Environment
-- [ ] Staging server setup
-- [ ] Database migration scripts
-- [ ] Environment-specific configurations
-- [ ] Automated testing pipeline
-
-### Production Environment
-- [ ] Production server setup
-- [ ] SSL certificate configuration
-- [ ] Database backup strategies
-- [ ] Monitoring and alerting setup
-
-## Maintenance and Support
-
-### Regular Maintenance
-- [ ] Database optimization
-- [ ] Security updates
-- [ ] Performance monitoring
-- [ ] Backup verification
-
-### User Support
-- [ ] Help documentation
-- [ ] FAQ section
-- [ ] Contact support system
-- [ ] Bug reporting system
-
-### Monitoring and Analytics
-- [ ] Application performance monitoring
-- [ ] Error tracking and reporting
-- [ ] User behavior analytics
-- [ ] System health monitoring 
+### Testing Strategy
+- Unit tests for business logic
+- Integration tests for API endpoints
+- End-to-end tests for critical flows
+- Performance testing for scalability
+- Security testing for vulnerabilities 

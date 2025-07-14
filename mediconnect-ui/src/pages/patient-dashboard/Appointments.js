@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from '../../components/DatePicker';
 import './Appointments.css';
 import '../../styles/Auth.css';
 import '../../styles/Common.css';
@@ -23,7 +22,7 @@ const PatientAppointments = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // Removed error state - using toast notifications instead
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
@@ -63,10 +62,10 @@ const PatientAppointments = () => {
         const data = await response.json();
         setAppointments(data);
       } else {
-        setError('Failed to fetch appointments');
+        showToast('Failed to fetch appointments', 'error');
       }
     } catch (err) {
-      setError('Error fetching appointments');
+      showToast('Error fetching appointments', 'error');
     } finally {
       setLoading(false);
     }
@@ -288,7 +287,7 @@ const PatientAppointments = () => {
       
       setAvailableSlotsForReschedule(availableSlots);
     } catch (err) {
-      setError('Failed to fetch available slots');
+      showToast('Failed to fetch available slots', 'error');
       console.error('Error fetching available slots:', err);
       // Mock data for demo
       setAvailableSlotsForReschedule([
@@ -463,7 +462,7 @@ const PatientAppointments = () => {
           </div>
 
           {/* Error Message */}
-          {error && (
+          {/* error && (
             <div className="error-container">
               <div className="error-message">{error}</div>
               <button 
@@ -473,7 +472,7 @@ const PatientAppointments = () => {
                 ✕
               </button>
             </div>
-          )}
+          ) */}
 
           {/* Empty State */}
           {!loading && filteredAppointments.length === 0 && (
@@ -565,7 +564,9 @@ const PatientAppointments = () => {
                       <button 
                         className="plain-btn sec-submit-btn"
                         onClick={() => {
-                          window.location.href = `/patient/appointment-details/${appointment.id}`;
+                          const currentUrl = window.location.pathname + window.location.search;
+                          const returnUrl = encodeURIComponent(currentUrl);
+                          window.location.href = `/patient/appointment-details/${appointment.id}?returnUrl=${returnUrl}`;
                         }}
                       >
                         Full Details

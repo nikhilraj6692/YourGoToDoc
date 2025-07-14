@@ -2,6 +2,100 @@
    PATIENT-SPECIFIC OVERRIDES
    =============================== */
 
+/* Fix layout for patient appointment details */
+.patient-appointment-details {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-appointment-details .appointment-details-scroll-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Remove max-height to allow proper layout */
+  max-height: none;
+}
+
+.patient-appointment-details .consultation-container {
+  display: grid;
+  grid-template-columns: 3fr 7fr;
+  gap: 1rem;
+  background: #f8fafc;
+  transition: grid-template-columns 0.4s ease;
+  min-height: calc(100vh - 80px); /* Account for header height */
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+.patient-appointment-details .consultation-container.chat-open {
+  grid-template-columns: 2.25fr 4.5fr 2.75fr;
+  animation: expandChat 0.4s ease-out;
+}
+
+@keyframes expandChat {
+  from {
+    grid-template-columns: 3fr 7fr 0fr;
+  }
+  to {
+    grid-template-columns: 2.25fr 4.5fr 2.75fr;
+  }
+}
+
+/* Patient sidebar styling */
+.patient-appointment-details .patient-sidebar {
+  background: white;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  min-height: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Main content styling */
+.patient-appointment-details .main-content {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Responsive styling for patient appointment details */
+@media (max-width: 1200px) {
+  .patient-appointment-details .consultation-container {
+    grid-template-columns: 2.5fr 7.5fr;
+  }
+  
+  .patient-appointment-details .consultation-container.chat-open {
+    grid-template-columns: 2fr 4fr 2.5fr;
+  }
+}
+
+@media (max-width: 968px) {
+  .patient-appointment-details .consultation-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  
+  .patient-appointment-details .consultation-container.chat-open {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  .patient-appointment-details .patient-sidebar {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+    max-height: 300px;
+  }
+}
+
 /* ===============================
    PATIENT APPOINTMENT DETAILS - DOCTOR INFO MODULE
    =============================== */

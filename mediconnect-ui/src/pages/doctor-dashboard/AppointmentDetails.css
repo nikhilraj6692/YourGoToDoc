@@ -211,13 +211,7 @@
     background: #94a3b8;
 }
 
-/* Firefox scrollbar styling */
-.patient-content,
-.notes-section,
-.chat-messages {
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 #f1f5f9;
-}
+
 
 .tab-panel {
     padding: 0.5rem;
@@ -1029,9 +1023,4 @@
 }
 .appointment-details-scroll-wrapper::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
-}
-
-.appointment-details-scroll-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 #f1f5f9;
 }

@@ -49,6 +49,7 @@ public class ScheduleController {
                     timeSlot.setEndTime(slot.getEndTime());
                     timeSlot.setAvailable(slot.isAvailable());
                     timeSlot.setPatientName(slot.getAppointmentId() != null ? "Booked" : null);
+                    timeSlot.setAppointmentId(slot.getAppointmentId());
                     return timeSlot;
                 }))
             .collect(Collectors.toList()));

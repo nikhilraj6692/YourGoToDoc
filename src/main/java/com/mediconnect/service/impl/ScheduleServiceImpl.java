@@ -7,7 +7,10 @@ import com.mediconnect.dto.schedule.SlotExtensionRequest;
 import com.mediconnect.dto.schedule.SlotValidationResponse;
 import com.mediconnect.dto.schedule.RescheduleRequest;
 import com.mediconnect.model.Calendar;
+import com.mediconnect.model.Appointment;
+import com.mediconnect.enums.AppointmentStatus;
 import com.mediconnect.repository.CalendarRepository;
+import com.mediconnect.repository.AppointmentRepository;
 import com.mediconnect.service.ScheduleService;
 import com.mediconnect.util.SlotMergeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,13 @@ import java.util.stream.Collectors;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private static final int MIN_SLOT_DURATION = 15; // Minimum slot duration in minutes
-
     @Autowired
     private CalendarRepository calendarRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    private static final int MIN_SLOT_DURATION = 15; // Minimum slot duration in minutes
 
     @Override
     public List<Calendar> getDailySchedule(String doctorId, List<LocalDate> dates) {
@@ -386,6 +392,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
     public void deleteSlot(String doctorId, String calendarId, String slotId) {
         Calendar calendar = calendarRepository.findByIdAndDoctorId(calendarId, doctorId)
                 .orElseThrow(() -> new IllegalArgumentException("Calendar not found"));
@@ -396,9 +403,20 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Slot not found"));
 
-        // If the slot is booked (not available), make it available again
+        // If the slot is booked (not available), cancel the associated appointment
         if (!slot.isAvailable()) {
-            slot.setAvailable(true);
+            String appointmentId = slot.getAppointmentId();
+            if (appointmentId != null) {
+                // Find and cancel the appointment
+                Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+                if (appointmentOpt.isPresent()) {
+                    Appointment appointment = appointmentOpt.get();
+                    appointment.setStatus(AppointmentStatus.CANCELLED);
+                    appointment.setUpdatedAt(System.currentTimeMillis());
+                    appointmentRepository.save(appointment);
+                }
+            }
+
             slot.setAppointmentId(null);
             calendarRepository.save(calendar);
         } else {

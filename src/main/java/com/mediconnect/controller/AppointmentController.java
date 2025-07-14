@@ -17,6 +17,7 @@ import com.mediconnect.repository.DoctorProfileRepository;
 import com.mediconnect.repository.UserRepository;
 import com.mediconnect.repository.CalendarRepository;
 import com.mediconnect.service.EmailService;
+import com.mediconnect.service.UserService;
 import com.mediconnect.util.UserContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,7 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -60,6 +63,8 @@ public class AppointmentController {
     private CalendarRepository calendarRepository;
     @Autowired
     private DoctorProfileRepository doctorProfileRepository;
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     @PreAuthorize("hasRole('PATIENT')")
@@ -392,7 +397,8 @@ public class AppointmentController {
             Map<String, Object> dayInfo = new HashMap<>();
             
             // Check if patient has any appointments for this day
-            Optional<Appointment> patientAppointment = appointmentRepository.findByPatientIdAndCalendarId(patient.getId(), calendar.getId())
+            Optional<Appointment> patientAppointment = appointmentRepository.findByPatientIdAndCalendarIdAndStatusIsNot(
+                    patient.getId(), calendar.getId(), "CANCELLED")
                     .stream()
                     .findFirst();
 
@@ -428,6 +434,13 @@ public class AppointmentController {
     public ResponseEntity<List<Map<String, Object>>> getDoctorDaySlots(
             @PathVariable String doctorId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        String userEmail = UserContext.getCurrentUserEmail();
+        User user = userService.findByEmail(userEmail);
+
+        if(null == user) {
+            throw new RuntimeException("User not found");
+        }
         
         // Get the calendar for the specified date
         Optional<Calendar> calendarOpt = calendarRepository.findByDoctorIdAndDate(doctorId, date);
@@ -439,20 +452,38 @@ public class AppointmentController {
         Calendar calendar = calendarOpt.get();
         LocalDateTime now = LocalDateTime.now();
 
-        // Filter slots that are available and after the current time
-        List<Map<String, Object>> availableSlots = calendar.getSlots().stream()
-                .filter(slot -> slot.isAvailable() && slot.getStartTime().isAfter(now))
-                .map(slot -> {
-                    Map<String, Object> slotInfo = new HashMap<>();
-                    slotInfo.put("id", slot.getId());
-                    slotInfo.put("startTime", slot.getStartTime());
-                    slotInfo.put("endTime", slot.getEndTime());
-                    slotInfo.put("calendarId", calendar.getId());
-                    return slotInfo;
-                })
-                .collect(Collectors.toList());
+        Map<String, String> appointmentIdToSlotId = new HashMap<>();
 
-        return ResponseEntity.ok(availableSlots);
+        // Filter slots that are available and after the current time
+        Map<String, Calendar.Slot> availableSlots = calendar.getSlots().stream()
+                .filter(slot -> slot.isAvailable() && slot.getStartTime().isAfter(now))
+                .collect(Collectors.toMap(Calendar.Slot::getId, Function.identity()));
+
+        List<Appointment> appointments = appointmentRepository.findAllBySlotIdIn(
+                availableSlots.values().stream().map(Calendar.Slot::getId).collect(Collectors.toList()));
+
+        Map<String, Appointment> slotIdToAppointment = Optional.ofNullable(appointments)
+                .orElse(Collections.emptyList()).stream().collect(Collectors.toMap(Appointment::getSlotId, Function.identity()));
+
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        availableSlots.forEach((slotId, slot) -> {
+            Map<String, Object> dayInfo = new HashMap<>();
+
+            if (null != slotIdToAppointment.get(slotId)) {
+                dayInfo.put("appointmentId", slotIdToAppointment.get(slotId).getId());
+                dayInfo.put("status", slotIdToAppointment.get(slotId).getStatus().toString());
+            }
+
+            dayInfo.put("id", slot.getId());
+            dayInfo.put("startTime", slot.getStartTime());
+            dayInfo.put("endTime", slot.getEndTime());
+            dayInfo.put("calendarId", calendar.getId());
+            result.add(dayInfo);
+
+        });
+
+        return ResponseEntity.ok(result);
     }
 
     // Helper method to get appointment date/time from calendar and slot

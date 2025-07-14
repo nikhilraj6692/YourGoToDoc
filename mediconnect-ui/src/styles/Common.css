@@ -1,25 +1,23 @@
 /* ===== CUSTOM SCROLLBAR STYLES ===== */
-
 /* Webkit browsers (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 1px;   /* made thinner */
+  height: 1px;  /* made thinner */
 }
 
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
+  border-radius: 0; /* explicitly set to 0 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #181f2a;
-  border: 1px solid #f1f5f9;
+  background: #f1f5f9;
+  border-radius: 0; /* explicitly set to 0 */
 }
-
-
 
 ::-webkit-scrollbar-corner {
   background: #f1f5f9;
-  border-radius: 0;
+  border-radius: 0; /* explicitly set to 0 */
 }
 
 ::-webkit-scrollbar-button {
@@ -29,7 +27,7 @@
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #5b626e #f1f5f9;
+  scrollbar-color: #6b8859 #e9ebee;
 }
 
 /* ===== GLOBAL ELEMENT STYLES ===== */
@@ -508,7 +506,7 @@ h3 {
   color: #c53030;
 }
 
-.plain-btn.small.remove {
+.plain-btn.small.remove {   
   background: #fbcfcf;
   color: #c53030;
 }
@@ -603,6 +601,14 @@ h3 {
   color: #718096;
   font-size: 0.9rem;
   margin: 0.1rem 0 0 0;
+}
+
+.padding-large {
+  padding: 0.875rem;
+}
+
+.padding-large-hollow {
+  padding: 0.75rem;
 }
 
 /* Section Headers - Consolidated styles for all components */
@@ -926,7 +932,7 @@ h3 {
 
 /* Form Group */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.9rem;
   position: relative;
 }
 
@@ -963,13 +969,21 @@ h3 {
   color: #a0aec0;
 }
 
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+
 /* Form Select */
 .form-select {
   padding: 0.8rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: 0.2rem;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   background: white;
   color: #2d3748;
   cursor: pointer;
@@ -983,16 +997,31 @@ h3 {
   padding-right: 2.5rem;
   width: 100%;
   box-sizing: border-box;
+  border-radius: 0.2rem !important;
 }
 
 .form-select:focus {
-  outline: none;
-  border-color: #86bf23;
-  box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.1);
+  outline: none !important;
+  border-color: #86bf23 !important;
+  box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.1) !important;
+  border-radius: 0.2rem !important;
+}
+
+/* Also add more specific focus selector */
+select.form-select:focus {
+  outline: none !important;
+  border-color: #86bf23 !important;
+  box-shadow: 0 0 0 3px rgba(134, 191, 35, 0.1) !important;
+  border-radius: 0.2rem !important;
 }
 
 .form-select:hover {
   border-color: #cbd5e0;
+}
+
+/* Ensure select dropdown options have correct border-radius */
+.form-select option {
+  border-radius: 0.2rem;
 }
 
 /* Dropdown Select (Alternative styling) */
@@ -1108,6 +1137,122 @@ textarea:focus {
   gap: 1rem;
 }
 
+.repeat-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  color: #2d3748;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #86bf23;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+  background: #86bf23;
+  border-color: #86bf23;
+}
+
+input[type="checkbox"]:checked::before {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+
+.repeat-days-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0rem;
+  background: #f8fafd;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.2rem;
+  padding: 1rem ;
+}
+
+.repeat-days-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  color: #2d3748;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0rem;
+}
+
+.repeat-days-checkboxes label:hover {
+  background-color: #f1f5f9;
+}
+
+.extension-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.extension-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #2d3748;
+  cursor: pointer;
+}
+
+.extension-options input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.extension-options input[type="checkbox"]:checked {
+  background: #86bf23;
+  border-color: #86bf23;
+}
+
+.extension-options input[type="checkbox"]:checked::before {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Time Inputs Container */
+
 /* Responsive Form Design */
 @media (max-width: 768px) {
   .form-row,
@@ -1131,6 +1276,14 @@ textarea:focus {
     font-size: 0.95rem;
     padding: 0.75rem 0.875rem;
   }
+  
+  .repeat-days-checkboxes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .extension-options {
+    gap: 0.75rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1143,6 +1296,10 @@ textarea:focus {
   .dropdown-select {
     font-size: 0.9rem;
     padding: 0.7rem 0.75rem;
+  }
+  
+  .repeat-days-checkboxes {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1396,7 +1553,7 @@ textarea:focus {
 .modal-close {
   color: rgba(255, 255, 255, 0.864);
   background: rgba(0, 0, 0, 0.3);
-    border: none;
+  border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0.5rem;
@@ -1412,7 +1569,7 @@ textarea:focus {
 
 .modal-close:hover {
   color: white;
-  background: rgba(0, 0, 0, 0.5); /* Darker on hover */
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-body {
@@ -1428,6 +1585,37 @@ textarea:focus {
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+}
+
+/* Modal Actions - Utility class for button layout in modals */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.modal-actions button,
+.modal-actions .plain-btn {
+  min-width: 100px;
+  flex: 1;
+  width: auto !important;
+  flex-shrink: 1 !important;
+}
+
+/* Responsive modal actions */
+@media (max-width: 768px) {
+  .modal-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .modal-actions button,
+  .modal-actions .plain-btn {
+    width: 100% !important;
+    min-width: auto;
+    max-width: none;
+  }
 }
 
 /* Avatar System */
@@ -1700,5 +1888,20 @@ textarea:focus {
     border-radius: 0;
     max-height: 100vh;
   }
+}
+
+/* Form Input Error State */
+.form-input.error,
+.form-select.error,
+.custom-time-input.error,
+.custom-datepicker.error {
+  border-color: #dc2626 !important;
+}
+
+.form-input.error:focus,
+.form-select.error:focus,
+.custom-time-input.error:focus,
+.custom-datepicker.error:focus {
+  border-color: #dc2626 !important;
 }
 

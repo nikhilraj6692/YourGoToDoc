@@ -21,6 +21,6 @@ public class Calendar {
         private LocalDateTime startTime;
         private LocalDateTime endTime;
         private boolean isAvailable;
-        private String appointmentId; // null if slot is available
+        private String appointmentId;
     }
 } 

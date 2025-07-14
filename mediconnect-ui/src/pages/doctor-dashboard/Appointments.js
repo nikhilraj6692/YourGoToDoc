@@ -17,7 +17,7 @@ const DoctorAppointments = () => {
   const [activeTab, setActiveTab] = useState('today');
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Removed error state - using toast notifications instead
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
@@ -60,10 +60,10 @@ const DoctorAppointments = () => {
         const data = await response.json();
         setAppointments(data);
       } else {
-        setError('Failed to fetch appointments');
+        showToast('Failed to fetch appointments', 'error');
       }
     } catch (err) {
-      setError('Error fetching appointments');
+      showToast('Error fetching appointments', 'error');
     } finally {
       setLoading(false);
     }

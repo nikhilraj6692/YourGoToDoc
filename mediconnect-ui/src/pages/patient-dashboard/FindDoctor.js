@@ -111,10 +111,10 @@ const FindDoctor = () => {
   // State management
   const [activeTab, setActiveTab] = useState('location');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // Removed error state - using toast notifications instead
+  const [locationError, setLocationError] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
-  const [locationError, setLocationError] = useState(null);
   
   // Pagination states
   const [hasMore, setHasMore] = useState(false);
@@ -402,8 +402,6 @@ const FindDoctor = () => {
 
     console.log('✅ getCurrentLocation starting - setting loading to true');
     setLoading(true);
-    setError(null);
-    setLocationError(null);
     resetPagination();
     
     if (!navigator.geolocation) {
@@ -436,7 +434,7 @@ const FindDoctor = () => {
         }
       } catch (err) {
         console.error('❌ Error searching doctors:', err);
-        setError(err.message || 'Failed to search doctors. Please try again.');
+        showToast('Failed to search doctors. Please try again.', 'error');
       } finally {
         console.log('🏁 Setting loading to false');
         setLoading(false);
@@ -535,17 +533,16 @@ const FindDoctor = () => {
     }
 
     setLoading(true);
-    setError(null);
     resetPagination();
 
     if (!pincodeSearchParams.pincode) {
-      setError('Please enter a pincode');
+      showToast('Please enter a pincode', 'error');
       setLoading(false);
       return;
     }
 
     if (!/^\d{6}$/.test(pincodeSearchParams.pincode)) {
-      setError('Please enter a valid 6-digit pincode');
+      showToast('Please enter a valid 6-digit pincode', 'error');
       setLoading(false);
       return;
     }
@@ -582,11 +579,10 @@ const FindDoctor = () => {
     }
 
     setLoading(true);
-    setError(null);
     resetPagination();
 
     if (!citySearchParams.city) {
-      setError('Please enter a city');
+      showToast('Please enter a city', 'error');
       setLoading(false);
       return;
     }
@@ -629,7 +625,7 @@ const FindDoctor = () => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setDoctors([]);
-    setError(null);
+    // Removed setError(null);
     setLocationError(null);
     setPrevLocationParams(null);
     setPrevPincodeParams(null);
@@ -898,7 +894,7 @@ const FindDoctor = () => {
             onChange={(e) => setPincodeSearchParams(prev => ({ ...prev, pincode: e.target.value }))}
             maxLength={6}
           />
-          {error && <div className="input-error">{error}</div>}
+          {/* Removed error display - using toast notifications instead */}
         </div>
 
         <div className="form-group">
@@ -1120,7 +1116,7 @@ const FindDoctor = () => {
               )}
 
               {/* Initial State - No search performed */}
-              {!error && doctors.length === 0 && !locationSearchParams.currentLocation && !pincodeSearchParams.pincode && !citySearchParams.city && !locationError && (
+              {!locationSearchParams.currentLocation && !pincodeSearchParams.pincode && !citySearchParams.city && !locationError && (
                 <>
                   {console.log('🎨 RENDERING empty state')}
                   <div className="empty-state">

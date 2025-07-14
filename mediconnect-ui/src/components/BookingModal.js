@@ -72,6 +72,16 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
     if (!dayInfo) return 'no-slots';
 
     if (dayInfo.hasAppointment) {
+      // Check if appointment is expired (end time has passed)
+      const now = new Date();
+      const appointmentEnd = new Date(dayInfo.endTime);
+      const isExpired = appointmentEnd < now;
+      
+      // If expired and not completed, return expired status
+      if (isExpired && dayInfo.status !== 'COMPLETED') {
+        return 'expired';
+      }
+      
       return dayInfo.status.toLowerCase();
     }
     
@@ -84,6 +94,28 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
     
     const dayInfo = monthSlots[dateStr];
     if (!dayInfo || (!dayInfo.hasAvailableSlot && !dayInfo.hasAppointment)) return;
+    
+    // Allow selecting dates with cancelled appointments, but don't show the cancelled appointment
+    if (dayInfo.hasAppointment && dayInfo.status === 'CANCELLED') {
+      // Set the date but don't show the cancelled appointment
+      setSelectedDate(dateStr);
+      setSelectedSlot(null);
+      setDateSlots([]);
+      
+      // Fetch available slots for this date
+      setLoading(true);
+      tokenService.authenticatedFetch(`/api/appointments/doctor/${doctor.id}/day-slots?date=${dateStr}`)
+        .then(res => res.json())
+        .then(data => {
+          setDateSlots(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          showToast('Error during operation. Please try after some time', 'error');
+          setLoading(false);
+        });
+      return;
+    }
     
     setSelectedDate(dateStr);
     setSelectedSlot(null);
@@ -257,6 +289,7 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
                 const dateStr = formatDate(date);
                 const status = getDayStatus(dateStr, dayNumber);
                 const isPast = date < new Date().setHours(0, 0, 0, 0);
+                const dayInfo = monthSlots[dateStr];
                 
                 return (
                   <button
@@ -274,12 +307,12 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
             {/* Calendar Legend */}
             <div className="calendar-legend">
               <div className="legend-item">
-                <span className="legend-dot available"></span>
-                <span>Available</span>
-              </div>
-              <div className="legend-item">
                 <span className="legend-dot no-slots"></span>
                 <span>No Slots</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-dot available"></span>
+                <span>Available</span>
               </div>
               <div className="legend-item">
                 <span className="legend-dot scheduled"></span>
@@ -288,6 +321,18 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
               <div className="legend-item">
                 <span className="legend-dot confirmed"></span>
                 <span>Confirmed</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-dot completed"></span>
+                <span>Completed</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-dot expired"></span>
+                <span>Expired</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-dot cancelled"></span>
+                <span>Cancelled</span>
               </div>
             </div>
           </div>
@@ -313,7 +358,31 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
               <>
                 {(() => {
                   const dayInfo = monthSlots[selectedDate];
-                  if (dayInfo?.hasAppointment) {
+                  
+                  // Show available slots if they exist, regardless of cancelled appointments
+                  if (dateSlots.length > 0) {
+                    return (
+                      <div className="slots-grid">
+                        {dateSlots.map(slot => (
+                          <button
+                            key={slot.id}
+                            className={`slot-btn ${selectedSlot?.id === slot.id ? 'selected' : ''} ${slot.isBooked ? 'booked' : ''} ${slot.status === 'CANCELLED' ? 'cancelled' : ''}`}
+                            onClick={() => !slot.isBooked && slot.status !== 'CANCELLED' && setSelectedSlot(slot)}
+                            disabled={slot.isBooked || slot.status === 'CANCELLED'}
+                          >
+                            <span className="slot-time">
+                              {formatSlotTime(slot.startTime)} - {formatSlotTime(slot.endTime)}
+                            </span>
+                            {slot.isBooked && <span className="booked-indicator">Booked</span>}
+                            {slot.status === 'CANCELLED'}
+                          </button>
+                        ))}
+                      </div>
+                    );
+                  }
+                  
+                  // Show appointment info if there's an active appointment (not cancelled)
+                  if (dayInfo?.hasAppointment && dayInfo?.status !== 'CANCELLED') {
                     const startTime = new Date(dayInfo.startTime).toLocaleTimeString([], { 
                       hour: '2-digit', 
                       minute: '2-digit' 
@@ -327,28 +396,61 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
                     const appointmentEnd = new Date(dayInfo.endTime);
                     const isExpired = appointmentEnd < now;
                     
+                    // Get status text based on appointment status and expiration
+                    const getStatusText = () => {
+                      if (isExpired && dayInfo.status !== 'COMPLETED') {
+                        return 'Expired Appointment';
+                      }
+                      
+                      switch (dayInfo.status) {
+                        case 'SCHEDULED':
+                          return 'Requested Appointment';
+                        case 'CONFIRMED':
+                          return 'Confirmed Appointment';
+                        case 'CANCELLED':
+                          return 'Cancelled Appointment';
+                        case 'COMPLETED':
+                          return 'Completed Appointment';
+                        default:
+                          return 'Upcoming Appointment';
+                      }
+                    };
+                    
+                    // Determine the CSS class based on status and expiration
+                    const getAppointmentClass = () => {
+                      if (isExpired && dayInfo.status !== 'COMPLETED') {
+                        return 'expired';
+                      }
+                      return dayInfo.status.toLowerCase();
+                    };
+                    
                     return (
-                      <div className={`appointment-info ${isExpired ? 'expired' : 'upcoming'}`}>
+                      <div className={`appointment-info ${getAppointmentClass()}`}>
                         <div className="appointment-status">
-                          {isExpired ? 'Expired Appointment' : 'Upcoming Appointment'}
+                          {getStatusText()}
                         </div>
                         <div className="appointment-time">
                           {startTime} - {endTime}
                         </div>
-                        <a href="#" className="view-details-link" onClick={(e) => {
-                          e.preventDefault();
-                          // Debug: Log the appointment ID
-                          console.log('Appointment ID from month-slots:', dayInfo.appointmentId);
-                          console.log('Full dayInfo:', dayInfo);
-                          // Navigate to patient appointment details
-                          window.location.href = `/patient/appointment-details/${dayInfo.appointmentId}`;
-                        }}>
-                          View Details
-                        </a>
+                        {dayInfo.status !== 'CANCELLED' && !isExpired && (
+                          <a href="#" className="view-details-link" onClick={(e) => {
+                            e.preventDefault();
+                            // Debug: Log the appointment ID
+                            console.log('Appointment ID from month-slots:', dayInfo.appointmentId);
+                            console.log('Full dayInfo:', dayInfo);
+                            // Navigate to patient appointment details with return URL
+                            const currentUrl = window.location.pathname + window.location.search;
+                            const returnUrl = encodeURIComponent(currentUrl);
+                            window.location.href = `/patient/appointment-details/${dayInfo.appointmentId}?returnUrl=${returnUrl}`;
+                          }}>
+                            View Details
+                          </a>
+                        )}
                       </div>
                     );
                   }
                   
+                  // Show no slots message if no available slots and no active appointment
                   if (dateSlots.length === 0) {
                     return (
                       <div className="no-slots-available">
@@ -358,37 +460,34 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
                       </div>
                     );
                   }
-
-                  return (
-                    <div className="slots-grid">
-                      {dateSlots.map(slot => (
-                        <button
-                          key={slot.id}
-                          className={`slot-btn ${selectedSlot?.id === slot.id ? 'selected' : ''} ${slot.isBooked ? 'booked' : ''}`}
-                          onClick={() => !slot.isBooked && setSelectedSlot(slot)}
-                          disabled={slot.isBooked}
-                        >
-                          <span className="slot-time">
-                            {formatSlotTime(slot.startTime)} - {formatSlotTime(slot.endTime)}
-                          </span>
-                          {slot.isBooked && <span className="booked-indicator">Booked</span>}
-                        </button>
-                      ))}
-                    </div>
-                  );
                 })()}
               </>
             )}
           </div>
 
           {/* Footer */}
-          <div className="modal-actions" >
+          <div className="modal-actions modal-footer" >
             <button className="plain-btn hollow" onClick={onClose}>
               Cancel
             </button>
             {(() => {
               const dayInfo = monthSlots[selectedDate];
-              if (dayInfo?.hasAppointment) {
+              
+              // Show booking button if there are available slots, regardless of cancelled appointments
+              if (dateSlots.length > 0) {
+                return (
+                  <button 
+                    className="plain-btn submit" 
+                    disabled={!selectedDate || !selectedSlot || loading} 
+                    onClick={handleBook}
+                  >
+                    {loading ? 'Requesting...' : 'Request Appointment'}
+                  </button>
+                );
+              }
+              
+              // Show appointment action buttons if there's an active appointment (not cancelled)
+              if (dayInfo?.hasAppointment && dayInfo?.status !== 'CANCELLED') {
                 return (
                   <>
                     {dayInfo.status === 'SCHEDULED' && (
@@ -414,15 +513,9 @@ const BookingModal = ({ open, onClose, doctor, onBook }) => {
                   </>
                 );
               }
-              return (
-                <button 
-                  className="plain-btn submit" 
-                  disabled={!selectedDate || !selectedSlot || loading} 
-                  onClick={handleBook}
-                >
-                  {loading ? 'Requesting...' : 'Request Appointment'}
-                </button>
-              );
+              
+              // Default case - no slots and no active appointment
+              return null;
             })()}
           </div>
         </div>
