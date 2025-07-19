@@ -8,4 +8,4 @@ cmds = [
 ]
 
 [start]
-cmd = "java -jar target/mediconnect.jar" 
+cmd = "java -jar target/mediconnect.jar --spring.profiles.active=prod" 

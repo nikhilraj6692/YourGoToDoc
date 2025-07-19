@@ -9,7 +9,6 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI:mongodb://localhost:27017/mediconnect}
-      database: mediconnect
       auto-index-creation: true
 
   # File Upload Configuration
@@ -22,7 +21,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-
 
   mail:
     enabled: false
