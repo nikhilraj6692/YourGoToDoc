@@ -183,9 +183,38 @@ npm start
 
 ## 🚀 Deployment
 
-### 🐳 Docker Deployment (Recommended - 15 minutes)
+### 🚂 Railway Deployment (Recommended - 10 minutes)
 
-MediConnect includes comprehensive Docker support for easy deployment to AWS, Azure, or any cloud platform.
+MediConnect is optimized for Railway deployment with built-in Vault integration for secure secrets management.
+
+#### Quick Railway Setup
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login and deploy
+railway login
+railway init
+railway up
+```
+
+#### Railway Features
+- ✅ **Built-in Vault** for secrets management
+- ✅ **Automatic SSL** certificates
+- ✅ **Custom domains** support
+- ✅ **Auto-scaling** capabilities
+- ✅ **GitHub integration** for CI/CD
+- ✅ **Built-in monitoring** and logs
+
+**Total deployment time: ~10 minutes**
+
+For detailed Railway deployment instructions, see:
+- [Railway Deployment Guide](deployment/RAILWAY_DEPLOYMENT.md) - Complete Railway setup
+- [Quick Start Guide](deployment/QUICK_START.md) - Step-by-step deployment
+
+### 🐳 Docker Deployment (Alternative - 15 minutes)
+
+MediConnect includes comprehensive Docker support for deployment to AWS, Azure, or any cloud platform.
 
 #### Quick Docker Setup
 ```bash
@@ -204,8 +233,7 @@ docker-compose -f docker-compose.prod.yml up -d
 
 **Total time: ~20 minutes**
 
-For detailed deployment instructions, see:
-- [Quick Start Guide](deployment/QUICK_START.md) - Step-by-step deployment
+For detailed Docker deployment instructions, see:
 - [Docker Deployment Guide](deployment/DOCKER_DEPLOYMENT.md) - Comprehensive Docker guide
 - [AWS Setup Guide](deployment/aws-setup.md) - Manual AWS deployment
 
@@ -243,11 +271,14 @@ MediConnect/
 │   │   └── utils/         # Utility functions
 │   └── public/
 ├── deployment/             # Deployment files and scripts
+│   ├── RAILWAY_DEPLOYMENT.md # Railway deployment guide
 │   ├── QUICK_START.md     # Quick deployment guide
 │   ├── DOCKER_DEPLOYMENT.md # Docker deployment guide
 │   ├── aws-setup.md       # AWS setup guide
 │   ├── docker-deploy.sh   # Docker deployment script
 │   └── ...                # Other deployment files
+├── railway.json           # Railway configuration
+├── nixpacks.toml         # Railway build configuration
 ├── Dockerfile             # Backend Docker configuration
 ├── docker-compose.yml     # Development Docker setup
 ├── docker-compose.prod.yml # Production Docker setup
