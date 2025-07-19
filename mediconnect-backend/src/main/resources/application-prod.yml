@@ -66,12 +66,41 @@ google:
     api:
       key: ${GOOGLE_MAPS_API_KEY}
 
-# Health Check Endpoint
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: health,info,metrics,env,configprops
+      base-path: /actuator
+    enabled-by-default: false
   endpoint:
     health:
-      show-details: when-authorized
+      enabled: true
+      show-details: when-authorized  # More secure
+      show-components: always
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    env:
+      enabled: true
+      show-values: when-authorized  # Hide sensitive values
+  health:
+    defaults:
+      enabled: true
+    mongo:
+      enabled: true
+    diskspace:
+      enabled: true
+      threshold: 10MB
+    ping:
+      enabled: true
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+    build:
+      enabled: true
