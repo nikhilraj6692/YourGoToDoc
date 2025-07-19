@@ -166,6 +166,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                path.startsWith("/ws") ||
                path.startsWith("/api/doctors/search") ||
                 path.startsWith("/api/documents") ||
+                path.startsWith("/actuator") ||
                method.equals("OPTIONS");
     }
 } 
