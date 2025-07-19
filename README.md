@@ -181,6 +181,40 @@ npm start
 - MongoDB should be running on localhost:27017
 - Database will be created automatically on first run
 
+## 🚀 Deployment
+
+### 🐳 Docker Deployment (Recommended - 15 minutes)
+
+MediConnect includes comprehensive Docker support for easy deployment to AWS, Azure, or any cloud platform.
+
+#### Quick Docker Setup
+```bash
+# Development
+docker-compose up -d
+
+# Production
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+#### AWS Deployment
+1. **Set up MongoDB Atlas** (5 minutes)
+2. **Configure AWS S3** (5 minutes)
+3. **Launch EC2 instance** (5 minutes)
+4. **Deploy with Docker** (5 minutes)
+
+**Total time: ~20 minutes**
+
+For detailed deployment instructions, see:
+- [Quick Start Guide](deployment/QUICK_START.md) - Step-by-step deployment
+- [Docker Deployment Guide](deployment/DOCKER_DEPLOYMENT.md) - Comprehensive Docker guide
+- [AWS Setup Guide](deployment/aws-setup.md) - Manual AWS deployment
+
+### 🔧 Manual Deployment (Legacy - 45 minutes)
+
+Traditional deployment method for custom server configurations.
+
+See [deployment/README.md](deployment/README.md) for complete deployment documentation.
+
 ## 📊 Project Structure
 
 ```
@@ -208,6 +242,15 @@ MediConnect/
 │   │   │   └── Common.css # Global utilities and shared styles
 │   │   └── utils/         # Utility functions
 │   └── public/
+├── deployment/             # Deployment files and scripts
+│   ├── QUICK_START.md     # Quick deployment guide
+│   ├── DOCKER_DEPLOYMENT.md # Docker deployment guide
+│   ├── aws-setup.md       # AWS setup guide
+│   ├── docker-deploy.sh   # Docker deployment script
+│   └── ...                # Other deployment files
+├── Dockerfile             # Backend Docker configuration
+├── docker-compose.yml     # Development Docker setup
+├── docker-compose.prod.yml # Production Docker setup
 └── docs/                  # Documentation
 ```
 
