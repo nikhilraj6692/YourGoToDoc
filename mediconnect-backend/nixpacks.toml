@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["maven", "openjdk17"]
+nixPkgs = ["maven", "openjdk17", "mongodb"]
 
 [phases.install]
 cmds = [
