@@ -196,6 +196,7 @@ public class CustomFlywayService {
             if (exitCode == 0) {
                 log.info("MongoDB script executed successfully with mongosh: {}", scriptPath);
                 log.debug("Script output: {}", output);
+
                 return true;
             } else {
                 log.warn("mongosh failed with exit code {}: {}", exitCode, output);
