@@ -3,6 +3,29 @@ spring:
     mongodb:
       uri: "${MONGODB_URI:mongodb://localhost:27017/mediconnect}"
       database: "mediconnect"
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  mail:
+    enabled: false
 
 server:
   port: "${PORT:8080}"
+
+jwt:
+  secret: ''
+  access-token-expiration: 300000
+  refresh-token-expiration: 600000
+
+aws:
+  s3:
+    bucket: mediconnect-app
+  accessKey: ''
+  secretKey: ''
+  region: ap-south-1
+
+google:
+  maps:
+    api:
+      key: ''

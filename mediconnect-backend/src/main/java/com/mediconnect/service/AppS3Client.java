@@ -21,10 +21,10 @@ public class AppS3Client {
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    @Value("${aws.accessKeyId}")
+    @Value("${aws.accessKey}")
     private String accessKeyId;
 
-    @Value("${aws.secretAccessKey}")
+    @Value("${aws.secretKey}")
     private String secretAccessKey;
 
     @Value("${aws.region}")

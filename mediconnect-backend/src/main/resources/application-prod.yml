@@ -23,19 +23,23 @@ spring:
     hibernate:
       ddl-auto: validate
 
+
+  mail:
+    enabled: false
+
 # JWT Configuration
 jwt:
   secret: ${JWT_SECRET:your-super-secret-jwt-key-change-this-in-production}
-  expiration: 300000
-  refresh-expiration: 600000
+  access-token-expiration: 300000
+  refresh-token-expiration: 600000
 
 # AWS S3 Configuration
 aws:
   s3:
-    bucket-name: ${S3_BUCKET_NAME:mediconnect-files}
-    region: ${AWS_REGION:ap-south-1}
-    access-key: ${AWS_ACCESS_KEY_ID}
-    secret-key: ${AWS_SECRET_ACCESS_KEY}
+    bucket: ${S3_BUCKET_NAME:mediconnect-files}
+  region: ${AWS_REGION:ap-south-1}
+  accessKey: ${AWS_ACCESS_KEY_ID}
+  secretKey: ${AWS_SECRET_ACCESS_KEY}
 
 # Logging Configuration
 logging:
