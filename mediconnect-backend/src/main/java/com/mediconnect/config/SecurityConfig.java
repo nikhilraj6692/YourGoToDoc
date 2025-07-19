@@ -36,8 +36,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Auth endpoints
                 .requestMatchers("/api/auth/**").permitAll()
-                // Health check endpoint
+                // Health check endpoints (for Railway)
                 .requestMatchers("/api/health").permitAll()
+                .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers("/actuator/health/**").permitAll()
                 // Swagger/OpenAPI documentation
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()

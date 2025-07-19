@@ -1,11 +1,11 @@
-// MongoDB initialization script for MediConnect
+// MongoDB initialization script for MediConnect - Version 1.1
 // This script sets up the database, collections, indexes, and sample data
 // Safe to run multiple times - includes "if not exists" checks
 
 // Switch to mediconnect database
 db = db.getSiblingDB('mediconnect');
 
-print('Starting MediConnect database initialization...');
+print('Starting MediConnect database initialization - Version 1.1...');
 
 // =============================================================================
 // CREATE COLLECTIONS (with existence checks)
@@ -37,7 +37,7 @@ print('Collections setup completed!');
 
 print('Creating indexes...');
 
-// User indexes
+// User indexes (skip _id as it's auto-created)
 if (!db.users.getIndexes().some(idx => idx.name === 'email_1')) {
     db.users.createIndex({ "email": 1 }, { unique: true });
     print('Created unique index on users.email');
@@ -55,7 +55,7 @@ if (!db.users.getIndexes().some(idx => idx.name === 'status_1')) {
     print('Created index on users.status');
 }
 
-// Doctor indexes
+// Doctor indexes (skip _id as it's auto-created)
 if (!db.doctors.getIndexes().some(idx => idx.name === 'email_1')) {
     db.doctors.createIndex({ "email": 1 }, { unique: true });
     print('Created unique index on doctors.email');
@@ -73,7 +73,7 @@ if (!db.doctors.getIndexes().some(idx => idx.name === 'verificationStatus_1')) {
     print('Created index on doctors.verificationStatus');
 }
 
-// Appointment indexes
+// Appointment indexes (skip _id as it's auto-created)
 if (!db.appointments.getIndexes().some(idx => idx.name === 'doctorId_1')) {
     db.appointments.createIndex({ "doctorId": 1 });
     print('Created index on appointments.doctorId');
@@ -99,7 +99,7 @@ if (!db.appointments.getIndexes().some(idx => idx.name === 'patientId_1_startTim
     print('Created compound index on appointments.patientId and startTime');
 }
 
-// Schedule indexes
+// Schedule indexes (skip _id as it's auto-created)
 if (!db.schedules.getIndexes().some(idx => idx.name === 'doctorId_1')) {
     db.schedules.createIndex({ "doctorId": 1 });
     print('Created index on schedules.doctorId');
@@ -113,7 +113,7 @@ if (!db.schedules.getIndexes().some(idx => idx.name === 'doctorId_1_startTime_1'
     print('Created compound index on schedules.doctorId and startTime');
 }
 
-// Message indexes
+// Message indexes (skip _id as it's auto-created)
 if (!db.messages.getIndexes().some(idx => idx.name === 'appointmentId_1')) {
     db.messages.createIndex({ "appointmentId": 1 });
     print('Created index on messages.appointmentId');
@@ -127,7 +127,7 @@ if (!db.messages.getIndexes().some(idx => idx.name === 'chatId_1_createdAt_-1'))
     print('Created compound index on messages.chatId and createdAt');
 }
 
-// Notification indexes
+// Notification indexes (skip _id as it's auto-created)
 if (!db.notifications.getIndexes().some(idx => idx.name === 'userId_1_createdAt_-1')) {
     db.notifications.createIndex({ "userId": 1, "createdAt": -1 });
     print('Created compound index on notifications.userId and createdAt');
@@ -137,7 +137,7 @@ if (!db.notification_preferences.getIndexes().some(idx => idx.name === 'userId_1
     print('Created unique index on notification_preferences.userId');
 }
 
-// Doctor profile indexes
+// Doctor profile indexes (skip _id as it's auto-created)
 if (!db.doctor_profiles.getIndexes().some(idx => idx.name === 'userId_1')) {
     db.doctor_profiles.createIndex({ "userId": 1 }, { unique: true });
     print('Created unique index on doctor_profiles.userId');
@@ -151,13 +151,13 @@ if (!db.doctor_profiles.getIndexes().some(idx => idx.name === 'location_2dsphere
     print('Created geospatial index on doctor_profiles.location');
 }
 
-// Chat indexes
+// Chat indexes (skip _id as it's auto-created)
 if (!db.chats.getIndexes().some(idx => idx.name === 'appointmentId_1')) {
     db.chats.createIndex({ "appointmentId": 1 });
     print('Created index on chats.appointmentId');
 }
 
-// Payment indexes
+// Payment indexes (skip _id as it's auto-created)
 if (!db.payments.getIndexes().some(idx => idx.name === 'appointmentId_1')) {
     db.payments.createIndex({ "appointmentId": 1 });
     print('Created index on payments.appointmentId');
@@ -198,89 +198,99 @@ print('Creating sample doctors...');
 // Sample doctor data
 var sampleDoctors = [
     {
-        email: "doctor1@mediconnect.com",
-        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "Doctor@123"
+        email: "dr.smith@mediconnect.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "doctor123"
         role: "DOCTOR",
         status: "ACTIVE",
-        fullName: "Dr. Rajesh Kumar",
-        phoneNumber: 1000000001,
-        address: {
-            address1: "123 Medical Center Dr",
-            city: "Patna",
-            state: "Bihar",
-            pincode: "800001"
-        },
+        fullName: "Dr. John Smith",
+        specialization: "Cardiology",
+        location: "New York",
+        verificationStatus: "VERIFIED",
+        experience: 15,
+        consultationFee: 150,
+        rating: 4.8,
+        totalPatients: 1200,
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        email: "doctor2@mediconnect.com",
-        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "Doctor@123"
+        email: "dr.johnson@mediconnect.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "doctor123"
         role: "DOCTOR",
         status: "ACTIVE",
-        fullName: "Dr. Priya Sharma",
-        phoneNumber: 1000000002,
-        address: {
-            address1: "456 Health Plaza",
-            city: "Muzaffarpur",
-            state: "Bihar",
-            pincode: "842001"
-        },
+        fullName: "Dr. Sarah Johnson",
+        specialization: "Dermatology",
+        location: "Los Angeles",
+        verificationStatus: "VERIFIED",
+        experience: 12,
+        consultationFee: 120,
+        rating: 4.9,
+        totalPatients: 800,
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        email: "doctor3@mediconnect.com",
-        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "Doctor@123"
+        email: "dr.williams@mediconnect.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "doctor123"
         role: "DOCTOR",
         status: "ACTIVE",
-        fullName: "Dr. Amit Verma",
-        phoneNumber: 1000000003,
-        address: {
-            address1: "789 Hospital Road",
-            city: "Gaya",
-            state: "Bihar",
-            pincode: "823001"
-        },
+        fullName: "Dr. Michael Williams",
+        specialization: "Neurology",
+        location: "Chicago",
+        verificationStatus: "VERIFIED",
+        experience: 18,
+        consultationFee: 180,
+        rating: 4.7,
+        totalPatients: 1500,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        email: "dr.brown@mediconnect.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "doctor123"
+        role: "DOCTOR",
+        status: "ACTIVE",
+        fullName: "Dr. Emily Brown",
+        specialization: "Pediatrics",
+        location: "Boston",
+        verificationStatus: "VERIFIED",
+        experience: 10,
+        consultationFee: 100,
+        rating: 4.9,
+        totalPatients: 600,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        email: "dr.davis@mediconnect.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "doctor123"
+        role: "DOCTOR",
+        status: "ACTIVE",
+        fullName: "Dr. Robert Davis",
+        specialization: "Orthopedics",
+        location: "Houston",
+        verificationStatus: "VERIFIED",
+        experience: 20,
+        consultationFee: 200,
+        rating: 4.8,
+        totalPatients: 2000,
         createdAt: new Date(),
         updatedAt: new Date()
     }
 ];
 
-// Insert sample doctors
+// Insert sample doctors if they don't exist
 sampleDoctors.forEach(function(doctor) {
-    var existingDoctor = db.users.findOne({ "email": doctor.email });
+    var existingDoctor = db.doctors.findOne({ "email": doctor.email });
     if (!existingDoctor) {
-        var insertedDoctor = db.users.insertOne(doctor);
-        
-        // Create corresponding doctor profile
-        var specializations = ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Orthopedics"];
-        var randomSpecialization = specializations[Math.floor(Math.random() * specializations.length)];
-        
-        db.doctor_profiles.insertOne({
-            userId: insertedDoctor.insertedId,
-            specialization: randomSpecialization,
-            licenseNumber: "MD" + String.format("%06d", Math.floor(Math.random() * 1000000)),
-            yearsOfExperience: 1 + Math.floor(Math.random() * 30),
-            bio: "Experienced " + randomSpecialization + " specialist with " + 
-                 (1 + Math.floor(Math.random() * 30)) + " years of practice.",
-            verificationStatus: "VERIFIED",
-            location: {
-                type: "Point",
-                coordinates: [
-                    85.39163437645426 + (Math.random() - 0.5) * 2, // longitude
-                    26.112585878580482 + (Math.random() - 0.5) * 2  // latitude
-                ]
-            },
-            createdAt: new Date(),
-            updatedAt: new Date()
-        });
-        
-        print('Added doctor: ' + doctor.fullName);
+        db.doctors.insertOne(doctor);
+        print('Created sample doctor: ' + doctor.fullName);
     } else {
-        print('Doctor already exists: ' + doctor.fullName);
+        print('Sample doctor already exists: ' + doctor.fullName);
     }
 });
+
+print('Sample doctors setup completed!');
 
 // =============================================================================
 // CREATE SAMPLE PATIENTS (with existence checks)
@@ -288,72 +298,102 @@ sampleDoctors.forEach(function(doctor) {
 
 print('Creating sample patients...');
 
+// Sample patient data
 var samplePatients = [
     {
-        email: "patient1@mediconnect.com",
-        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "Patient@123"
+        email: "john.doe@example.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "patient123"
         role: "PATIENT",
         status: "ACTIVE",
-        fullName: "Rahul Singh",
-        phoneNumber: 2000000001,
-        address: {
-            address1: "321 Patient Street",
-            city: "Patna",
-            state: "Bihar",
-            pincode: "800002"
+        fullName: "John Doe",
+        phone: "+1234567890",
+        dateOfBirth: new Date("1990-05-15"),
+        gender: "MALE",
+        address: "123 Main St, New York, NY 10001",
+        medicalHistory: "No significant medical history",
+        allergies: "None",
+        emergencyContact: {
+            name: "Jane Doe",
+            phone: "+1234567891",
+            relationship: "Spouse"
         },
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        email: "patient2@mediconnect.com",
-        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "Patient@123"
+        email: "jane.smith@example.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "patient123"
         role: "PATIENT",
         status: "ACTIVE",
-        fullName: "Neha Gupta",
-        phoneNumber: 2000000002,
-        address: {
-            address1: "654 Health Lane",
-            city: "Muzaffarpur",
-            state: "Bihar",
-            pincode: "842002"
+        fullName: "Jane Smith",
+        phone: "+1234567892",
+        dateOfBirth: new Date("1985-08-22"),
+        gender: "FEMALE",
+        address: "456 Oak Ave, Los Angeles, CA 90210",
+        medicalHistory: "Hypertension, controlled with medication",
+        allergies: "Penicillin",
+        emergencyContact: {
+            name: "Mike Smith",
+            phone: "+1234567893",
+            relationship: "Husband"
+        },
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        email: "mike.wilson@example.com",
+        password: "$2a$10$rDkPvvAFV6GgJjXpX5Y5UOQZ5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z5Z", // hashed "patient123"
+        role: "PATIENT",
+        status: "ACTIVE",
+        fullName: "Mike Wilson",
+        phone: "+1234567894",
+        dateOfBirth: new Date("1992-03-10"),
+        gender: "MALE",
+        address: "789 Pine St, Chicago, IL 60601",
+        medicalHistory: "Asthma, seasonal allergies",
+        allergies: "Dust, pollen",
+        emergencyContact: {
+            name: "Lisa Wilson",
+            phone: "+1234567895",
+            relationship: "Sister"
         },
         createdAt: new Date(),
         updatedAt: new Date()
     }
 ];
 
-// Insert sample patients
+// Insert sample patients if they don't exist
 samplePatients.forEach(function(patient) {
     var existingPatient = db.users.findOne({ "email": patient.email });
     if (!existingPatient) {
         db.users.insertOne(patient);
-        print('Added patient: ' + patient.fullName);
+        print('Created sample patient: ' + patient.fullName);
     } else {
-        print('Patient already exists: ' + patient.fullName);
+        print('Sample patient already exists: ' + patient.fullName);
     }
 });
 
+print('Sample patients setup completed!');
+
 // =============================================================================
-// VERIFICATION
+// VERIFICATION AND SUMMARY
 // =============================================================================
 
 print('Verifying database setup...');
 
-var userCount = db.users.countDocuments();
-var doctorCount = db.doctor_profiles.countDocuments();
+// Count collections
 var collectionCount = db.getCollectionNames().length;
+print('Total collections created: ' + collectionCount);
 
-print('Database verification complete:');
-print('- Total users: ' + userCount);
-print('- Total doctors: ' + doctorCount);
-print('- Total collections: ' + collectionCount);
+// Count documents in key collections
+var userCount = db.users.countDocuments();
+var doctorCount = db.doctors.countDocuments();
+var appointmentCount = db.appointments.countDocuments();
 
-print('MediConnect database initialized successfully! 🎉');
-print('');
-print('Default credentials:');
-print('- Admin: admin@mediconnect.com / admin123');
-print('- Doctor: doctor1@mediconnect.com / Doctor@123');
-print('- Patient: patient1@mediconnect.com / Patient@123');
-print('');
-print('Note: Passwords are hashed in the database for security.'); 
+print('Total users: ' + userCount);
+print('Total doctors: ' + doctorCount);
+print('Total appointments: ' + appointmentCount);
+
+print('MediConnect database initialization completed successfully!');
+print('Version: 1.1');
+print('Timestamp: ' + new Date()); 
