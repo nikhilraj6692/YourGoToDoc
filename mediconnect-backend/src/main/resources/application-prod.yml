@@ -1,8 +1,11 @@
 # Server Configuration
 server:
-  port: 8080
+  port: ${PORT:8080}
   servlet:
     context-path: /api
+  error:
+    include-message: always
+    include-binding-errors: always
 
 # MongoDB Configuration (Atlas)
 spring:
@@ -10,6 +13,7 @@ spring:
     mongodb:
       uri: ${MONGODB_URI:mongodb://localhost:27017/mediconnect}
       auto-index-creation: true
+      database: mediconnect
 
   # File Upload Configuration
   servlet:
@@ -44,7 +48,6 @@ logging:
   level:
     root: INFO
     com.mediconnect: DEBUG
-    org.springframework.web: INFO
   file:
     name: logs/mediconnect.log
   pattern:
