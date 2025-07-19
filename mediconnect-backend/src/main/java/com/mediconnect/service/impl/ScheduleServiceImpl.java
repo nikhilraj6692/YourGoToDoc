@@ -1,6 +1,6 @@
 package com.mediconnect.service.impl;
 
-import com.mediconnect.exceptions.SlotException;
+import com.mediconnect.exception.SlotException;
 import com.mediconnect.dto.schedule.DeleteSlotsRequest;
 import com.mediconnect.dto.schedule.ScheduleSlotRequest;
 import com.mediconnect.dto.schedule.SlotExtensionRequest;

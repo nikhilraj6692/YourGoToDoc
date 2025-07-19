@@ -12301,8 +12301,8 @@ org.springframework.web.bind.ServletRequestBindingException: Missing request att
 2025-07-14 18:24:03 [http-nio-8080-exec-5] DEBUG o.s.data.mongodb.core.MongoTemplate - find using query: { "email" : "trex@gmail.com"} fields: Document{{}} for class: class com.mediconnect.model.User in collection: users
 2025-07-14 18:24:03 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.mediconnect.exception.GlobalExceptionHandler#handleRuntimeException(RuntimeException, WebRequest)
 2025-07-14 18:24:03 [http-nio-8080-exec-5] ERROR c.m.exception.GlobalExceptionHandler - Runtime exception occurred for request: uri=/api/schedule/slots - Error: Cannot add a slot. Please reduce slot duration
-com.mediconnect.exceptions.SlotException: Cannot add a slot. Please reduce slot duration
-	at com.mediconnect.exceptions.SlotException.slotLargeConflict(SlotException.java:91)
+com.mediconnect.exception.SlotException: Cannot add a slot. Please reduce slot duration
+	at com.mediconnect.exception.SlotException.slotLargeConflict(SlotException.java:91)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.validateTimeSlotCombination(ScheduleServiceImpl.java:86)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.validateSlotRequest(ScheduleServiceImpl.java:200)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.addSlots(ScheduleServiceImpl.java:48)
@@ -13592,8 +13592,8 @@ com.mediconnect.exceptions.SlotException: Cannot add a slot. Please reduce slot 
 2025-07-14 23:33:02 [http-nio-8080-exec-2] DEBUG o.s.data.mongodb.core.MongoTemplate - find using query: { "email" : "trex@gmail.com"} fields: Document{{}} for class: class com.mediconnect.model.User in collection: users
 2025-07-14 23:33:02 [http-nio-8080-exec-2] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.mediconnect.exception.GlobalExceptionHandler#handleRuntimeException(RuntimeException, WebRequest)
 2025-07-14 23:33:02 [http-nio-8080-exec-2] ERROR c.m.exception.GlobalExceptionHandler - Runtime exception occurred for request: uri=/api/schedule/slots - Error: Cannot add a slot. Please reduce slot duration
-com.mediconnect.exceptions.SlotException: Cannot add a slot. Please reduce slot duration
-	at com.mediconnect.exceptions.SlotException.slotLargeConflict(SlotException.java:91)
+com.mediconnect.exception.SlotException: Cannot add a slot. Please reduce slot duration
+	at com.mediconnect.exception.SlotException.slotLargeConflict(SlotException.java:91)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.validateTimeSlotCombination(ScheduleServiceImpl.java:86)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.validateSlotRequest(ScheduleServiceImpl.java:200)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.addSlots(ScheduleServiceImpl.java:48)
@@ -13716,8 +13716,8 @@ com.mediconnect.exceptions.SlotException: Cannot add a slot. Please reduce slot 
 2025-07-14 23:34:34 [http-nio-8080-exec-5] DEBUG o.s.data.mongodb.core.MongoTemplate - find using query: { "email" : "trex@gmail.com"} fields: Document{{}} for class: class com.mediconnect.model.User in collection: users
 2025-07-14 23:34:34 [http-nio-8080-exec-5] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Using @ExceptionHandler com.mediconnect.exception.GlobalExceptionHandler#handleRuntimeException(RuntimeException, WebRequest)
 2025-07-14 23:34:34 [http-nio-8080-exec-5] ERROR c.m.exception.GlobalExceptionHandler - Runtime exception occurred for request: uri=/api/schedule/slots - Error: Cannot add a slot. Please reduce slot duration
-com.mediconnect.exceptions.SlotException: Cannot add a slot. Please reduce slot duration
-	at com.mediconnect.exceptions.SlotException.slotLargeConflict(SlotException.java:91)
+com.mediconnect.exception.SlotException: Cannot add a slot. Please reduce slot duration
+	at com.mediconnect.exception.SlotException.slotLargeConflict(SlotException.java:91)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.validateTimeSlotCombination(ScheduleServiceImpl.java:86)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.validateSlotRequest(ScheduleServiceImpl.java:200)
 	at com.mediconnect.service.impl.ScheduleServiceImpl.addSlots(ScheduleServiceImpl.java:48)

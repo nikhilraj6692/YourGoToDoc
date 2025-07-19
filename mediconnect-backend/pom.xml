@@ -125,6 +125,7 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <finalName>mediconnect</finalName>
                 </configuration>
             </plugin>
         </plugins>

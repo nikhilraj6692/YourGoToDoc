@@ -165,7 +165,7 @@ A comprehensive healthcare platform connecting doctors and patients through secu
 
 ### Backend Setup
 ```bash
-cd backend
+cd mediconnect-backend
 mvn clean install
 mvn spring-boot:run
 ```
@@ -188,15 +188,10 @@ npm start
 MediConnect is optimized for Railway deployment with built-in Vault integration for secure secrets management.
 
 #### Quick Railway Setup
-```bash
-# Install Railway CLI
-npm install -g @railway/cli
-
-# Login and deploy
-railway login
-railway init
-railway up
-```
+1. **Create Railway account** at [railway.app](https://railway.app)
+2. **Connect your GitHub repository**
+3. **Add environment variables** in Railway dashboard
+4. **Deploy backend and frontend services**
 
 #### Railway Features
 - ✅ **Built-in Vault** for secrets management
@@ -209,53 +204,23 @@ railway up
 **Total deployment time: ~10 minutes**
 
 For detailed Railway deployment instructions, see:
-- [Railway Deployment Guide](deployment/RAILWAY_DEPLOYMENT.md) - Complete Railway setup
-- [Quick Start Guide](deployment/QUICK_START.md) - Step-by-step deployment
-
-### 🐳 Docker Deployment (Alternative - 15 minutes)
-
-MediConnect includes comprehensive Docker support for deployment to AWS, Azure, or any cloud platform.
-
-#### Quick Docker Setup
-```bash
-# Development
-docker-compose up -d
-
-# Production
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-#### AWS Deployment
-1. **Set up MongoDB Atlas** (5 minutes)
-2. **Configure AWS S3** (5 minutes)
-3. **Launch EC2 instance** (5 minutes)
-4. **Deploy with Docker** (5 minutes)
-
-**Total time: ~20 minutes**
-
-For detailed Docker deployment instructions, see:
-- [Docker Deployment Guide](deployment/DOCKER_DEPLOYMENT.md) - Comprehensive Docker guide
-- [AWS Setup Guide](deployment/aws-setup.md) - Manual AWS deployment
-
-### 🔧 Manual Deployment (Legacy - 45 minutes)
-
-Traditional deployment method for custom server configurations.
-
-See [deployment/README.md](deployment/README.md) for complete deployment documentation.
+- [Quick Start Guide](deployment/QUICK_START.md) - Step-by-step Railway deployment
 
 ## 📊 Project Structure
 
 ```
 MediConnect/
-├── backend/                 # Spring Boot application
+├── mediconnect-backend/     # Spring Boot application
 │   ├── src/main/java/
 │   │   ├── controller/     # REST API controllers
 │   │   ├── service/        # Business logic
 │   │   ├── repository/     # Data access layer
 │   │   ├── model/          # Data models
 │   │   └── dto/           # Data transfer objects
-│   └── src/main/resources/
-│       └── application.properties
+│   ├── src/main/resources/
+│   │   └── application.properties
+│   ├── mongo-init.js       # MongoDB initialization script
+│   └── setup-database.sh   # Database setup script
 ├── mediconnect-ui/         # React frontend
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
@@ -270,18 +235,11 @@ MediConnect/
 │   │   │   └── Common.css # Global utilities and shared styles
 │   │   └── utils/         # Utility functions
 │   └── public/
-├── deployment/             # Deployment files and scripts
-│   ├── RAILWAY_DEPLOYMENT.md # Railway deployment guide
-│   ├── QUICK_START.md     # Quick deployment guide
-│   ├── DOCKER_DEPLOYMENT.md # Docker deployment guide
-│   ├── aws-setup.md       # AWS setup guide
-│   ├── docker-deploy.sh   # Docker deployment script
-│   └── ...                # Other deployment files
+├── deployment/             # Railway deployment files
+│   ├── QUICK_START.md     # Quick Railway deployment (10 min)
+│   └── README.md          # Railway deployment overview
 ├── railway.json           # Railway configuration
 ├── nixpacks.toml         # Railway build configuration
-├── Dockerfile             # Backend Docker configuration
-├── docker-compose.yml     # Development Docker setup
-├── docker-compose.prod.yml # Production Docker setup
 └── docs/                  # Documentation
 ```
 

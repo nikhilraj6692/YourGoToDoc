@@ -15,7 +15,7 @@ import jakarta.annotation.PostConstruct;
 @EnableMongoRepositories(basePackages = "com.mediconnect.repository")
 public class MongoConfig {
     // MongoDB configuration is handled by Spring Boot's auto-configuration
-    // based on application.properties/yml settings
+    // based on application-local.yml/yml settings
 
     @Autowired
     private MongoTemplate mongoTemplate;

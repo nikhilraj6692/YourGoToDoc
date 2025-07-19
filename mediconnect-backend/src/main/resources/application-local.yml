@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      uri: "${MONGODB_URI:mongodb://localhost:27017/mediconnect}"
+      database: "mediconnect"
+
+server:
+  port: "${PORT:8080}"

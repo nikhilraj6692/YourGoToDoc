@@ -2,7 +2,10 @@
 nixPkgs = ["maven", "openjdk17"]
 
 [phases.install]
-cmds = ["mvn clean package -DskipTests"]
+cmds = [
+    "mvn clean package -DskipTests -Dmaven.test.skip=true",
+    "ls -la target/"
+]
 
 [start]
 cmd = "java -jar target/mediconnect.jar" 

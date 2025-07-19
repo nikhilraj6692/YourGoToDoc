@@ -1,4 +1,4 @@
-package com.mediconnect.exceptions;
+package com.mediconnect.exception;
 
 /**
  * Custom exception for slot-related operations in the schedule service
