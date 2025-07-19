@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "serve"]  # Use specific Node.js version + serve
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = ["npm install"]
 
 [phases.build]
-cmds = ["npm run build"]  # Build the React app
+cmds = ["npm run build"]
 
 [start]
-cmd = "serve -s build -l $PORT"  # Serve static files 
+cmd = "npx serve -s build -l $PORT" 
