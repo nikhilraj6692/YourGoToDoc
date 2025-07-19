@@ -18,7 +18,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -157,11 +156,31 @@ public class CustomFlywayService {
             // Get MongoDB connection string from Spring configuration
             String connectionString = getMongoConnectionString();
             
-            // Execute script using mongosh (MongoDB Shell)
+            // Try mongosh first, then fallback to mongo
+            boolean success = tryExecuteWithMongoSh(connectionString, tempScript.toString());
+            if (!success) {
+                log.info("mongosh not available, trying with mongo command...");
+                success = tryExecuteWithMongo(connectionString, tempScript.toString());
+            }
+            
+            // Clean up temp file
+            Files.deleteIfExists(tempScript);
+            Files.deleteIfExists(tempDir);
+            
+            return success;
+            
+        } catch (Exception e) {
+            log.error("Error executing MongoDB script: {}", scriptFilename, e);
+            return false;
+        }
+    }
+    
+    private boolean tryExecuteWithMongoSh(String connectionString, String scriptPath) {
+        try {
             ProcessBuilder processBuilder = new ProcessBuilder(
                 "mongosh", 
                 connectionString,
-                "--file", tempScript.toString(),
+                "--file", scriptPath,
                 "--quiet"
             );
             
@@ -174,22 +193,50 @@ public class CustomFlywayService {
             
             int exitCode = process.waitFor();
             
-            // Clean up temp file
-            Files.deleteIfExists(tempScript);
-            Files.deleteIfExists(tempDir);
-            
             if (exitCode == 0) {
-                log.info("MongoDB script executed successfully: {}", scriptFilename);
+                log.info("MongoDB script executed successfully with mongosh: {}", scriptPath);
                 log.debug("Script output: {}", output);
                 return true;
             } else {
-                log.error("MongoDB script failed with exit code {}: {}", exitCode, scriptFilename);
-                log.error("Script output: {}", output);
+                log.warn("mongosh failed with exit code {}: {}", exitCode, output);
                 return false;
             }
             
         } catch (Exception e) {
-            log.error("Error executing MongoDB script: {}", scriptFilename, e);
+            log.debug("mongosh not available: {}", e.getMessage());
+            return false;
+        }
+    }
+    
+    private boolean tryExecuteWithMongo(String connectionString, String scriptPath) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                "mongo", 
+                connectionString,
+                scriptPath,
+                "--quiet"
+            );
+            
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+            
+            // Read output
+            String output = new java.util.Scanner(process.getInputStream()).useDelimiter("\\A").hasNext() ? 
+                new java.util.Scanner(process.getInputStream()).useDelimiter("\\A").next() : "";
+            
+            int exitCode = process.waitFor();
+            
+            if (exitCode == 0) {
+                log.info("MongoDB script executed successfully with mongo: {}", scriptPath);
+                log.debug("Script output: {}", output);
+                return true;
+            } else {
+                log.error("mongo failed with exit code {}: {}", exitCode, output);
+                return false;
+            }
+            
+        } catch (Exception e) {
+            log.error("mongo command also not available: {}", e.getMessage());
             return false;
         }
     }
