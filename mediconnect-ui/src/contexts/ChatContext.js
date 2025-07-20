@@ -148,7 +148,8 @@ export const ChatProvider = ({ children }) => {
       });
 
       // Create WebSocket connection
-      const wsUrl = `ws://localhost:8080/ws/chat?appointmentId=${appointmentId}&token=${token}`;
+      const wsBaseUrl = process.env.REACT_APP_WS_BASE_URL || 'ws://localhost:8080';
+      const wsUrl = `${wsBaseUrl}/ws/chat?appointmentId=${appointmentId}&token=${token}`;
       console.log('Creating WebSocket with URL:', wsUrl);
       const socket = new WebSocket(wsUrl);
       
