@@ -4,6 +4,15 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+  tomcat:
+    threads:
+      max: 20                    # Reduced from 200
+      min-spare: 2               # Reduced from 10
+    connection-timeout: 20000
+    max-connections: 50          # Reduced from 8192
+    accept-count: 10             # Reduced from 100
+    max-http-form-post-size: 2MB
+    max-swallow-size: 2MB
 
 # MongoDB Configuration (Atlas)
 spring:
@@ -15,13 +24,26 @@ spring:
   # File Upload Configuration
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 5MB              # Reduced from 10MB
+      max-request-size: 5MB           # Reduced from 10MB
+      file-size-threshold: 1MB        # Threshold for writing to disk
 
   # Performance Configuration
   jpa:
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20               # Batch processing
+          fetch_size: 50               # Limit fetch size
+        cache:
+          use_second_level_cache: false # Disable caching
+          use_query_cache: false       # Disable query cache
+        connection:
+          pool_size: 5                 # Connection pool size
+    show-sql: false                    # Disable SQL logging
+    open-in-view: false               # Prevent lazy loading issues
 
   mail:
     enabled: false
