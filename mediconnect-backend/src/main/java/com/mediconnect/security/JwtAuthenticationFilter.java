@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final ObjectMapper objectMapper;
 
-    public JwtAuthenticationFilter(JwtTokenProvider tokenProvider, @Lazy UserDetailsService userDetailsService, ObjectMapper objectMapper) {
+    public JwtAuthenticationFilter(JwtTokenProvider tokenProvider, UserDetailsService userDetailsService, ObjectMapper objectMapper) {
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
         this.objectMapper = objectMapper;
