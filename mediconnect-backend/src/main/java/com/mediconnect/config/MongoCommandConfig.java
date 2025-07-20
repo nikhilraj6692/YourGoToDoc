@@ -21,7 +21,7 @@ public class MongoCommandConfig {
     private MongoTemplate mongoTemplate;
 
     @PostConstruct
-    public void initIndexes(MongoTemplate mongoTemplate) {
+    public void initIndexes() {
         try {
             // Clean up invalid location data first
             cleanupInvalidLocationData(mongoTemplate);
