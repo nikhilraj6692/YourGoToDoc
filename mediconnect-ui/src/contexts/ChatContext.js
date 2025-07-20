@@ -148,9 +148,20 @@ export const ChatProvider = ({ children }) => {
       });
 
       // Create WebSocket connection
-      const wsBaseUrl = process.env.REACT_APP_WS_BASE_URL || 'ws://localhost:8080';
+      console.log('🔍 Debug - Environment variables:');
+      console.log('REACT_APP_WS_BASE_URL:', process.env.REACT_APP_WS_BASE_URL);
+      console.log('REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
+      console.log('NODE_ENV:', process.env.NODE_ENV);
+      
+      // Force use of backend URL for WebSocket
+      const wsBaseUrl = process.env.REACT_APP_WS_BASE_URL || 
+                       (process.env.REACT_APP_API_BASE_URL ? 
+                         process.env.REACT_APP_API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://') : 
+                         'ws://localhost:8080');
+      
       const wsUrl = `${wsBaseUrl}/ws/chat?appointmentId=${appointmentId}&token=${token}`;
       console.log('Creating WebSocket with URL:', wsUrl);
+      console.log('Final wsBaseUrl:', wsBaseUrl);
       const socket = new WebSocket(wsUrl);
       
       // Set connection timeout (10 seconds)
@@ -603,23 +614,17 @@ export const ChatProvider = ({ children }) => {
       }
     };
 
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        console.log('🔄 Page hidden - closing WebSocket connections');
-        handleBeforeUnload();
-      }
-    };
+    // Remove the aggressive visibility change handler
+    // Only close connections on actual page unload, not when page becomes hidden
 
     // Add event listeners
     window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('pagehide', handleBeforeUnload);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // Cleanup event listeners
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('pagehide', handleBeforeUnload);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [connections]);
 
