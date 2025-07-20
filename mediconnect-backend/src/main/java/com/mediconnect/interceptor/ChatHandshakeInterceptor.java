@@ -5,8 +5,8 @@ import com.mediconnect.security.JwtTokenProvider;
 import com.mediconnect.service.ChatSecurityService;
 import com.mediconnect.service.UserService;
 import com.mediconnect.util.UserContext;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -17,13 +17,18 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import java.util.Map;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class ChatHandshakeInterceptor implements HandshakeInterceptor {
 
     private final JwtTokenProvider tokenProvider;
     private final UserService userService;
     private final ChatSecurityService chatSecurityService;
+    
+    public ChatHandshakeInterceptor(JwtTokenProvider tokenProvider, @Lazy UserService userService, ChatSecurityService chatSecurityService) {
+        this.tokenProvider = tokenProvider;
+        this.userService = userService;
+        this.chatSecurityService = chatSecurityService;
+    }
     
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, 
